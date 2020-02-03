@@ -1,3 +1,10 @@
-rootProject.name = 'org.paradox.genreclassifier'
-include ':AudioFeaturesExtractor'
+pluginManagement{
+    repositories{
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+    }
+}
+
+rootProject.name = 'AudioFeaturesExtractor'
 

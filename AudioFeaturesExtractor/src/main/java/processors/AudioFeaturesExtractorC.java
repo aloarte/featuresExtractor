@@ -1,17 +1,16 @@
 package processors;
 
+import libs.CustomOperations;
+import org.jtransforms.fft.DoubleFFT_1D;
 import org.nd4j.linalg.api.ndarray.INDArray;
+import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.indexing.INDArrayIndex;
 import org.nd4j.linalg.indexing.NDArrayIndex;
-import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.ops.transforms.Transforms;
-import static org.nd4j.linalg.ops.transforms.Transforms.*;
-import java.lang.Math;
+
 import java.util.Arrays;
 
-import libs.CustomOperations;
-import libs.FFT;
-import org.jtransforms.fft.DoubleFFT_1D;
+import static org.nd4j.linalg.ops.transforms.Transforms.pow;
 
 
 public class AudioFeaturesExtractorC {
@@ -51,9 +50,8 @@ public class AudioFeaturesExtractorC {
         while( current_pos + window -1 < N){ //For each short-term window
             count_frames += 1;
             INDArray x = norm_samples.get(
-                    new INDArrayIndex[]{NDArrayIndex.interval(
-                            current_pos,current_pos+window)}
-                            ).dup();
+                    NDArrayIndex.interval(
+                            current_pos, current_pos + window)).dup();
             current_pos += step;
 
             /**
@@ -156,10 +154,8 @@ public class AudioFeaturesExtractorC {
                 }
 
                 INDArray cur_stFeatures = stFeatures.get(
-                        new INDArrayIndex[]{
-                                NDArrayIndex.point(i),
-                                NDArrayIndex.interval(N1,N2)}
-                );
+                        NDArrayIndex.point(i),
+                        NDArrayIndex.interval(N1, N2));
 
                 mtFeatures.put(new INDArrayIndex[]{
                         NDArrayIndex.point(i),
@@ -245,7 +241,7 @@ public class AudioFeaturesExtractorC {
         int subWinLength = (int)(Math.floor(L/numOfShortBlocks)); //subframe length
         System.out.println("Shape X: " + x.shapeInfoToString());
         if(L!=subWinLength*numOfShortBlocks){
-            x = x.get(new INDArrayIndex[]{NDArrayIndex.interval(0, subWinLength*numOfShortBlocks)});
+            x = x.get(NDArrayIndex.interval(0, subWinLength * numOfShortBlocks));
         }
         System.out.println("Shape X: " + x.shapeInfoToString());
         INDArray subWindows = x.reshape(subWinLength, numOfShortBlocks).dup();
@@ -285,7 +281,7 @@ public class AudioFeaturesExtractorC {
         int subWinLength = (int)(Math.floor(L/numOfShortBlocks)); //subframe length
         System.out.println("Shape X: " + X.shapeInfoToString());
         if(L!=subWinLength*numOfShortBlocks){
-            X = X.get(new INDArrayIndex[]{NDArrayIndex.interval(0, subWinLength*numOfShortBlocks)});
+            X = X.get(NDArrayIndex.interval(0, subWinLength * numOfShortBlocks));
         }
         System.out.println("Shape X: " + X.shapeInfoToString());
         INDArray subWindows = X.reshape(subWinLength, numOfShortBlocks).dup();

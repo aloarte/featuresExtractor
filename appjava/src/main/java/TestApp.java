@@ -1,6 +1,7 @@
 import fr.delthas.javamp3.Sound;
 import libs.WavFile;
 import org.nd4j.linalg.api.ndarray.INDArray;
+import processors.AudioFeaturesExtractorC;
 
 import javax.sound.sampled.*;
 import java.io.*;
@@ -8,8 +9,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import processors.AudioFeaturesExtractorC;
-
 
 import static java.lang.Thread.sleep;
 

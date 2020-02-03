@@ -256,9 +256,3 @@ gradle-app.setting
 
 ### Gradle Patch ###
 **/build/
-/gradlew.bat
-/AudioFeaturesExtractor/AudioFeaturesExtractor.iml
-/AudioFeaturesExtractor/.idea/
-/AudioFeaturesExtractor/gradle/wrapper/
-/.idea/
-/gradle/wrapper/

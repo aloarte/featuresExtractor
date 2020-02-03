@@ -1,0 +1,16 @@
+plugins {
+    id 'java'
+}
+compileJava(){
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+repositories {
+    mavenCentral()
+}
+dependencies {
+    implementation "fr.delthas:javamp3:$vlib_javamp3"
+    implementation "org.nd4j:nd4j-native-platform:1.0.0-alpha"
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile project(path: ":AudioFeaturesExtractor")
+}
