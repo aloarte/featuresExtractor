@@ -20,11 +20,11 @@ public class FilterbankProcessor {
 
     public FilterbankProcessor(int frequency_rate, int nFFT) {
 
-        mfccInitFilterBanks(frequency_rate, nFFT);
+        extractMfccInitFilterBanks(frequency_rate, nFFT);
 
     }
 
-    public double[] stMFCC(INDArray X, int n_mfcc) {
+    public double[] extractMFCC(INDArray X, int n_mfcc) {
         /**
          Computes the MFCCs of a frame, given the fft mag
 
@@ -49,7 +49,7 @@ public class FilterbankProcessor {
         return ceps;
     }
 
-    private void mfccInitFilterBanks(int frequency_rate, int nFFT) {
+    private void extractMfccInitFilterBanks(int frequency_rate, int nFFT) {
         //filterbank params
         double lowfreq = 133.33;
         double linsc = 200 / 3.0;

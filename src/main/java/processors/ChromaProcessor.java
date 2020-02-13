@@ -21,10 +21,10 @@ public class ChromaProcessor {
 
     public ChromaProcessor(int nFFT, int frequency_rate) {
         this.frequency_rate = frequency_rate;
-        stChomaFeaturesIniti(nFFT);
+        extractChomaFeaturesIniti(nFFT);
     }
 
-    public INDArray stChromaFeatures(INDArray X) {
+    public INDArray extractChromaFeatures(INDArray X) {
         INDArray spec = Transforms.pow(X, 2);
         INDArray C = Nd4j.zeros(nChroma.length());
         /**
@@ -49,7 +49,7 @@ public class ChromaProcessor {
 
     }
 
-    private void stChomaFeaturesIniti(int nFFT) {
+    private void extractChomaFeaturesIniti(int nFFT) {
         INDArray freqs = Nd4j.arange(nFFT);
         freqs = freqs.add(1).mul(frequency_rate).div(2 * nFFT);
 

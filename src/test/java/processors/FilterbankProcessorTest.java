@@ -28,7 +28,21 @@ public class FilterbankProcessorTest {
         // Transform the input file into a float[] array
         double[] samples = wavUtils.load_wav(TEST_AUDIO_SAMPLE_WAV_PATH);
 
-//        double[] mfccValues = SUT.stMFCC();
+        //double[] mfccValues = SUT.stMFCC();
+//
+//        System.out.print(mfccValues);
+
+        //TODO: Check what stMFCC function gets and returns and test its functionallity
+    }
+
+    @Ignore
+    @Test
+    public void mfccInitFilterBanks() {
+
+        // Transform the input file into a float[] array
+        double[] samples = wavUtils.load_wav(TEST_AUDIO_SAMPLE_WAV_PATH);
+
+        //double[] mfccValues = SUT.mfccInitFilterBanks();
 //
 //        System.out.print(mfccValues);
 
