@@ -1,6 +1,8 @@
 package processors;
 
 import libs.CustomOperations;
+import model.ModuleParams;
+import model.enums.StatisticalMeasureType;
 import org.jtransforms.fft.DoubleFFT_1D;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
@@ -122,48 +124,35 @@ public class GeneralRawProcessor {
      * @param stStep
      * @return
      */
-    INDArray obtainAudioFeaturesStatistics(INDArray extractedFeaturesMatrix, int mtWin, int mtStep, int stStep) {
+    INDArray obtainAudioFeaturesStatistics(INDArray extractedFeaturesMatrix, int mtWin, int mtStep, int stStep, final ModuleParams moduleParams) {
         //Mid-Term feature extraction
         int mtWinRation = Math.round(mtWin / stStep);
         int mtStepRatio = Math.round(mtStep / stStep);
 
-//        INDArray stFeatures = stFeatureExtraction(samples, frequency_rate,
-//                stWin, stStep);
 
-        int numOfFeatures = extractedFeaturesMatrix.shape()[0];
-        int mtWindows = (int) Math.ceil(extractedFeaturesMatrix.shape()[1] / mtStepRatio);
+        int mtWindows = (int) Math.ceil(extractedFeaturesMatrix.columns() / mtStepRatio);
 
-        INDArray mtFeatures = Nd4j.zeros(numOfFeatures * 2, mtWindows);
+        //Create the base response INDArray initialized with zeros. Is size is [NumberOfFeatures * NumberOfStatisticalMeasures]
+        INDArray mtFeatures = Nd4j.zeros(extractedFeaturesMatrix.rows() * moduleParams.getStatisticalMeasuresNumber(), mtWindows);
 
-        for (int i = 0; i < numOfFeatures; i++) {
+        for (int featureIndex = 0; featureIndex < extractedFeaturesMatrix.rows(); featureIndex++) {
             int cur_p = 0;
-            int j = 0;
-            int N = extractedFeaturesMatrix.shape()[1];
+            int featureDataIndex = 0;
 
-            while (cur_p < N) {
+            while (cur_p < extractedFeaturesMatrix.columns()) {
                 int N1 = cur_p;
                 int N2 = cur_p + mtWinRation;
 
-                if (N2 > N) {
-                    N2 = N;
+                if (N2 > extractedFeaturesMatrix.columns()) {
+                    N2 = extractedFeaturesMatrix.columns();
                 }
 
-                INDArray cur_stFeatures = extractedFeaturesMatrix.get(
-                        NDArrayIndex.point(i),
-                        NDArrayIndex.interval(N1, N2));
 
-                mtFeatures.put(new INDArrayIndex[]{
-                        NDArrayIndex.point(i),
-                        NDArrayIndex.point(j)
-                }, Nd4j.mean(cur_stFeatures));
-
-                mtFeatures.put(new INDArrayIndex[]{
-                        NDArrayIndex.point(i + numOfFeatures),
-                        NDArrayIndex.point(j)
-                }, Nd4j.std(cur_stFeatures));
+                //Calculate all the statistical info based on the module params from the extractedFeaturesMatrix. Result returned on mtFeatures.
+                calculateStatisticalInfo(extractedFeaturesMatrix, mtFeatures, featureIndex, featureDataIndex, N1, N2, moduleParams);
 
                 cur_p += mtStepRatio;
-                j++;
+                featureDataIndex++;
             }
 
 
@@ -172,15 +161,46 @@ public class GeneralRawProcessor {
         return mtFeatures;
     }
 
-    public INDArray globalFeatureExtraction(double[] samples, int frequency_rate, int mtWin, int mtStep, int stWin, int stStep) {
+    public INDArray globalFeatureExtraction(double[] samples, int frequency_rate, int mtWin, int mtStep, int stWin, int stStep, final ModuleParams moduleParams) {
 
         //Extract the matrix with the [32 features] x [N window samples]
         INDArray matrixExtractedFeatures = extractAudioFeatures(samples, frequency_rate, stWin, stStep);
 
         //Apply statistic operations to each N sample for each of the 32 features. Extract a matrix of [32 features] x [N statistic operations]
-        INDArray mtFeatures = obtainAudioFeaturesStatistics(matrixExtractedFeatures, mtWin, mtStep, stStep);
+        INDArray mtFeatures = obtainAudioFeaturesStatistics(matrixExtractedFeatures, mtWin, mtStep, stStep, moduleParams);
 
         return (mtFeatures.mean(1));
 
     }
+
+
+    private INDArray calculateStatisticalInfo(INDArray extractedFeaturesMatrix, INDArray mtFeatures, int featureIndex, int featureDataIndex, int N1, int N2, final ModuleParams moduleParams) {
+
+        INDArray cur_stFeatures = extractedFeaturesMatrix.get(
+                NDArrayIndex.point(featureIndex),
+                NDArrayIndex.interval(N1, N2));
+
+        for (StatisticalMeasureType measureType : moduleParams.getStatisticalMeasures()) {
+            switch (measureType) {
+                case MEAN:
+                    mtFeatures.put(new INDArrayIndex[]{
+                            NDArrayIndex.point(featureIndex),
+                            NDArrayIndex.point(featureDataIndex)
+                    }, Nd4j.mean(cur_stFeatures));
+                    break;
+                case VARIANCE:
+                    break;
+                case STANDARD_DEVIATION:
+                    mtFeatures.put(new INDArrayIndex[]{
+                            NDArrayIndex.point(featureIndex + extractedFeaturesMatrix.rows()),
+                            NDArrayIndex.point(featureDataIndex)
+                    }, Nd4j.std(cur_stFeatures));
+                    break;
+            }
+        }
+
+        return mtFeatures;
+    }
+
+
 }

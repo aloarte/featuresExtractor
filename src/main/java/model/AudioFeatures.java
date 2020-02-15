@@ -1,5 +1,7 @@
 package model;
 
+import model.enums.StatisticalMeasureType;
+
 import java.io.Serializable;
 
 /**
@@ -37,6 +39,11 @@ public class AudioFeatures implements Serializable {
      */
     private ChromaFeatures chromaFeatures;
 
+    /**
+     * Meassure type used to filter the data of this set of AudioFeatures
+     */
+    private StatisticalMeasureType statisticalMeasureType;
+
 
     /**
      * Default constructor
@@ -47,6 +54,7 @@ public class AudioFeatures implements Serializable {
         this.spectralFeatures = new SpectralFeatures();
         this.mfcCs = new MFCCs();
         this.chromaFeatures = new ChromaFeatures();
+        this.statisticalMeasureType = StatisticalMeasureType.UNKNOWN;
     }
 
     public double getZeroCrossingRate() {
@@ -87,5 +95,13 @@ public class AudioFeatures implements Serializable {
 
     public void setChromaFeatures(ChromaFeatures chromaFeatures) {
         this.chromaFeatures = chromaFeatures;
+    }
+
+    public StatisticalMeasureType getStatisticalMeasureType() {
+        return statisticalMeasureType;
+    }
+
+    public void setStatisticalMeasureType(StatisticalMeasureType statisticalMeasureType) {
+        this.statisticalMeasureType = statisticalMeasureType;
     }
 }

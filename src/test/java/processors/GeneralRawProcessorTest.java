@@ -1,5 +1,6 @@
 package processors;
 
+import model.ModuleParams;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -26,7 +27,7 @@ public class GeneralRawProcessorTest {
         // Transform the input file into a float[] array
         double[] samples = wavUtils.load_wav(TEST_SAMPLE);
         // Extract globalFeatures
-        INDArray features = SUT.globalFeatureExtraction(samples, 22050, 2205, 2205, 2205, 2205);
+        INDArray features = SUT.globalFeatureExtraction(samples, 22050, 2205, 2205, 2205, 2205, new ModuleParams());
 
         System.out.print(features);
     }

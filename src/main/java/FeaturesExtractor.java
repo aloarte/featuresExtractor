@@ -1,4 +1,5 @@
 import model.AudioFeatures;
+import model.ModuleParams;
 import model.enums.AudioReadExtractionExceptionType;
 import model.exceptions.AudioExtractionException;
 import model.exceptions.AudioReadExtractionException;
@@ -7,8 +8,6 @@ import processors.GeneralRawProcessor;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static constants.ModuleConstants.STATISTICS_NUMBER;
 
 public class FeaturesExtractor {
 
@@ -27,17 +26,17 @@ public class FeaturesExtractor {
      * @param rawAudioSource raw audio source in byte[] format
      * @return
      */
-    public List<AudioFeatures> processAudioSource(final double[] rawAudioSource) throws AudioExtractionException {
+    public List<AudioFeatures> processAudioSource(final double[] rawAudioSource, final ModuleParams moduleParams) throws AudioExtractionException {
 
         try {
             //Check if the audio source is well read from the raw source. If anything goes wrong, throws an AudioExtractionException
             validateAudioSource(rawAudioSource);
 
             //Extract the global features in an INDArray
-            INDArray globalFeatures = generalRawProcessor.globalFeatureExtraction(rawAudioSource, 22050, 2205, 2205, 2205, 2205);
+            INDArray globalFeatures = generalRawProcessor.globalFeatureExtraction(rawAudioSource, 22050, 2205, 2205, 2205, 2205, moduleParams);
 
             //Parse the audio features from the INDArray to the concrete AudioFeature object
-            return dataParser.parseAudioFeatures(globalFeatures, STATISTICS_NUMBER);
+            return dataParser.parseAudioFeatures(globalFeatures, moduleParams);
         } catch (AudioExtractionException audioExtractionException) {
             System.err.println(audioExtractionException.getMessage());
             throw audioExtractionException;

@@ -9,76 +9,116 @@ import static constants.FeaturesNumbersConstants.*;
 public class DataParser {
 
 
-    List<AudioFeatures> parseAudioFeatures(INDArray extractedFeatures, int numberOfStatistics) {
-        if (extractedFeatures != null && extractedFeatures.length() == 68) {
+    /**
+     * Parse the INDArray of statistical measures of the extracted features into a list of AudioFeatures
+     *
+     * @param smExtractedFeatures INDArray containing the statistical measures of each extracted feature
+     * @param moduleParams        ModuleParams with the configuration selected by the user
+     * @return A list of AudioFeatures with the same number of AudioFeatures as the number of statistical measures.
+     */
+    List<AudioFeatures> parseAudioFeatures(INDArray smExtractedFeatures, final ModuleParams moduleParams) {
+        if (smExtractedFeatures != null && smExtractedFeatures.length() == (TOTAL_FEATURES * moduleParams.getStatisticalMeasuresNumber())) {
             List<AudioFeatures> parsedFeatures = new ArrayList<>();
-            for (int i = 0; i < numberOfStatistics; i++) {
+            for (int statisticalMeasureIndex = 0; statisticalMeasureIndex < moduleParams.getStatisticalMeasuresNumber(); statisticalMeasureIndex++) {
+                //Create the AudioFeatures class and set the statistical measure type
                 AudioFeatures audioFeatures = new AudioFeatures();
+                audioFeatures.setStatisticalMeasureType(moduleParams.getStatisticalMeasures().get(statisticalMeasureIndex));
 
-                audioFeatures.setZeroCrossingRate(extractedFeatures.getDouble(i));
-                audioFeatures.setEnergyFeatures(parseEnergyFeatures(extractedFeatures, numberOfStatistics));
-                audioFeatures.setSpectralFeatures(parseSpectralFeatures(extractedFeatures, numberOfStatistics));
-                audioFeatures.setMfcCs(parseMFFCS(extractedFeatures, numberOfStatistics));
-                audioFeatures.setChromaFeatures(parseChromaFeatures(extractedFeatures, numberOfStatistics));
+                //Add each set of features to the final AudioFeatures class
+                audioFeatures.setZeroCrossingRate(smExtractedFeatures.getDouble(statisticalMeasureIndex));
+                audioFeatures.setEnergyFeatures(parseEnergyFeatures(smExtractedFeatures, statisticalMeasureIndex));
+                audioFeatures.setSpectralFeatures(parseSpectralFeatures(smExtractedFeatures, statisticalMeasureIndex));
+                audioFeatures.setMfcCs(parseMFFCS(smExtractedFeatures, statisticalMeasureIndex));
+                audioFeatures.setChromaFeatures(parseChromaFeatures(smExtractedFeatures, statisticalMeasureIndex));
 
+                //Add the AudioFeatures calculated to the list of AudioFeatures
                 parsedFeatures.add(audioFeatures);
             }
+            //Return the list of AudioFeatures
             return parsedFeatures;
         } else return null;
     }
 
-    EnergyFeatures parseEnergyFeatures(INDArray extractedFeatures, int currentStatisticPosition) {
+    /**
+     * Obtain the EnergyFeatures from the INDArray of statistical measures of the extracted features
+     *
+     * @param smExtractedFeatures      INDArray containing the statistical measures of each extracted feature
+     * @param currentStatisticPosition index of the position to retrieve the proper values
+     * @return A class with the EnergyFeatures already parsed from the input
+     */
+    EnergyFeatures parseEnergyFeatures(INDArray smExtractedFeatures, int currentStatisticPosition) {
         return new EnergyFeatures(
-                extractedFeatures.getDouble(currentStatisticPosition + 1),
-                extractedFeatures.getDouble(currentStatisticPosition + 2));
+                smExtractedFeatures.getDouble(currentStatisticPosition + 1),
+                smExtractedFeatures.getDouble(currentStatisticPosition + 2));
     }
 
-    SpectralFeatures parseSpectralFeatures(INDArray extractedFeatures, int currentStatisticPosition) {
+    /**
+     * Obtain the SpectralFeatures from the INDArray of statistical measures of the extracted features
+     *
+     * @param smExtractedFeatures      INDArray containing the statistical measures of each extracted feature
+     * @param currentStatisticPosition index of the position to retrieve the proper values
+     * @return A class with the EnergyFeatures already parsed from the input
+     */
+    SpectralFeatures parseSpectralFeatures(INDArray smExtractedFeatures, int currentStatisticPosition) {
         return new SpectralFeatures(
-                extractedFeatures.getDouble(currentStatisticPosition + 3),
-                extractedFeatures.getDouble(currentStatisticPosition + 4),
-                extractedFeatures.getDouble(currentStatisticPosition + 5),
-                extractedFeatures.getDouble(currentStatisticPosition + 6),
-                extractedFeatures.getDouble(currentStatisticPosition + 7));
+                smExtractedFeatures.getDouble(currentStatisticPosition + 3),
+                smExtractedFeatures.getDouble(currentStatisticPosition + 4),
+                smExtractedFeatures.getDouble(currentStatisticPosition + 5),
+                smExtractedFeatures.getDouble(currentStatisticPosition + 6),
+                smExtractedFeatures.getDouble(currentStatisticPosition + 7));
     }
 
-    MFCCs parseMFFCS(INDArray extractedFeatures, int currentStatisticPosition) {
+    /**
+     * Obtain the MFCCs from the INDArray of statistical measures of the extracted features
+     *
+     * @param smExtractedFeatures      INDArray containing the statistical measures of each extracted feature
+     * @param currentStatisticPosition index of the position to retrieve the proper values
+     * @return A class with the EnergyFeatures already parsed from the input
+     */
+    MFCCs parseMFFCS(INDArray smExtractedFeatures, int currentStatisticPosition) {
 
-//        extractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES);
-//        extractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES +1);
-//        extractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES+2);
-//        extractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES+3);
-//        extractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES+4);
-//        extractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES+5);
-//        extractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES+6);
-//        extractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES+7);
-//        extractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES+8);
-//        extractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES+9);
-//        extractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES+10);
-//        extractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES+11);
-//        extractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES+12);
+//        smExtractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES);
+//        smExtractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES +1);
+//        smExtractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES+2);
+//        smExtractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES+3);
+//        smExtractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES+4);
+//        smExtractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES+5);
+//        smExtractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES+6);
+//        smExtractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES+7);
+//        smExtractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES+8);
+//        smExtractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES+9);
+//        smExtractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES+10);
+//        smExtractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES+11);
+//        smExtractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES+12);
 
         return new MFCCs();
     }
 
-    ChromaFeatures parseChromaFeatures(INDArray extractedFeatures, int currentStatisticPosition) {
+    /**
+     * Obtain the ChromaFeatures from the INDArray of statistical measures of the extracted features
+     *
+     * @param smExtractedFeatures      INDArray containing the statistical measures of each extracted feature
+     * @param currentStatisticPosition index of the position to retrieve the proper values
+     * @return A class with the EnergyFeatures already parsed from the input
+     */
+    ChromaFeatures parseChromaFeatures(INDArray smExtractedFeatures, int currentStatisticPosition) {
 
         double[] chromaFeatures = new double[]{
-                extractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES + NCEPS_FEATURES),
-                extractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES + NCEPS_FEATURES + 1),
-                extractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES + NCEPS_FEATURES + 2),
-                extractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES + NCEPS_FEATURES + 3),
-                extractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES + NCEPS_FEATURES + 4),
-                extractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES + NCEPS_FEATURES + 5),
-                extractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES + NCEPS_FEATURES + 6),
-                extractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES + NCEPS_FEATURES + 7),
-                extractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES + NCEPS_FEATURES + 8),
-                extractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES + NCEPS_FEATURES + 9),
-                extractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES + NCEPS_FEATURES + 10),
-                extractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES + NCEPS_FEATURES + 11)
+                smExtractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES + NCEPS_FEATURES),
+                smExtractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES + NCEPS_FEATURES + 1),
+                smExtractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES + NCEPS_FEATURES + 2),
+                smExtractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES + NCEPS_FEATURES + 3),
+                smExtractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES + NCEPS_FEATURES + 4),
+                smExtractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES + NCEPS_FEATURES + 5),
+                smExtractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES + NCEPS_FEATURES + 6),
+                smExtractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES + NCEPS_FEATURES + 7),
+                smExtractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES + NCEPS_FEATURES + 8),
+                smExtractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES + NCEPS_FEATURES + 9),
+                smExtractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES + NCEPS_FEATURES + 10),
+                smExtractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES + NCEPS_FEATURES + 11)
         };
 
-        return new ChromaFeatures(chromaFeatures, extractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES + NCEPS_FEATURES + CHROMA_FEATURES - 1));
+        return new ChromaFeatures(chromaFeatures, smExtractedFeatures.getDouble(currentStatisticPosition + TIME_SPECTRAL_FEATURES + NCEPS_FEATURES + CHROMA_FEATURES -1));
     }
 
 
