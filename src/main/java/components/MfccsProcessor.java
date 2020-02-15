@@ -1,4 +1,4 @@
-package processors;
+package components;
 
 import org.jtransforms.dct.DoubleDCT_1D;
 import org.nd4j.linalg.api.iter.NdIndexIterator;
@@ -12,13 +12,13 @@ import java.util.Arrays;
 import static org.nd4j.linalg.ops.transforms.Transforms.pow;
 
 
-public class FilterbankProcessor {
+public class MfccsProcessor {
     private static double eps = 0.00000001;
     private INDArray fbank;
     private INDArray freqs;
 
 
-    public FilterbankProcessor(int frequency_rate, int nFFT) {
+    public MfccsProcessor(int frequency_rate, int nFFT) {
 
         extractMfccInitFilterBanks(frequency_rate, nFFT);
 

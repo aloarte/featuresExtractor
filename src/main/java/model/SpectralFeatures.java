@@ -81,4 +81,14 @@ public class SpectralFeatures {
     public void setSpectralRolloff(double spectralRolloff) {
         this.spectralRolloff = spectralRolloff;
     }
+
+    @Override
+    public String toString() {
+        return "----- Spectral Features ----\n " +
+                "- Spectral centroid: " + getSpectralCentroid() + "\n" +
+                "- Spectral spread: " + getSpectralSpread() + "\n" +
+                "- Spectral entropy: " + getSpectralEntropy() + "\n" +
+                "- Spectral flux: " + getSpectralFlux() + "\n" +
+                "- Spectral rolloff: " + getSpectralRolloff() + "\n";
+    }
 }

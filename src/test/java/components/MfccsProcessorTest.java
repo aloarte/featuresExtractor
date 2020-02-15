@@ -1,4 +1,4 @@
-package processors;
+package components;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -7,18 +7,18 @@ import testutils.WavUtils;
 
 import static testutils.TestingConstants.TEST_AUDIO_SAMPLE_WAV_PATH;
 
-public class FilterbankProcessorTest {
+public class MfccsProcessorTest {
 
     private WavUtils wavUtils;
 
-    private FilterbankProcessor SUT;
+    private MfccsProcessor SUT;
 
     @Before
     public void startUp() {
         wavUtils = new WavUtils();
         int freqRate = 1; //TODO: Check a good value for the freqRate
         int nFFT = 1;   //TODO: Check a good value for nFFT
-        SUT = new FilterbankProcessor(freqRate, nFFT);
+        SUT = new MfccsProcessor(freqRate, nFFT);
     }
 
     @Ignore

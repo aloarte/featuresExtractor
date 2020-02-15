@@ -10,18 +10,18 @@ import java.util.List;
 
 import static testutils.TestingConstants.TEST_SAMPLE;
 
-public class FeaturesExtractorTest {
+public class AudioFeaturesManagerTest {
 
 
     String pathFile;
     private WavUtils wavUtils;
 
-    private FeaturesExtractor SUT;
+    private AudioFeaturesManager SUT;
 
     @Before
     public void startUp() {
         wavUtils = new WavUtils();
-        SUT = new FeaturesExtractor();
+        SUT = new AudioFeaturesManager();
     }
 
     @Test
@@ -33,9 +33,12 @@ public class FeaturesExtractorTest {
         ModuleParams moduleParams = new ModuleParams();
         List<StatisticalMeasureType> measureTypes = new ArrayList<>();
         measureTypes.add(StatisticalMeasureType.MEAN);
+        measureTypes.add(StatisticalMeasureType.STANDARD_DEVIATION);
+
         moduleParams.setStatisticalMeasures(measureTypes);
         List<AudioFeatures> extractedFeatures = SUT.processAudioSource(samples, moduleParams);
-        System.out.println();
+        System.out.println(extractedFeatures.get(0).toString());
+        System.out.println(extractedFeatures.get(1).toString());
 
     }
 

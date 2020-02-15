@@ -1,4 +1,4 @@
-package processors;
+package components;
 
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
@@ -16,7 +16,7 @@ public class FeaturesProcessor {
     INDArray extractFeaturesFromSlice(INDArray currentAudioSlice, INDArray fftAudioSlice, INDArray fftPreviousAudioSlice, int frequency_rate, int nFFT) {
 
         //Initialize the processors
-        FilterbankProcessor filterbankProcessor = new FilterbankProcessor(frequency_rate, nFFT);
+        MfccsProcessor mfccsProcessor = new MfccsProcessor(frequency_rate, nFFT);
         ChromaProcessor chromaProcessor = new ChromaProcessor(nFFT, frequency_rate);
         EnergyProcessor energyProcessor = new EnergyProcessor(EPS_CONSTANT);
         SpectralProcessor spectralProcessor = new SpectralProcessor((EPS_CONSTANT));
@@ -39,7 +39,7 @@ public class FeaturesProcessor {
         extractedFeatures.putScalar(7, spectralProcessor.extractSpectralRollOff(fftAudioSlice, 0.90, frequency_rate));
 
         // 9 -21: MFCCS
-        double[] stMFCCs = filterbankProcessor.extractMFCC(fftAudioSlice, NCEPS_FEATURES);
+        double[] stMFCCs = mfccsProcessor.extractMFCC(fftAudioSlice, NCEPS_FEATURES);
         extractedFeatures.put(new INDArrayIndex[]{
                         NDArrayIndex.interval(TIME_SPECTRAL_FEATURES, TIME_SPECTRAL_FEATURES + NCEPS_FEATURES)},
                 Nd4j.create(stMFCCs));

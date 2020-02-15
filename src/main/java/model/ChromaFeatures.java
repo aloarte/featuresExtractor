@@ -58,4 +58,23 @@ public class ChromaFeatures {
     public void setChromaDeviation(double chromaDeviation) {
         this.chromaDeviation = chromaDeviation;
     }
+
+    @Override
+    public String toString() {
+        return "----- Chroma Features: -----\n " +
+                "- Chroma vector\n" +
+                " [0]: " + getChromaVector()[0] + "\n" +
+                " [1]: " + getChromaVector()[1] + "\n" +
+                " [2]: " + getChromaVector()[2] + "\n" +
+                " [3]: " + getChromaVector()[3] + "\n" +
+                " [4]: " + getChromaVector()[4] + "\n" +
+                " [5]: " + getChromaVector()[5] + "\n" +
+                " [6]: " + getChromaVector()[6] + "\n" +
+                " [7]: " + getChromaVector()[7] + "\n" +
+                " [8]: " + getChromaVector()[8] + "\n" +
+                " [9]: " + getChromaVector()[9] + "\n" +
+                " [10]: " + getChromaVector()[10] + "\n" +
+                " [11]: " + getChromaVector()[11] + "\n" +
+                "- Chroma deviation: " + getChromaDeviation() + "\n";
+    }
 }

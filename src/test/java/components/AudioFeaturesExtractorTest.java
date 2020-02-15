@@ -1,4 +1,4 @@
-package processors;
+package components;
 
 import model.ModuleParams;
 import org.junit.Before;
@@ -9,16 +9,16 @@ import testutils.WavUtils;
 
 import static testutils.TestingConstants.TEST_SAMPLE;
 
-public class GeneralRawProcessorTest {
+public class AudioFeaturesExtractorTest {
 
     private WavUtils wavUtils;
 
-    private GeneralRawProcessor SUT;
+    private AudioFeaturesExtractor SUT;
 
     @Before
     public void startUp() {
         wavUtils = new WavUtils();
-        SUT = new GeneralRawProcessor();
+        SUT = new AudioFeaturesExtractor();
     }
 
     @Test

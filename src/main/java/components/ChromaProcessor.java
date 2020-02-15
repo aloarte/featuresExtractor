@@ -1,4 +1,4 @@
-package processors;
+package components;
 
 import org.nd4j.linalg.api.iter.NdIndexIterator;
 import org.nd4j.linalg.api.ndarray.INDArray;

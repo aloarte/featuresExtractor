@@ -39,4 +39,11 @@ public class EnergyFeatures {
     public void setEntropyOfEnergy(double entropyOfEnergy) {
         this.entropyOfEnergy = entropyOfEnergy;
     }
+
+    @Override
+    public String toString() {
+        return "----- Energy Features: ------\n " +
+                "- Energy: " + getEnergy() + "\n" +
+                "- Entropy: " + getEntropyOfEnergy() + "\n";
+    }
 }

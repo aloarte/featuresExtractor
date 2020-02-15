@@ -1,23 +1,23 @@
+import components.AudioFeaturesExtractor;
 import model.AudioFeatures;
 import model.ModuleParams;
 import model.enums.AudioReadExtractionExceptionType;
 import model.exceptions.AudioExtractionException;
 import model.exceptions.AudioReadExtractionException;
 import org.nd4j.linalg.api.ndarray.INDArray;
-import processors.GeneralRawProcessor;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class FeaturesExtractor {
+public class AudioFeaturesManager {
 
     private DataParser dataParser;
 
-    private GeneralRawProcessor generalRawProcessor;
+    private AudioFeaturesExtractor audioFeaturesExtractor;
 
-    public FeaturesExtractor() {
+    public AudioFeaturesManager() {
         this.dataParser = new DataParser();
-        this.generalRawProcessor = new GeneralRawProcessor();
+        this.audioFeaturesExtractor = new AudioFeaturesExtractor();
     }
 
     /**
@@ -33,7 +33,7 @@ public class FeaturesExtractor {
             validateAudioSource(rawAudioSource);
 
             //Extract the global features in an INDArray
-            INDArray globalFeatures = generalRawProcessor.globalFeatureExtraction(rawAudioSource, 22050, 2205, 2205, 2205, 2205, moduleParams);
+            INDArray globalFeatures = audioFeaturesExtractor.globalFeatureExtraction(rawAudioSource, 22050, 2205, 2205, 2205, 2205, moduleParams);
 
             //Parse the audio features from the INDArray to the concrete AudioFeature object
             return dataParser.parseAudioFeatures(globalFeatures, moduleParams);

@@ -1,4 +1,4 @@
-package processors;
+package components;
 
 import org.junit.Before;
 import org.junit.Ignore;

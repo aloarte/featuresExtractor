@@ -104,4 +104,15 @@ public class AudioFeatures implements Serializable {
     public void setStatisticalMeasureType(StatisticalMeasureType statisticalMeasureType) {
         this.statisticalMeasureType = statisticalMeasureType;
     }
+
+    @Override
+    public String toString() {
+        return "++++++++++++++ Audio Features (" + getStatisticalMeasureType().name() + "): +++++\n " +
+                "----- ZCR: " + getZeroCrossingRate() + "\n" +
+                getEnergyFeatures().toString() +
+                getSpectralFeatures().toString() +
+                getChromaFeatures() +
+                getMfcCs() +
+                "+++++++++++++++++++++++++++++++++++++++++++++++++\n";
+    }
 }
