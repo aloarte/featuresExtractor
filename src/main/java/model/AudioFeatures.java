@@ -11,7 +11,7 @@ public class AudioFeatures implements Serializable {
     /**
      * The rate of sign-changes of the signal during the duration of a particular frame.
      */
-    public float zeroCrossingRate;
+    public double zeroCrossingRate;
 
     //2-3
     /**
@@ -49,11 +49,11 @@ public class AudioFeatures implements Serializable {
         this.chromaFeatures = new ChromaFeatures();
     }
 
-    public float getZeroCrossingRate() {
+    public double getZeroCrossingRate() {
         return zeroCrossingRate;
     }
 
-    public void setZeroCrossingRate(float zeroCrossingRate) {
+    public void setZeroCrossingRate(double zeroCrossingRate) {
         this.zeroCrossingRate = zeroCrossingRate;
     }
 

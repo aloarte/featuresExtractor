@@ -8,69 +8,77 @@ public class SpectralFeatures {
     /**
      * The center of gravity of the spectrum.
      */
-    private float spectralCentroid;
+    private double spectralCentroid;
 
     /**
      * The second central moment of the spectrum.
      */
-    private float spectralSpread;
+    private double spectralSpread;
 
     /**
      * Entropy of the normalized spectral energies for a set of sub-frames.
      */
-    private float spectralEntropy;
+    private double spectralEntropy;
 
     /**
      * The squared difference between the normalized magnitudes of the spectra of the two successive frames.
      */
-    private float spectralFlux;
+    private double spectralFlux;
 
     /**
      * The frequency below which 90% of the magnitude distribution of the spectrum is concentrated
      */
-    private float spectralRolloff;
+    private double spectralRolloff;
 
-    public SpectralFeatures() {
-        //TODO: check if there is any default behaviour to build this class
+    public SpectralFeatures(double spectralCentroid, double spectralSpread, double spectralEntropy, double spectralFlux, double spectralRolloff) {
+        this.spectralCentroid = spectralCentroid;
+        this.spectralSpread = spectralSpread;
+        this.spectralEntropy = spectralEntropy;
+        this.spectralFlux = spectralFlux;
+        this.spectralRolloff = spectralRolloff;
     }
 
-    public float getSpectralCentroid() {
+    public SpectralFeatures() {
+
+    }
+
+    public double getSpectralCentroid() {
         return spectralCentroid;
     }
 
-    public void setSpectralCentroid(float spectralCentroid) {
+    public void setSpectralCentroid(double spectralCentroid) {
         this.spectralCentroid = spectralCentroid;
     }
 
-    public float getSpectralSpread() {
+    public double getSpectralSpread() {
         return spectralSpread;
     }
 
-    public void setSpectralSpread(float spectralSpread) {
+    public void setSpectralSpread(double spectralSpread) {
         this.spectralSpread = spectralSpread;
     }
 
-    public float getSpectralEntropy() {
+    public double getSpectralEntropy() {
         return spectralEntropy;
     }
 
-    public void setSpectralEntropy(float spectralEntropy) {
+    public void setSpectralEntropy(double spectralEntropy) {
         this.spectralEntropy = spectralEntropy;
     }
 
-    public float getSpectralFlux() {
+    public double getSpectralFlux() {
         return spectralFlux;
     }
 
-    public void setSpectralFlux(float spectralFlux) {
+    public void setSpectralFlux(double spectralFlux) {
         this.spectralFlux = spectralFlux;
     }
 
-    public float getSpectralRolloff() {
+    public double getSpectralRolloff() {
         return spectralRolloff;
     }
 
-    public void setSpectralRolloff(float spectralRolloff) {
+    public void setSpectralRolloff(double spectralRolloff) {
         this.spectralRolloff = spectralRolloff;
     }
 }

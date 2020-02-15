@@ -1,7 +1,6 @@
 package processors;
 
 import libs.CustomOperations;
-import model.FeaturesCounters;
 import org.jtransforms.fft.DoubleFFT_1D;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
@@ -11,12 +10,10 @@ import org.nd4j.linalg.ops.transforms.Transforms;
 
 import java.util.Arrays;
 
-public class GeneralRawProcessor {
+import static constants.FeaturesNumbersConstants.TOTAL_FEATURES;
 
-    public static int TIME_SPECTRAL_FEATURES = 8;
-    public static int HARMONIC_FEATURES = 0;
-    public static int NCEPS_FEATURES = 13;
-    public static int CHROMA_FEATURES = 13;
+
+public class GeneralRawProcessor {
 
     private FeaturesProcessor featuresProcessor;
 
@@ -36,9 +33,6 @@ public class GeneralRawProcessor {
      */
     INDArray extractAudioFeatures(double[] samples, int frequency_rate,
                                   int window, int step) {
-
-        //Calculate the number counter of each feature
-        FeaturesCounters featuresCounters = new FeaturesCounters(TIME_SPECTRAL_FEATURES, HARMONIC_FEATURES, NCEPS_FEATURES, CHROMA_FEATURES);
 
 
         INDArray norm_samples = Nd4j.create(samples, new int[]{samples.length});
@@ -101,7 +95,7 @@ public class GeneralRawProcessor {
             }
 
             //Extract the features from the different slices of audio from the same window
-            INDArray curFV = featuresProcessor.extractFeaturesFromSlice(currentAudioSlice, fftAudioSlice, fftPreviousAudioSlice, frequency_rate, nFFT, featuresCounters);
+            INDArray curFV = featuresProcessor.extractFeaturesFromSlice(currentAudioSlice, fftAudioSlice, fftPreviousAudioSlice, frequency_rate, nFFT);
 
 
             fftPreviousAudioSlice = fftAudioSlice.dup();
@@ -113,7 +107,8 @@ public class GeneralRawProcessor {
             }
 
         }
-        matrixStFeatures = matrixStFeatures.reshape(matrixStFeatures.length() / featuresCounters.getTotalFeatures(), featuresCounters.getTotalFeatures());
+
+        matrixStFeatures = matrixStFeatures.reshape(matrixStFeatures.length() / TOTAL_FEATURES, TOTAL_FEATURES);
 
         return matrixStFeatures.transpose();
     }

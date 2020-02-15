@@ -12,19 +12,19 @@ public class ChromaFeatures {
     /**
      * A 12-element representation of the spectral energy where the bins represent the 12 equal-tempered pitch classes of western-type music (semitone spacing).
      */
-    private float[] chromaVector;
+    private double[] chromaVector;
 
     //34
     /**
      * The standard deviation of the 12 chroma coefficients.
      */
-    private float chromaDeviation;
+    private double chromaDeviation;
 
     /**
      * Default constructor.
      */
     public ChromaFeatures() {
-        this.chromaVector = new float[CHROMA_ELEMENTS];
+        this.chromaVector = new double[CHROMA_ELEMENTS];
         this.chromaDeviation = 0F;
     }
 
@@ -34,28 +34,28 @@ public class ChromaFeatures {
      * @param chromaVector    value of the chroma vector
      * @param chromaDeviation value of  the chroma vector deviation
      */
-    public ChromaFeatures(float[] chromaVector, float chromaDeviation) {
+    public ChromaFeatures(double[] chromaVector, double chromaDeviation) {
         //Check that the passed chroma vector has exactly 12 elements
         if (chromaVector != null && chromaVector.length == CHROMA_ELEMENTS) {
             this.chromaVector = chromaVector;
-        } else this.chromaVector = new float[CHROMA_ELEMENTS];
+        } else this.chromaVector = new double[CHROMA_ELEMENTS];
 
         this.chromaDeviation = chromaDeviation;
     }
 
-    public float[] getChromaVector() {
+    public double[] getChromaVector() {
         return chromaVector;
     }
 
-    public void setChromaVector(float[] chromaVector) {
+    public void setChromaVector(double[] chromaVector) {
         this.chromaVector = chromaVector;
     }
 
-    public float getChromaDeviation() {
+    public double getChromaDeviation() {
         return chromaDeviation;
     }
 
-    public void setChromaDeviation(float chromaDeviation) {
+    public void setChromaDeviation(double chromaDeviation) {
         this.chromaDeviation = chromaDeviation;
     }
 }

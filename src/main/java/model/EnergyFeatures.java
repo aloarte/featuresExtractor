@@ -8,30 +8,35 @@ public class EnergyFeatures {
     /**
      * The sum of squares of the signal values, normalized by the respective frame length.
      */
-    private float energy;
+    private double energy;
 
     /**
      * The entropy of sub-frames' normalized energies. It can be interpreted as a measure of abrupt changes.
      */
-    private float entropyOfEnergy;
+    private double entropyOfEnergy;
 
-    public EnergyFeatures() {
-        //TODO: check if there is any default behaviour to build this class
+    public EnergyFeatures(double energy, double entropyOfEnergy) {
+        this.energy = energy;
+        this.entropyOfEnergy = entropyOfEnergy;
     }
 
-    public float getEnergy() {
+    public EnergyFeatures() {
+
+    }
+
+    public double getEnergy() {
         return energy;
     }
 
-    public void setEnergy(float energy) {
+    public void setEnergy(double energy) {
         this.energy = energy;
     }
 
-    public float getEntropyOfEnergy() {
+    public double getEntropyOfEnergy() {
         return entropyOfEnergy;
     }
 
-    public void setEntropyOfEnergy(float entropyOfEnergy) {
+    public void setEntropyOfEnergy(double entropyOfEnergy) {
         this.entropyOfEnergy = entropyOfEnergy;
     }
 }

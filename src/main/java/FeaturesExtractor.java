@@ -6,6 +6,9 @@ import org.nd4j.linalg.api.ndarray.INDArray;
 import processors.GeneralRawProcessor;
 
 import java.util.Arrays;
+import java.util.List;
+
+import static constants.ModuleConstants.STATISTICS_NUMBER;
 
 public class FeaturesExtractor {
 
@@ -24,17 +27,17 @@ public class FeaturesExtractor {
      * @param rawAudioSource raw audio source in byte[] format
      * @return
      */
-    public AudioFeatures processAudioSource(final double[] rawAudioSource) throws AudioExtractionException {
+    public List<AudioFeatures> processAudioSource(final double[] rawAudioSource) throws AudioExtractionException {
 
         try {
             //Check if the audio source is well read from the raw source. If anything goes wrong, throws an AudioExtractionException
             validateAudioSource(rawAudioSource);
 
-            //Exctract the global features in an INDArray
+            //Extract the global features in an INDArray
             INDArray globalFeatures = generalRawProcessor.globalFeatureExtraction(rawAudioSource, 22050, 2205, 2205, 2205, 2205);
 
             //Parse the audio features from the INDArray to the concrete AudioFeature object
-            return dataParser.parseAudioFeatures(globalFeatures);
+            return dataParser.parseAudioFeatures(globalFeatures, STATISTICS_NUMBER);
         } catch (AudioExtractionException audioExtractionException) {
             System.err.println(audioExtractionException.getMessage());
             throw audioExtractionException;
