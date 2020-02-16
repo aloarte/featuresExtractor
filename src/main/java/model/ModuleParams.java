@@ -11,8 +11,8 @@ public class ModuleParams {
 
     public ModuleParams() {
         statisticalMeasures = new ArrayList<>();
-        statisticalMeasures.add(StatisticalMeasureType.MEAN);
-        statisticalMeasures.add(StatisticalMeasureType.STANDARD_DEVIATION);
+        statisticalMeasures.add(StatisticalMeasureType.Mean);
+        statisticalMeasures.add(StatisticalMeasureType.StandardDeviation);
     }
 
     public List<StatisticalMeasureType> getStatisticalMeasures() {

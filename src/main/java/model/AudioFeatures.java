@@ -54,7 +54,7 @@ public class AudioFeatures implements Serializable {
         this.spectralFeatures = new SpectralFeatures();
         this.mfcCs = new MFCCs();
         this.chromaFeatures = new ChromaFeatures();
-        this.statisticalMeasureType = StatisticalMeasureType.UNKNOWN;
+        this.statisticalMeasureType = StatisticalMeasureType.Unknown;
     }
 
     public double getZeroCrossingRate() {

@@ -2,12 +2,20 @@ package components;
 
 import model.ModuleParams;
 import model.enums.StatisticalMeasureType;
+import model.exceptions.AudioExtractionException;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.indexing.INDArrayIndex;
 import org.nd4j.linalg.indexing.NDArrayIndex;
 
 public class StatisticsExtractor {
+
+
+    private MethodsEntryValidator validator;
+
+    public StatisticsExtractor() {
+        validator = new MethodsEntryValidator();
+    }
 
     /**
      * Read the info from the extractedFeaturedMatrix, calculate the statistics of each feature and put it on the mtFeatures output INDArray
@@ -29,12 +37,12 @@ public class StatisticsExtractor {
 
         for (StatisticalMeasureType measureType : moduleParams.getStatisticalMeasures()) {
             switch (measureType) {
-                case MEAN:
+                case Mean:
                     calculateMean(cur_stFeatures, audioFeaturesStatistics, featureIndex, featureDataIndex);
                     break;
-                case VARIANCE:
+                case Variance:
                     break;
-                case STANDARD_DEVIATION:
+                case StandardDeviation:
                     calculateStandardDeviation(cur_stFeatures, audioFeaturesStatistics, featureIndex + extractedFeaturesMatrix.rows(), featureDataIndex);
                     break;
             }
@@ -66,7 +74,10 @@ public class StatisticsExtractor {
      * @param stStep
      * @return
      */
-    INDArray obtainAudioFeaturesStatistics(INDArray extractedFeaturesMatrix, int mtWin, int mtStep, int stStep, final ModuleParams moduleParams) {
+    INDArray obtainAudioFeaturesStatistics(INDArray extractedFeaturesMatrix, int mtWin, int mtStep, int stStep, final ModuleParams moduleParams) throws AudioExtractionException {
+
+        validator.verifyExtractedMatrix(extractedFeaturesMatrix);
+
         //Mid-Term feature extraction
         int mtWinRation = Math.round(mtWin / stStep);
         int mtStepRatio = Math.round(mtStep / stStep);

@@ -2,6 +2,7 @@ package components;
 
 import libs.CustomOperations;
 import model.ModuleParams;
+import model.exceptions.AudioExtractionException;
 import org.jtransforms.fft.DoubleFFT_1D;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
@@ -36,7 +37,7 @@ public class AudioFeaturesExtractor {
      * @return
      */
     INDArray extractAudioFeatures(double[] samples, int frequency_rate,
-                                  int window, int step) {
+                                  int window, int step) throws AudioExtractionException {
 
 
         INDArray norm_samples = Nd4j.create(samples, new int[]{samples.length});
@@ -118,8 +119,7 @@ public class AudioFeaturesExtractor {
     }
 
 
-
-    public INDArray globalFeatureExtraction(double[] samples, int frequency_rate, int mtWin, int mtStep, int stWin, int stStep, final ModuleParams moduleParams) {
+    public INDArray globalFeatureExtraction(double[] samples, int frequency_rate, int mtWin, int mtStep, int stWin, int stStep, final ModuleParams moduleParams) throws AudioExtractionException {
 
         //Extract the matrix with the [32 features] x [N window samples]
         INDArray matrixExtractedFeatures = extractAudioFeatures(samples, frequency_rate, stWin, stStep);

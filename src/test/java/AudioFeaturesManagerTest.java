@@ -32,8 +32,8 @@ public class AudioFeaturesManagerTest {
 
         ModuleParams moduleParams = new ModuleParams();
         List<StatisticalMeasureType> measureTypes = new ArrayList<>();
-        measureTypes.add(StatisticalMeasureType.MEAN);
-        measureTypes.add(StatisticalMeasureType.STANDARD_DEVIATION);
+        measureTypes.add(StatisticalMeasureType.Mean);
+        measureTypes.add(StatisticalMeasureType.StandardDeviation);
 
         moduleParams.setStatisticalMeasures(measureTypes);
         List<AudioFeatures> extractedFeatures = SUT.processAudioSource(samples, moduleParams);

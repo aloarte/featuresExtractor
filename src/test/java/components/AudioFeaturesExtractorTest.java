@@ -22,7 +22,7 @@ public class AudioFeaturesExtractorTest {
     }
 
     @Test
-    public void globalFeatureExtraction() {
+    public void globalFeatureExtraction() throws Exception {
 
         // Transform the input file into a float[] array
         double[] samples = wavUtils.load_wav(TEST_SAMPLE);
@@ -46,7 +46,7 @@ public class AudioFeaturesExtractorTest {
 
 
     @Test
-    public void stFeatureExtraction() {
+    public void stFeatureExtraction() throws Exception {
 
         // Transform the input file into a float[] array
         double[] samples = wavUtils.load_wav(TEST_SAMPLE);

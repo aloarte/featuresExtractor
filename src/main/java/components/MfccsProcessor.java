@@ -9,11 +9,11 @@ import org.nd4j.linalg.indexing.NDArrayIndex;
 
 import java.util.Arrays;
 
+import static constants.ModuleConstants.EPS_CONSTANT;
 import static org.nd4j.linalg.ops.transforms.Transforms.pow;
 
 
 public class MfccsProcessor {
-    private static double eps = 0.00000001;
     private INDArray fbank;
     private INDArray freqs;
 
@@ -40,7 +40,7 @@ public class MfccsProcessor {
          compact and suitable for the pyAudioAnalysis Lib
          **/
         //INDArray mspec = Transforms.log(X.mmul( fbank.transpose()).add(eps),10);
-        INDArray mspec = X.mmul(fbank.transpose()).add(eps);
+        INDArray mspec = X.mmul(fbank.transpose()).add(EPS_CONSTANT);
         DoubleDCT_1D mydtc = new DoubleDCT_1D(mspec.length());
         double[] ceps = mspec.toDoubleVector();
         mydtc.forward(ceps, false);

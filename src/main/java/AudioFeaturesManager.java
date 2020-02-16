@@ -1,12 +1,10 @@
 import components.AudioFeaturesExtractor;
+import components.MethodsEntryValidator;
 import model.AudioFeatures;
 import model.ModuleParams;
-import model.enums.AudioReadExtractionExceptionType;
 import model.exceptions.AudioExtractionException;
-import model.exceptions.AudioReadExtractionException;
 import org.nd4j.linalg.api.ndarray.INDArray;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class AudioFeaturesManager {
@@ -15,9 +13,12 @@ public class AudioFeaturesManager {
 
     private AudioFeaturesExtractor audioFeaturesExtractor;
 
+    private MethodsEntryValidator validator;
+
     public AudioFeaturesManager() {
         this.dataParser = new DataParser();
         this.audioFeaturesExtractor = new AudioFeaturesExtractor();
+        this.validator = new MethodsEntryValidator();
     }
 
     /**
@@ -30,7 +31,7 @@ public class AudioFeaturesManager {
 
         try {
             //Check if the audio source is well read from the raw source. If anything goes wrong, throws an AudioExtractionException
-            validateAudioSource(rawAudioSource);
+            validator.validateAudioSource(rawAudioSource);
 
             //Extract the global features in an INDArray
             INDArray globalFeatures = audioFeaturesExtractor.globalFeatureExtraction(rawAudioSource, 22050, 2205, 2205, 2205, 2205, moduleParams);
@@ -42,17 +43,6 @@ public class AudioFeaturesManager {
             throw audioExtractionException;
         }
 
-    }
-
-    void validateAudioSource(double[] rawAudioSource) throws AudioReadExtractionException {
-        if (rawAudioSource != null) {
-            //Check that the audio source is not an empty double array
-            if (!Arrays.equals(rawAudioSource, new double[1])) {
-                //TODO: Check additional known properties related with a "good" raw audio source
-            } else
-                throw new AudioReadExtractionException(AudioReadExtractionExceptionType.BAD_AUDIO_SOURCE_READ, "The raw audio source seems empty.");
-        } else
-            throw new AudioReadExtractionException(AudioReadExtractionExceptionType.NULL_RAW_AUDIO_SOURCE, "The double[] raw audio source received was null.");
     }
 
 

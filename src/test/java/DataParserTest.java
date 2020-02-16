@@ -27,7 +27,7 @@ public class DataParserTest {
 
         moduleParams = new ModuleParams();
         List<StatisticalMeasureType> measureTypes = new ArrayList<>();
-        measureTypes.add(StatisticalMeasureType.MEAN);
+        measureTypes.add(StatisticalMeasureType.Mean);
         moduleParams.setStatisticalMeasures(measureTypes);
 
 
@@ -75,7 +75,7 @@ public class DataParserTest {
         assertNotNull(parsedAudioFeatures);
         assertThat(parsedAudioFeatures.size(), is(moduleParams.getStatisticalMeasuresNumber()));
         assertThat((double) Math.round(parsedAudioFeatures.get(0).getZeroCrossingRate() * roundPrecision) / roundPrecision, is(TEST_AF_ZCR));
-        assertThat(parsedAudioFeatures.get(0).getStatisticalMeasureType(), is(StatisticalMeasureType.MEAN));
+        assertThat(parsedAudioFeatures.get(0).getStatisticalMeasureType(), is(StatisticalMeasureType.Mean));
         assertNotNull(parsedAudioFeatures.get(0).getEnergyFeatures());
         assertNotNull(parsedAudioFeatures.get(0).getSpectralFeatures());
         assertNotNull(parsedAudioFeatures.get(0).getMfcCs());

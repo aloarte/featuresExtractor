@@ -1,19 +1,27 @@
 package components;
 
+import model.exceptions.AudioExtractionException;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.indexing.INDArrayIndex;
 import org.nd4j.linalg.indexing.NDArrayIndex;
 
 import static constants.FeaturesNumbersConstants.*;
+import static constants.ModuleConstants.EPS_CONSTANT;
 
 
 public class FeaturesProcessor {
 
-    public double EPS_CONSTANT = 0.00000001;
+    private MethodsEntryValidator validator;
+
+    public FeaturesProcessor() {
+        validator = new MethodsEntryValidator();
+    }
 
 
-    INDArray extractFeaturesFromSlice(INDArray currentAudioSlice, INDArray fftAudioSlice, INDArray fftPreviousAudioSlice, int frequency_rate, int nFFT) {
+    INDArray extractFeaturesFromSlice(INDArray currentAudioSlice, INDArray fftAudioSlice, INDArray fftPreviousAudioSlice, int frequency_rate, int nFFT) throws AudioExtractionException {
+        //verify the inputs
+        validator.verifySliceValues(currentAudioSlice, fftAudioSlice, fftPreviousAudioSlice);
 
         //Initialize the processors
         MfccsProcessor mfccsProcessor = new MfccsProcessor(frequency_rate, nFFT);
@@ -59,6 +67,7 @@ public class FeaturesProcessor {
         return extractedFeatures;
 
     }
+
 
     double extractZeroCrossingRate(INDArray x) {
         //Computes zero crossing rate of frame
