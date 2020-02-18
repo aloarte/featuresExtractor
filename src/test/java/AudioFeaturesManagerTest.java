@@ -27,6 +27,7 @@ public class AudioFeaturesManagerTest {
     @Test
     public void processAudioSource() throws Exception {
 
+
         // Transform the input file into a float[] array
         double[] samples = wavUtils.load_wav(TEST_SAMPLE);
 

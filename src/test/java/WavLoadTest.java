@@ -18,7 +18,7 @@ public class WavLoadTest {
 
     @Test
     public void loadWavTest() throws IOException {
-        String path = "G:\\JavaProjects\\featuresExtractor\\src\\test\\resources\\AudioTest.wav";
+        String path = "G:\\JavaProjects\\featuresExtractorGH\\src\\test\\resources\\AudioTest.wav";
         String path2 = new File("src/test/resources/AudioTest.wav").getAbsolutePath();
         double[] samples = wavUtils.load_wav(path);
 

@@ -11,8 +11,11 @@ public class TestingConstants {
     // Path of the wav input file
     public final static String TEST_AUDIO_SAMPLE_WAV_PATH = TEST_ABSOLUTE_RESOURCES_PATH + "\\AudioSample.wav";
 
-    public final static String TEST_SAMPLE = "G:\\JavaProjects\\featuresExtractor\\src\\test\\resources\\AudioTest.wav";
+    public final static String TEST_SAMPLE = "G:\\JavaProjects\\featuresExtractorGH\\src\\test\\resources\\AudioTest.wav";
 
+    public final static String TEST_SAMPLE_DOUBLE_INDARRAY_C_AUDIO_SLICE = "G:\\JavaProjects\\featuresExtractorGH\\src\\test\\resources\\CurrentAudioSliceSample.txt";
+    public final static String TEST_SAMPLE_DOUBLE_INDARRAY_FFT_C_AUDIO_SLICE = "G:\\JavaProjects\\featuresExtractorGH\\src\\test\\resources\\FFTCurrentAudioSliceSample.txt";
+    public final static String TEST_SAMPLE_DOUBLE_INDARRAY_FFT_P_AUDIO_SLICE = "G:\\JavaProjects\\featuresExtractorGH\\src\\test\\resources\\FFTPreviousAudioSliceSample.txt";
 
     public final static double TEST_AF_ZCR = 0.111;
 
@@ -38,6 +41,17 @@ public class TestingConstants {
     public final static double TEST_AF_CF_CV_11 = 0.212;
     public final static double TEST_AF_CF_CV_12 = 0.213;
     public final static double TEST_AF_CF_CE = 0.221;
+
+
+    public static final double TEST_AUDIO_ENERGY_VALUE = 0.017972755950900067;
+
+    public static final double TEST_AUDIO_ENERGY_ENTROPY_VALUE = 0.003589624387873332;
+
+    public static final double TEST_AUDIO_SPECTRAL_CENTROID_VALUE = 0.08358086981677823;
+    public static final double TEST_AUDIO_SPECTRAL_SPREAD_VALUE = 304.5489028215897;
+    public static final double TEST_AUDIO_SPECTRAL_ENTROPY_VALUE = 7.39471705284503E-7;
+    public static final double TEST_AUDIO_SPECTRAL_FLUX_VALUE = 77.0106430053711;
+    public static final double TEST_AUDIO_SPECTRAL_ROLLOFF_VALUE = 2.185572259607687E-5;
 
 
 }

@@ -1,32 +1,34 @@
 package components;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.nd4j.linalg.api.ndarray.INDArray;
+import testutils.INDArrayUtils;
 
-import static testutils.TestingConstants.EPS_CONSTANT;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static testutils.TestingConstants.*;
 
 public class EnergyProcessorTest {
 
     private EnergyProcessor SUT;
+    private INDArray currentSliceData;
 
     @Before
     public void startUp() {
         SUT = new EnergyProcessor(EPS_CONSTANT);
+        currentSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_DOUBLE_INDARRAY_C_AUDIO_SLICE);
     }
 
-    @Ignore
     @Test
     public void extractEnergy() {
-        //double energy = SUT.extractEnergy();
-
-        //TODO: Perform assertions against controlled values
+        double energy = SUT.extractEnergy(currentSliceData);
+        assertThat(energy, is(TEST_AUDIO_ENERGY_VALUE));
     }
 
-    @Ignore
     @Test
     public void extractEnergyEntropy() {
-        //double stSpectralEntropy = SUT.extractEnergyEntropy();
-        //TODO: Perform assertions against controlled values
+        double energyEntropy = SUT.extractEnergyEntropy(currentSliceData, 10);
+        assertThat(energyEntropy, is(TEST_AUDIO_ENERGY_ENTROPY_VALUE));
     }
 }

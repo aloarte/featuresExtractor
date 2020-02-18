@@ -1,10 +1,17 @@
 package components;
 
 import model.exceptions.AudioExtractionException;
+import org.apache.commons.lang3.ArrayUtils;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.indexing.INDArrayIndex;
 import org.nd4j.linalg.indexing.NDArrayIndex;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static constants.FeaturesNumbersConstants.*;
 import static constants.ModuleConstants.EPS_CONSTANT;
@@ -18,14 +25,40 @@ public class FeaturesProcessor {
         validator = new MethodsEntryValidator();
     }
 
+    private static void writeINDArrayFromFile(INDArray indArrayData, String filename) {
 
-    INDArray extractFeaturesFromSlice(INDArray currentAudioSlice, INDArray fftAudioSlice, INDArray fftPreviousAudioSlice, int frequency_rate, int nFFT) throws AudioExtractionException {
+        double[] data = indArrayData.data().asDouble();
+
+        Double[] dataDouble = ArrayUtils.toObject(data);
+
+
+        ArrayList<Double> yourArray = new ArrayList<>(Arrays.asList(dataDouble));
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))) {
+            bw.write(data.length + "\n");
+            for (double line : yourArray) {
+                bw.write(line + "");
+                bw.newLine();
+            }
+
+            bw.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    INDArray extractFeaturesFromSlice(INDArray currentAudioSlice, INDArray fftAudioSlice, INDArray fftPreviousAudioSlice, int frequencyRate, int nFFT) throws AudioExtractionException {
         //verify the inputs
         validator.verifySliceValues(currentAudioSlice, fftAudioSlice, fftPreviousAudioSlice);
 
+//        writeINDArrayFromFile(currentAudioSlice,"G:\\JavaProjects\\featuresExtractorGH\\src\\test\\resources\\CurrentAudioSliceSample.txt");
+//        writeINDArrayFromFile(fftAudioSlice,"G:\\JavaProjects\\featuresExtractorGH\\src\\test\\resources\\FFTCurrentAudioSliceSample.txt");
+//        writeINDArrayFromFile(fftPreviousAudioSlice,"G:\\JavaProjects\\featuresExtractorGH\\src\\test\\resources\\FFTPreviousAudioSliceSample.txt");
+
+
         //Initialize the processors
-        MfccsProcessor mfccsProcessor = new MfccsProcessor(frequency_rate, nFFT);
-        ChromaProcessor chromaProcessor = new ChromaProcessor(nFFT, frequency_rate);
+        MfccsProcessor mfccsProcessor = new MfccsProcessor(frequencyRate, nFFT);
+        ChromaProcessor chromaProcessor = new ChromaProcessor(nFFT, frequencyRate);
         EnergyProcessor energyProcessor = new EnergyProcessor(EPS_CONSTANT);
         SpectralProcessor spectralProcessor = new SpectralProcessor((EPS_CONSTANT));
 
@@ -39,12 +72,12 @@ public class FeaturesProcessor {
         extractedFeatures.putScalar(2, energyProcessor.extractEnergyEntropy(currentAudioSlice, 10));
 
         //4-8: Audio spectral
-        double[] spectralCentroidSpread = spectralProcessor.extractSpectralCentroidAndSpread(fftAudioSlice, frequency_rate);
+        double[] spectralCentroidSpread = spectralProcessor.extractSpectralCentroidAndSpread(fftAudioSlice, frequencyRate);
         extractedFeatures.putScalar(3, spectralCentroidSpread[0]); // Spectral centroid
         extractedFeatures.putScalar(4, spectralCentroidSpread[1]); //Spectral spread
         extractedFeatures.putScalar(5, spectralProcessor.extractSpectralEntropy(fftAudioSlice, 10));
         extractedFeatures.putScalar(6, spectralProcessor.extractSpectralFlux(fftAudioSlice, fftPreviousAudioSlice));
-        extractedFeatures.putScalar(7, spectralProcessor.extractSpectralRollOff(fftAudioSlice, 0.90, frequency_rate));
+        extractedFeatures.putScalar(7, spectralProcessor.extractSpectralRollOff(fftAudioSlice, 0.90, frequencyRate));
 
         // 9 -21: MFCCS
         double[] stMFCCs = mfccsProcessor.extractMFCC(fftAudioSlice, NCEPS_FEATURES);
@@ -68,16 +101,15 @@ public class FeaturesProcessor {
 
     }
 
-
-    double extractZeroCrossingRate(INDArray x) {
+    double extractZeroCrossingRate(INDArray currentAudioSlice) {
         //Computes zero crossing rate of frame
-        int count = x.length();
+        int count = currentAudioSlice.length();
         int countz = 0;
 
-        for (int i = 0; i < x.length() - 1; i++) {
-            if ((x.getDouble(0) > 0 && x.getDouble(i + 1) <= 0)
+        for (int i = 0; i < currentAudioSlice.length() - 1; i++) {
+            if ((currentAudioSlice.getDouble(0) > 0 && currentAudioSlice.getDouble(i + 1) <= 0)
                     ||
-                    (x.getDouble(i) < 0 && x.getDouble(i + 1) >= 0)) {
+                    (currentAudioSlice.getDouble(i) < 0 && currentAudioSlice.getDouble(i + 1) >= 0)) {
                 countz++;
             }
         }

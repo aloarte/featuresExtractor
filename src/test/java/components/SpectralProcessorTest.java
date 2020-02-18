@@ -1,33 +1,59 @@
 package components;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.nd4j.linalg.api.ndarray.INDArray;
+import testutils.INDArrayUtils;
 
-import static testutils.TestingConstants.EPS_CONSTANT;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static testutils.TestingConstants.*;
 
 public class SpectralProcessorTest {
 
     private SpectralProcessor SUT;
 
+    private INDArray fftCurrentSliceData;
+
+
+    private INDArray fftPreviousSliceData;
+
+
     @Before
     public void startUp() {
         SUT = new SpectralProcessor(EPS_CONSTANT);
+        fftCurrentSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_DOUBLE_INDARRAY_FFT_C_AUDIO_SLICE);
+        fftPreviousSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_DOUBLE_INDARRAY_FFT_P_AUDIO_SLICE);
+
     }
 
-    @Ignore
+
     @Test
-    public void stSpectralCentroidAndSpread() {
-        //double[] stSpectralCentroidAndSpread = SUT.extractSpectralCentroidAndSpread(audioSource, frequencyRate);
-        //  stSpectralCentroidAndSpread[0]  -> SpectralCentroid
-        // stSpectralCentroidAndSpread[1]  -> SpectralSpread
-        //TODO: Perform assertions against controlled values
+    public void extractSpectralCentroidAndSpread() {
+        double[] stSpectralCentroidAndSpread = SUT.extractSpectralCentroidAndSpread(fftCurrentSliceData, 22050);
+        assertNotNull(stSpectralCentroidAndSpread);
+        assertThat(stSpectralCentroidAndSpread.length, is(2));
+        assertThat(stSpectralCentroidAndSpread[0], is(TEST_AUDIO_SPECTRAL_CENTROID_VALUE));
+        assertThat(stSpectralCentroidAndSpread[1], is(TEST_AUDIO_SPECTRAL_SPREAD_VALUE));
     }
 
-    @Ignore
     @Test
-    public void stSpectralEntropy() {
-        //double stSpectralEntropy = SUT.extractSpectralEntropy(audioSource, frequencyRate);
-        //TODO: Perform assertions against controlled values
+    public void extractSpectralEntropy() {
+        double spectralEntropy = SUT.extractSpectralEntropy(fftCurrentSliceData, 10);
+        assertThat(spectralEntropy, is(TEST_AUDIO_SPECTRAL_ENTROPY_VALUE));
+    }
+
+
+    @Test
+    public void extractSpectralFlux() {
+        double spectralFlux = SUT.extractSpectralFlux(fftCurrentSliceData, fftPreviousSliceData);
+        assertThat(spectralFlux, is(TEST_AUDIO_SPECTRAL_FLUX_VALUE));
+    }
+
+    @Test
+    public void extractSpectralRollOff() {
+        double spectralFlux = SUT.extractSpectralRollOff(fftCurrentSliceData, 0.90, 22050);
+        assertThat(spectralFlux, is(TEST_AUDIO_SPECTRAL_ROLLOFF_VALUE));
     }
 }
