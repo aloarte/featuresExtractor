@@ -108,7 +108,6 @@ public class FFT {
         for (int i = 0; i < iter; i++)
             fft.fft(re, im);
         time = System.currentTimeMillis() - time;
-        System.out.println("Averaged " + (time / iter) + "ms per iteration");
     }
 
     protected static void beforeAfter(FFT fft, double[] re, double[] im) {

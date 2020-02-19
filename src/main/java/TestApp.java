@@ -62,7 +62,6 @@ public class TestApp {
             clip.open(stream);
             clip.start();
 
-            System.out.println("Hello world");
 
         } catch (IOException e) {
             e.printStackTrace();

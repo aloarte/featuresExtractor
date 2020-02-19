@@ -30,6 +30,11 @@ public class MethodsEntryValidator {
         if (fftPreviousAudioSlice == null || fftPreviousAudioSlice.length() == 0) {
             throw new AudioExtractionException(AudioExtractionExceptionType.BadPreviousAudioSlice, "Empty or null previous audio slice found.");
         }
+
+        if (fftAudioSlice.shape()[0] != fftPreviousAudioSlice.shape()[0] || fftAudioSlice.shape()[1] != fftPreviousAudioSlice.shape()[1]) {
+            throw new AudioExtractionException(AudioExtractionExceptionType.fftShapesMismatch, "The sizes of the FFT slices must be the same. FFTAudio slice: [" + fftAudioSlice.shape()[0] + "," + fftAudioSlice.shape()[1] + "] FFTPreviousAudioSlice: [" + fftPreviousAudioSlice.shape()[0] + "," + fftPreviousAudioSlice.shape()[1] + "]");
+
+        }
     }
 
     /**

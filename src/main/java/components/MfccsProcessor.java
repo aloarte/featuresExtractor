@@ -24,7 +24,7 @@ public class MfccsProcessor {
 
     }
 
-    public double[] extractMFCC(INDArray X, int n_mfcc) {
+    public double[] extractMFCC(INDArray fftAudioSlice, int n_mfcc) {
         /**
          Computes the MFCCs of a frame, given the fft mag
 
@@ -40,7 +40,8 @@ public class MfccsProcessor {
          compact and suitable for the pyAudioAnalysis Lib
          **/
         //INDArray mspec = Transforms.log(X.mmul( fbank.transpose()).add(eps),10);
-        INDArray mspec = X.mmul(fbank.transpose()).add(EPS_CONSTANT);
+
+        INDArray mspec = fftAudioSlice.mmul(fbank.transpose()).add(EPS_CONSTANT);
         DoubleDCT_1D mydtc = new DoubleDCT_1D(mspec.length());
         double[] ceps = mspec.toDoubleVector();
         mydtc.forward(ceps, false);

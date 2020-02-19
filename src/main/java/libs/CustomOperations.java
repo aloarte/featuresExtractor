@@ -30,7 +30,6 @@ interface Predicate<T> {
 public class CustomOperations {
     static INDArray arange(double start, double end, double step) {
         int elements = (int) ((end - start) / step);
-        System.out.println(elements);
         return Nd4j.linspace(start, start + elements * step, elements + 1);
     }
 
@@ -68,7 +67,7 @@ public class CustomOperations {
         }
     }
 
-    static INDArray insert(INDArray arr1, int index, INDArray values) {
+    public static INDArray insert(INDArray arr1, int index, INDArray values) {
         return insert(arr1, index, values, -1);
     }
 
@@ -88,7 +87,7 @@ public class CustomOperations {
         }
     }
 
-    static INDArray delete(INDArray arr1, int... interval) {
+    public static INDArray delete(INDArray arr1, int... interval) {
         return delete(-1, arr1, interval);
     }
 

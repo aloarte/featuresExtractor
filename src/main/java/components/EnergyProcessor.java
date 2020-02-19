@@ -26,11 +26,9 @@ public class EnergyProcessor {
         if (L != subWinLength * numOfShortBlocks) {
             currentAudioSlice = currentAudioSlice.get(NDArrayIndex.interval(0, subWinLength * numOfShortBlocks));
         }
-        //System.out.println("Shape X: " + x.shapeInfoToString());
         INDArray subWindows = currentAudioSlice.reshape(subWinLength, numOfShortBlocks).dup();
         double s = (double) (pow(subWindows, 2).sumNumber()) / (Eol + epsValue);
-        double Entropy = -s * Math.log(s + epsValue);
-        return Entropy;
+        return (-s * Math.log(s + epsValue));
     }
 
     double extractEnergy(INDArray currentAudioSlice) {

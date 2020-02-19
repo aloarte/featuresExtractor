@@ -8,12 +8,13 @@ import testutils.WavUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static testutils.TestingConstants.TEST_SAMPLE;
 
 public class AudioFeaturesManagerTest {
 
-
-    String pathFile;
     private WavUtils wavUtils;
 
     private AudioFeaturesManager SUT;
@@ -37,9 +38,16 @@ public class AudioFeaturesManagerTest {
         measureTypes.add(StatisticalMeasureType.StandardDeviation);
 
         moduleParams.setStatisticalMeasures(measureTypes);
+
+
         List<AudioFeatures> extractedFeatures = SUT.processAudioSource(samples, moduleParams);
-        System.out.println(extractedFeatures.get(0).toString());
-        System.out.println(extractedFeatures.get(1).toString());
+
+        assertNotNull(extractedFeatures);
+        assertThat(extractedFeatures.size(), is(2));
+
+
+        //System.out.println(extractedFeatures.get(0).toString());
+        //System.out.println(extractedFeatures.get(1).toString());
 
     }
 

@@ -111,8 +111,8 @@ public class AudioFeatures implements Serializable {
                 "----- ZCR: " + getZeroCrossingRate() + "\n" +
                 getEnergyFeatures().toString() +
                 getSpectralFeatures().toString() +
-                getChromaFeatures() +
-                getMfcCs() +
+                getChromaFeatures().toString() +
+                getMfcCs().toString() +
                 "+++++++++++++++++++++++++++++++++++++++++++++++++\n";
     }
 }

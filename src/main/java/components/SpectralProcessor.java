@@ -67,11 +67,9 @@ public class SpectralProcessor {
         double EoL = (double) pow(fftAudioSlice, 2).sumNumber(); //Total energy
 
         int subWinLength = (int) (Math.floor(L / numOfShortBlocks)); //subframe length
-        //System.out.println("Shape X: " + X.shapeInfoToString());
         if (L != subWinLength * numOfShortBlocks) {
             fftAudioSlice = fftAudioSlice.get(NDArrayIndex.interval(0, subWinLength * numOfShortBlocks));
         }
-        //System.out.println("Shape X: " + X.shapeInfoToString());
         INDArray subWindows = fftAudioSlice.reshape(subWinLength, numOfShortBlocks).dup();
         double s = (double) (pow(subWindows, 2).sumNumber()) / (EoL + epsValue);
         double En = -s * Math.log(s + epsValue);

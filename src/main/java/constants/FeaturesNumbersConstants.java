@@ -16,7 +16,7 @@ public class FeaturesNumbersConstants {
     /**
      * Number of
      */
-    public static final int NCEPS_FEATURES = 13;
+    public static final int MFCCS_FEATURES = 13;
 
     /**
      * Number of Chroma features
@@ -26,6 +26,6 @@ public class FeaturesNumbersConstants {
     /**
      * Number of total features
      */
-    public static final int TOTAL_FEATURES = TIME_SPECTRAL_FEATURES + HARMONIC_FEATURES + NCEPS_FEATURES + CHROMA_FEATURES;
+    public static final int TOTAL_FEATURES = TIME_SPECTRAL_FEATURES + HARMONIC_FEATURES + MFCCS_FEATURES + CHROMA_FEATURES;
 
 }

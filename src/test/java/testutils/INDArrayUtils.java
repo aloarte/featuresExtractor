@@ -1,6 +1,5 @@
 package testutils;
 
-import libs.CustomOperations;
 import org.apache.commons.lang3.ArrayUtils;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
@@ -43,18 +42,20 @@ public class INDArrayUtils {
             scan = new Scanner(file);
 
             int arraySize = Integer.parseInt(scan.next());
-            double[] readValue = new double[arraySize];
+            double[][] readValue = new double[1][arraySize];
 
             for (int i = 0; i < arraySize; i++) {
-                readValue[i] = Double.parseDouble(scan.next());
+                readValue[0][i] = Double.parseDouble(scan.next());
 
             }
 
-            INDArray retIndArray = Nd4j.create(new int[]{1, 1});
+//
+//            INDArray retINDarray = CustomOperations.append( Nd4j.create(new int[]{1}), Nd4j.create(readValue, new int[]{readValue.length}));
+//
+//            CustomOperations.delete(retINDarray,0);
 
-            //retIndArray.put(0,Nd4j.create(readValue, new int[]{readValue.length}));
 
-            return CustomOperations.append(retIndArray, Nd4j.create(readValue, new int[]{readValue.length}));
+            return Nd4j.create(readValue);
 
         } catch (FileNotFoundException e1) {
             e1.printStackTrace();

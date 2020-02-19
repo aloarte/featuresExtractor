@@ -8,6 +8,7 @@ import org.nd4j.linalg.factory.Nd4j;
 import java.util.ArrayList;
 import java.util.List;
 
+import static constants.FeaturesNumbersConstants.MFCCS_FEATURES;
 import static constants.FeaturesNumbersConstants.TOTAL_FEATURES;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNotNull;
@@ -40,19 +41,19 @@ public class DataParserTest {
         testFeatures.putScalar(5, TEST_AF_SF_E);
         testFeatures.putScalar(6, TEST_AF_SF_F);
         testFeatures.putScalar(7, TEST_AF_SF_R);
-        testFeatures.putScalar(8, 0);
-        testFeatures.putScalar(9, 0);
-        testFeatures.putScalar(10, 0);
-        testFeatures.putScalar(11, 0);
-        testFeatures.putScalar(12, 0);
-        testFeatures.putScalar(13, 0);
-        testFeatures.putScalar(14, 0);
-        testFeatures.putScalar(15, 0);
-        testFeatures.putScalar(16, 0);
-        testFeatures.putScalar(17, 0);
-        testFeatures.putScalar(18, 0);
-        testFeatures.putScalar(19, 0);
-        testFeatures.putScalar(20, 0);
+        testFeatures.putScalar(8, TEST_AF_MFCC_1);
+        testFeatures.putScalar(9, TEST_AF_MFCC_2);
+        testFeatures.putScalar(10, TEST_AF_MFCC_3);
+        testFeatures.putScalar(11, TEST_AF_MFCC_4);
+        testFeatures.putScalar(12, TEST_AF_MFCC_5);
+        testFeatures.putScalar(13, TEST_AF_MFCC_6);
+        testFeatures.putScalar(14, TEST_AF_MFCC_7);
+        testFeatures.putScalar(15, TEST_AF_MFCC_8);
+        testFeatures.putScalar(16, TEST_AF_MFCC_9);
+        testFeatures.putScalar(17, TEST_AF_MFCC_10);
+        testFeatures.putScalar(18, TEST_AF_MFCC_11);
+        testFeatures.putScalar(19, TEST_AF_MFCC_12);
+        testFeatures.putScalar(20, TEST_AF_MFCC_13);
         testFeatures.putScalar(21, TEST_AF_CF_CV_1);
         testFeatures.putScalar(22, TEST_AF_CF_CV_2);
         testFeatures.putScalar(23, TEST_AF_CF_CV_3);
@@ -102,11 +103,27 @@ public class DataParserTest {
         assertThat((double) Math.round(parsedSpectralFeatures.getSpectralRolloff() * roundPrecision) / roundPrecision, is(TEST_AF_SF_R));
     }
 
-//    @Ignore("parseMFFCS function isn't complete yet")
-//    @Test
-//    public void parseMFFCS() throws Exception {
-//        SUT.parseMFFCS(testFeatures, 0);
-//    }
+    @Test
+    public void parseMFFCS() throws Exception {
+        MFCCs parsedMfccs = SUT.parseMFFCS(testFeatures, 0);
+        assertNotNull(parsedMfccs);
+        assertThat(parsedMfccs.getMfccsValues().length, is(MFCCS_FEATURES));
+
+        assertThat((double) Math.round(parsedMfccs.getMfccsValues()[0] * roundPrecision) / roundPrecision, is(TEST_AF_MFCC_1));
+        assertThat((double) Math.round(parsedMfccs.getMfccsValues()[1] * roundPrecision) / roundPrecision, is(TEST_AF_MFCC_2));
+        assertThat((double) Math.round(parsedMfccs.getMfccsValues()[2] * roundPrecision) / roundPrecision, is(TEST_AF_MFCC_3));
+        assertThat((double) Math.round(parsedMfccs.getMfccsValues()[3] * roundPrecision) / roundPrecision, is(TEST_AF_MFCC_4));
+        assertThat((double) Math.round(parsedMfccs.getMfccsValues()[4] * roundPrecision) / roundPrecision, is(TEST_AF_MFCC_5));
+        assertThat((double) Math.round(parsedMfccs.getMfccsValues()[5] * roundPrecision) / roundPrecision, is(TEST_AF_MFCC_6));
+        assertThat((double) Math.round(parsedMfccs.getMfccsValues()[6] * roundPrecision) / roundPrecision, is(TEST_AF_MFCC_7));
+        assertThat((double) Math.round(parsedMfccs.getMfccsValues()[7] * roundPrecision) / roundPrecision, is(TEST_AF_MFCC_8));
+        assertThat((double) Math.round(parsedMfccs.getMfccsValues()[8] * roundPrecision) / roundPrecision, is(TEST_AF_MFCC_9));
+        assertThat((double) Math.round(parsedMfccs.getMfccsValues()[9] * roundPrecision) / roundPrecision, is(TEST_AF_MFCC_10));
+        assertThat((double) Math.round(parsedMfccs.getMfccsValues()[10] * roundPrecision) / roundPrecision, is(TEST_AF_MFCC_11));
+        assertThat((double) Math.round(parsedMfccs.getMfccsValues()[11] * roundPrecision) / roundPrecision, is(TEST_AF_MFCC_12));
+        assertThat((double) Math.round(parsedMfccs.getMfccsValues()[12] * roundPrecision) / roundPrecision, is(TEST_AF_MFCC_13));
+
+    }
 
     @Test
     public void parseChromaFeatures() throws Exception {

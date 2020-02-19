@@ -45,14 +45,11 @@ public class AudioFeaturesExtractor {
         norm_samples = norm_samples.div(Math.pow(2, 15));
 
         INDArray DC = Nd4j.mean(norm_samples, 0);
-        System.out.println("Mean on dimension zero" + DC);
         Number MAX = Transforms.abs(norm_samples.dup()).maxNumber();
-        System.out.println("Max number(abs):" + MAX);
 
         norm_samples = norm_samples.sub(DC.getDouble(0)).div((double) (MAX) + 0.0000000001);
 
         int N = norm_samples.length();
-        System.out.println("Num of samples: " + N);
         int current_pos = 0;
         int count_frames = 0;
         int nFFT = window / 2;

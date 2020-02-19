@@ -6,7 +6,6 @@ import org.nd4j.linalg.api.ops.impl.accum.MatchCondition;
 import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.indexing.BooleanIndexing;
 import org.nd4j.linalg.indexing.conditions.Conditions;
-import org.nd4j.linalg.ops.transforms.Transforms;
 
 import java.util.HashSet;
 
@@ -24,9 +23,9 @@ public class ChromaProcessor {
         extractChomaFeaturesIniti(nFFT);
     }
 
-    public INDArray extractChromaFeatures(INDArray X) {
-        INDArray spec = Transforms.pow(X, 2);
-        INDArray C = Nd4j.zeros(nChroma.length());
+    public double[] extractChromaFeatures(INDArray fftAudioSlice) {
+        //INDArray spec = Transforms.pow(fftAudioSlice, 2);
+        //INDArray C = Nd4j.zeros(nChroma.length());
         /**
          if(nChroma.maxNumber().intValue()<nChroma.shape()[0]){
          C = spec.div(nFreqsPerChroma);
@@ -37,7 +36,7 @@ public class ChromaProcessor {
          C = C.div(nFreqsPerChroma);
          }
          **/
-        INDArray finalC = Nd4j.zeros(12);
+        //INDArray finalC = Nd4j.zeros(12);
         //int newD = (int)Math.ceil(C.length()/(12.0) * 12);
         //INDArray C2 = Nd4j.zeros(newD);
         //C2.put(new INDArrayIndex[]{NDArrayIndex.interval(0,C.length())},C);
@@ -45,7 +44,7 @@ public class ChromaProcessor {
 
         //finalC = Nd4j.sum(C2,0).transpose();
         //finalC = finalC.div(Nd4j.sum(spec));
-        return finalC;
+        return new double[12];
 
     }
 

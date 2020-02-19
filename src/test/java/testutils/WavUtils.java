@@ -40,7 +40,6 @@ public class WavUtils {
             wavFile.close();
 
             // Output the minimum and maximum value
-            System.out.printf("Min: %f, Max: %f\n", min, max);
         } catch (Exception e) {
             System.err.println(e);
         }
