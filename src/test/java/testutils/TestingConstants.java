@@ -1,6 +1,6 @@
 package testutils;
 
-import java.io.File;
+import java.nio.file.Paths;
 
 public class TestingConstants {
 
@@ -10,16 +10,11 @@ public class TestingConstants {
 
     public final static int TEST_NFFT = 1102;
 
-    public final static String TEST_ABSOLUTE_RESOURCES_PATH = new File("src\\test\\resources").getAbsolutePath();
-
-    // Path of the wav input file
-    public final static String TEST_AUDIO_SAMPLE_WAV_PATH = TEST_ABSOLUTE_RESOURCES_PATH + "\\AudioSample.wav";
-
-    public final static String TEST_SAMPLE = "G:\\JavaProjects\\featuresExtractorGH\\src\\test\\resources\\AudioTest.wav";
-
-    public final static String TEST_SAMPLE_DOUBLE_INDARRAY_C_AUDIO_SLICE = "G:\\JavaProjects\\featuresExtractorGH\\src\\test\\resources\\CurrentAudioSliceSample.txt";
-    public final static String TEST_SAMPLE_DOUBLE_INDARRAY_FFT_C_AUDIO_SLICE = "G:\\JavaProjects\\featuresExtractorGH\\src\\test\\resources\\FFTCurrentAudioSliceSample.txt";
-    public final static String TEST_SAMPLE_DOUBLE_INDARRAY_FFT_P_AUDIO_SLICE = "G:\\JavaProjects\\featuresExtractorGH\\src\\test\\resources\\FFTPreviousAudioSliceSample.txt";
+    public final static String TEST_RESOURCES_PATH = Paths.get("src", "test", "resources").toFile().getAbsolutePath();
+    public final static String TEST_SAMPLE = TEST_RESOURCES_PATH + "\\AudioTest.wav";
+    public final static String TEST_SAMPLE_DOUBLE_INDARRAY_C_AUDIO_SLICE = TEST_RESOURCES_PATH + "\\CurrentAudioSliceSample.txt";
+    public final static String TEST_SAMPLE_DOUBLE_INDARRAY_FFT_C_AUDIO_SLICE = TEST_RESOURCES_PATH + "\\FFTCurrentAudioSliceSample.txt";
+    public final static String TEST_SAMPLE_DOUBLE_INDARRAY_FFT_P_AUDIO_SLICE = TEST_RESOURCES_PATH + "\\FFTPreviousAudioSliceSample.txt";
 
     //Mocked values for the whole AudioFeatures.
     public final static double TEST_AF_ZCR = 0.111;
