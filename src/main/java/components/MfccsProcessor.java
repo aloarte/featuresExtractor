@@ -41,7 +41,9 @@ public class MfccsProcessor {
          **/
         //INDArray mspec = Transforms.log(X.mmul( fbank.transpose()).add(eps),10);
 
+        //Apply the filter bank
         INDArray mspec = fftAudioSlice.mmul(fbank.transpose()).add(EPS_CONSTANT);
+
         DoubleDCT_1D mydtc = new DoubleDCT_1D(mspec.length());
         double[] ceps = mspec.toDoubleVector();
         mydtc.forward(ceps, false);

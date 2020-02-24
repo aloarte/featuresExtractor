@@ -32,81 +32,52 @@ public class AudioFeaturesExtractor {
      *
      * @param samples
      * @param frequency_rate
-     * @param window
+     * @param sliceWindow
      * @param step
      * @return
      */
     INDArray extractAudioFeatures(double[] samples, int frequency_rate,
-                                  int window, int step) throws AudioExtractionException {
+                                  int sliceWindow, int step) throws AudioExtractionException {
 
 
-        INDArray norm_samples = Nd4j.create(samples, new int[]{samples.length});
+        INDArray normalizedSamples = calculateNormalizedSamples(samples);
 
-        norm_samples = norm_samples.div(Math.pow(2, 15));
 
-        INDArray DC = Nd4j.mean(norm_samples, 0);
-        Number MAX = Transforms.abs(norm_samples.dup()).maxNumber();
-
-        norm_samples = norm_samples.sub(DC.getDouble(0)).div((double) (MAX) + 0.0000000001);
-
-        int N = norm_samples.length();
-        int current_pos = 0;
-        int count_frames = 0;
-        int nFFT = window / 2;
-
+        int totalSamples = normalizedSamples.length();
+        //Value of the position from the normalizedSamples INDArray which is being read at the moment
+        int currentReadPosition = 0;
+        int fftWindow = sliceWindow / 2;
         INDArray matrixStFeatures = null;
         INDArray fftPreviousAudioSlice = null;
-        while (current_pos + window - 1 < N) { //For each short-term window
-            count_frames += 1;
+
+        boolean firstSlice = true;
+
+
+        while (currentReadPosition + sliceWindow - 1 < totalSamples) { //For each short-term window
             //Extract the audio slice from the whole audio source with Window as a size
-            INDArray currentAudioSlice = norm_samples.get(
-                    NDArrayIndex.interval(
-                            current_pos, current_pos + window)).dup();
-            current_pos += step;
+            INDArray currentAudioSlice = normalizedSamples.get(NDArrayIndex.interval(currentReadPosition, currentReadPosition + sliceWindow)).dup();
+            currentReadPosition += step;
 
-            /**
-             float[] arr_x = x.toFloatVector();
+            //Calculate the Fast Fourier Transform of the currentAudioSlice
+            INDArray fftAudioSlice = calculateFftFromAudioSlice(currentAudioSlice, fftWindow);
 
-             FFT fft = new FFT(arr_x.length);
-             double[] darr_x = new double[arr_x.length];
-             for(int i=0; i<arr_x.length;i++){
-             darr_x[i] = arr_x[i];
-             }
-             fft.fft(darr_x,new double[arr_x.length]);
-             **/
-            double[] arr_X = currentAudioSlice.toDoubleVector();
-            //Get the FastFourierTransform of the audioSlice
-            DoubleFFT_1D fft = new DoubleFFT_1D(arr_X.length);
-            fft.realForward(arr_X);
-
-
-            arr_X = Arrays.copyOfRange(arr_X, 0, nFFT);
-
-            /**
-             double[] arr_X = new double[nFFT];
-             for(int i=0; i<arr_X.length; i++){
-             arr_X[i] = Math.abs(darr_x[i])/arr_X.length;
-             }
-             **/
-            //Build a INDArray from the double[] with the FFT of slice
-            INDArray fftAudioSlice = Nd4j.create(arr_X).div(arr_X.length);
-
-            //Save the previous audio slice
-            if (count_frames == 1) {
-                fftPreviousAudioSlice = fftAudioSlice.dup();
-            }
+            //The fftPreviousAudioSlice is a copy from a fftAudioSlice if its the first slice
+            if (firstSlice) fftPreviousAudioSlice = fftAudioSlice.dup();
 
             //Extract the features from the different slices of audio from the same window
-            INDArray curFV = featuresProcessor.extractFeaturesFromSlice(currentAudioSlice, fftAudioSlice, fftPreviousAudioSlice, frequency_rate, nFFT);
+            INDArray extractedFeatures = featuresProcessor.extractFeaturesFromSlice(currentAudioSlice, fftAudioSlice, fftPreviousAudioSlice, frequency_rate, fftWindow);
 
-
+            //
             fftPreviousAudioSlice = fftAudioSlice.dup();
 
-            if (count_frames == 1) {
-                matrixStFeatures = curFV;
-            } else {
-                matrixStFeatures = CustomOperations.append(matrixStFeatures, curFV);
+            //If its the first slice
+            if (firstSlice) {
+                matrixStFeatures = extractedFeatures;
+                firstSlice = false;
             }
+            //If its not the first slice, append the extractedFeatures values to the matrix
+            else matrixStFeatures = CustomOperations.append(matrixStFeatures, extractedFeatures);
+
 
         }
 
@@ -115,21 +86,61 @@ public class AudioFeaturesExtractor {
         return matrixStFeatures.transpose();
     }
 
+    /**
+     * Get a INDArray normalized from the raw audioSamples array
+     *
+     * @param audioSamples Raw double array with the data read from the input audio
+     * @return normalized INDArray containing the audioSamples
+     */
+    private INDArray calculateNormalizedSamples(double[] audioSamples) {
+        INDArray normalizedSamples = Nd4j.create(audioSamples, new int[]{audioSamples.length});
+
+        normalizedSamples = normalizedSamples.div(Math.pow(2, 15));
+
+        double mean = (Nd4j.mean(normalizedSamples, 0)).getDouble(0);
+        double maxValue = (Transforms.abs(normalizedSamples.dup()).maxNumber()).doubleValue();
+
+        return normalizedSamples.sub(mean).div((maxValue) + 0.0000000001);
+    }
+
+    /**
+     * Get a INDArray representing the FastFourierTransform of the passed currentAudioSlice
+     *
+     * @param currentAudioSlice INDArray with the audio slice to calculate its FFT
+     * @param fftWindowSize     Size of the FFT window
+     * @return INDArray with the FFT already calculated
+     */
+    private INDArray calculateFftFromAudioSlice(INDArray currentAudioSlice, int fftWindowSize) {
+
+        //Parse data to double array
+        double[] audioSliceValues = currentAudioSlice.toDoubleVector();
+
+        //Get the FastFourierTransform of the audioSlice
+        DoubleFFT_1D fastFourierTransform = new DoubleFFT_1D(audioSliceValues.length);
+        fastFourierTransform.realForward(audioSliceValues);
+
+        //Replace the values
+        audioSliceValues = Arrays.copyOfRange(audioSliceValues, 0, fftWindowSize);
+
+        //Build a INDArray from the double[] with the FFT of slice
+        return Nd4j.create(audioSliceValues).div(audioSliceValues.length);
+    }
+
 
     public INDArray globalFeatureExtraction(double[] samples, int frequency_rate, int mtWin, int mtStep, int stWin, int stStep, final ModuleParams moduleParams) throws AudioExtractionException {
 
         //Extract the matrix with the [32 features] x [N window samples]
         INDArray matrixExtractedFeatures = extractAudioFeatures(samples, frequency_rate, stWin, stStep);
 
+        System.out.println("globalFeatureExtraction: matrixExtractedFeatures [" + matrixExtractedFeatures.shape()[0] + "][" + matrixExtractedFeatures.shape()[1] + "]");
+
         //Apply statistic operations to each N sample for each of the 32 features. Extract a matrix of [32 features] x [N statistic operations]
         INDArray mtFeatures = statisticsExtractor.obtainAudioFeaturesStatistics(matrixExtractedFeatures, mtWin, mtStep, stStep, moduleParams);
+        System.out.println("globalFeatureExtraction: mtFeatures [" + mtFeatures.shape()[0] + "][" + mtFeatures.shape()[1] + "]");
 
-        return (mtFeatures.mean(1));
+        return mtFeatures;
 
     }
-
-
-
 
 
 }

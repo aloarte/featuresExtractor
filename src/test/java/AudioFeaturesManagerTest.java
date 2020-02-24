@@ -39,15 +39,14 @@ public class AudioFeaturesManagerTest {
 
         moduleParams.setStatisticalMeasures(measureTypes);
 
-
         List<AudioFeatures> extractedFeatures = SUT.processAudioSource(samples, moduleParams);
 
         assertNotNull(extractedFeatures);
         assertThat(extractedFeatures.size(), is(2));
 
 
-        //System.out.println(extractedFeatures.get(0).toString());
-        //System.out.println(extractedFeatures.get(1).toString());
+//        System.out.println(extractedFeatures.get(0).toString());
+//        System.out.println(extractedFeatures.get(1).toString());
 
     }
 

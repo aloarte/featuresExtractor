@@ -19,6 +19,9 @@ public class FeaturesProcessor {
     }
 
     INDArray extractFeaturesFromSlice(INDArray currentAudioSlice, INDArray fftAudioSlice, INDArray fftPreviousAudioSlice, int frequencyRate, int nFFT) throws AudioExtractionException {
+        //System.out.println("extractFeaturesFromSlice: currentAudioSlice ["+ currentAudioSlice.shape()[0] +"]["+ currentAudioSlice.shape()[1] +"] fftAudioSlice [" + fftAudioSlice.shape()[0] +"]["+ fftAudioSlice.shape()[1] +"]");
+
+
         //verify the inputs
         validator.verifySliceValues(currentAudioSlice, fftAudioSlice, fftPreviousAudioSlice);
 

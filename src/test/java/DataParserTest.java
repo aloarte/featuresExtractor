@@ -31,7 +31,6 @@ public class DataParserTest {
         measureTypes.add(StatisticalMeasureType.Mean);
         moduleParams.setStatisticalMeasures(measureTypes);
 
-
         testFeatures = Nd4j.zeros(TOTAL_FEATURES);
         testFeatures.putScalar(0, TEST_AF_ZCR);
         testFeatures.putScalar(1, TEST_AF_EF_E);

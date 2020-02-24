@@ -31,6 +31,7 @@ public class StatisticsExtractor {
      */
     private INDArray calculateStatisticalInfo(INDArray extractedFeaturesMatrix, INDArray audioFeaturesStatistics, int featureIndex, int featureDataIndex, int N1, int N2, final ModuleParams moduleParams) {
 
+        //System.out.println("calculateStatisticalInfo: extractedFeaturesMatrix ["+ extractedFeaturesMatrix.shape()[0] +"]["+ extractedFeaturesMatrix.shape()[1] +"] audioFeaturesStatistics [" + audioFeaturesStatistics.shape()[0] +"]["+ audioFeaturesStatistics.shape()[1] +"]");
         INDArray cur_stFeatures = extractedFeaturesMatrix.get(
                 NDArrayIndex.point(featureIndex),
                 NDArrayIndex.interval(N1, N2));
@@ -111,6 +112,6 @@ public class StatisticsExtractor {
 
         }
 
-        return audioFeaturesStatistics;
+        return audioFeaturesStatistics.mean(1);
     }
 }
