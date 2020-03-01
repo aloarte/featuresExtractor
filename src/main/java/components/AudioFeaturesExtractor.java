@@ -127,15 +127,15 @@ public class AudioFeaturesExtractor {
     }
 
 
-    public INDArray globalFeatureExtraction(double[] samples, int frequency_rate, int mtWin, int mtStep, int stWin, int stStep, final ModuleParams moduleParams) throws AudioExtractionException {
+    public INDArray globalFeatureExtraction(double[] samples, final ModuleParams moduleParams) throws AudioExtractionException {
 
         //Extract the matrix with the [32 features] x [N window samples]
-        INDArray matrixExtractedFeatures = extractAudioFeatures(samples, frequency_rate, stWin, stStep);
+        INDArray matrixExtractedFeatures = extractAudioFeatures(samples, moduleParams.getFrequencyRate(), moduleParams.getShortTermWindowSize(), moduleParams.getShortTermStepSize());
 
         System.out.println("globalFeatureExtraction: matrixExtractedFeatures [" + matrixExtractedFeatures.shape()[0] + "][" + matrixExtractedFeatures.shape()[1] + "]");
 
         //Apply statistic operations to each N sample for each of the 32 features. Extract a matrix of [32 features] x [N statistic operations]
-        INDArray mtFeatures = statisticsExtractor.obtainAudioFeaturesStatistics(matrixExtractedFeatures, mtWin, mtStep, stStep, moduleParams);
+        INDArray mtFeatures = statisticsExtractor.obtainAudioFeaturesStatistics(matrixExtractedFeatures, moduleParams);
         System.out.println("globalFeatureExtraction: mtFeatures [" + mtFeatures.shape()[0] + "][" + mtFeatures.shape()[1] + "]");
 
         return mtFeatures;

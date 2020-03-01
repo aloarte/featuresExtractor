@@ -1,9 +1,14 @@
 import org.junit.Before;
 import org.junit.Test;
+import testutils.SamplesReaderUtils;
 import testutils.WavUtils;
 
-import java.io.File;
 import java.io.IOException;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static testutils.TestingConstants.TEST_SAMPLE_KNIFE;
+import static testutils.TestingConstants.TEST_SAMPLE_KNIFE_READ;
 
 public class WavLoadTest {
 
@@ -18,9 +23,16 @@ public class WavLoadTest {
 
     @Test
     public void loadWavTest() throws IOException {
-        String path = "G:\\JavaProjects\\featuresExtractorGH\\src\\test\\resources\\AudioTest.wav";
-        String path2 = new File("src/test/resources/AudioTest.wav").getAbsolutePath();
-        double[] samples = wavUtils.load_wav(path);
+        double roundPrecision = 10000d;
 
+        double[] samplesFromWav = wavUtils.load_wav(TEST_SAMPLE_KNIFE);
+        double[] samplesFromFile = SamplesReaderUtils.readSamplesFromFile(TEST_SAMPLE_KNIFE_READ);
+
+        assert samplesFromFile != null;
+
+        assertThat(samplesFromFile.length, is(samplesFromWav.length));
+        for (int i = 0; i < samplesFromFile.length; i++) {
+            assertThat((double) Math.round(samplesFromFile[i] * roundPrecision) / roundPrecision, is((double) Math.round(samplesFromWav[i] * roundPrecision) / roundPrecision));
+        }
     }
 }

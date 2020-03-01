@@ -12,9 +12,17 @@ public class TestingConstants {
 
     public final static String TEST_RESOURCES_PATH = Paths.get("src", "test", "resources").toFile().getAbsolutePath();
     public final static String TEST_SAMPLE = TEST_RESOURCES_PATH + "\\AudioTest.wav";
+    public final static String TEST_SAMPLE_KNIFE = TEST_RESOURCES_PATH + "\\knife.wav";
+    public final static String TEST_SAMPLE_KNIFE_READ = TEST_RESOURCES_PATH + "\\knife_samples.text";
+
     public final static String TEST_SAMPLE_DOUBLE_INDARRAY_C_AUDIO_SLICE = TEST_RESOURCES_PATH + "\\CurrentAudioSliceSample.txt";
     public final static String TEST_SAMPLE_DOUBLE_INDARRAY_FFT_C_AUDIO_SLICE = TEST_RESOURCES_PATH + "\\FFTCurrentAudioSliceSample.txt";
     public final static String TEST_SAMPLE_DOUBLE_INDARRAY_FFT_P_AUDIO_SLICE = TEST_RESOURCES_PATH + "\\FFTPreviousAudioSliceSample.txt";
+
+    public final static String TEST_SAMPLE_SHORT_FEATURE = TEST_RESOURCES_PATH + "\\short_feature.text";
+    public final static String TEST_SAMPLE_MID_FEATURE = TEST_RESOURCES_PATH + "\\mid_feature.text";
+    public final static String TEST_SAMPLE_FEATURES = TEST_RESOURCES_PATH + "\\mid_feature_mean.text";
+
 
     //Mocked values for the whole AudioFeatures.
     public final static double TEST_AF_ZCR = 0.111;

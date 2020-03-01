@@ -25,8 +25,10 @@ public class AudioFeaturesExtractorTest {
 
         // Transform the input file into a float[] array
         double[] samples = wavUtils.load_wav(TEST_SAMPLE);
+
+
         // Extract globalFeatures
-        INDArray features = SUT.globalFeatureExtraction(samples, 22050, 2205, 2205, 2205, 2205, new ModuleParams());
+        INDArray features = SUT.globalFeatureExtraction(samples, new ModuleParams(22050, 1, 1, 1, 1));
 
     }
 
@@ -36,7 +38,7 @@ public class AudioFeaturesExtractorTest {
         // Transform the input file into a float[] array
         double[] samples = wavUtils.load_wav(TEST_SAMPLE);
         // Extract globalFeatures
-        INDArray features = SUT.extractAudioFeatures(samples, 22050, 2205, 2205);
+        INDArray features = SUT.extractAudioFeatures(samples, 22050, 2200, 2200);
 
     }
 

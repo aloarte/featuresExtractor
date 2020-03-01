@@ -26,7 +26,7 @@ public class DataParserTest {
     public void startUp() {
         SUT = new DataParser();
 
-        moduleParams = new ModuleParams();
+        moduleParams = new ModuleParams(22050, 1, 1, 1, 1);
         List<StatisticalMeasureType> measureTypes = new ArrayList<>();
         measureTypes.add(StatisticalMeasureType.Mean);
         moduleParams.setStatisticalMeasures(measureTypes);
