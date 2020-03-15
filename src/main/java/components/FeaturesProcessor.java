@@ -76,14 +76,14 @@ public class FeaturesProcessor {
         int countz = 0;
 
         for (int i = 0; i < currentAudioSlice.length() - 1; i++) {
-            if ((currentAudioSlice.getDouble(0) > 0 && currentAudioSlice.getDouble(i + 1) <= 0)
+            if ((currentAudioSlice.getDouble(i) > 0 && currentAudioSlice.getDouble(i + 1) <= 0)
                     ||
                     (currentAudioSlice.getDouble(i) < 0 && currentAudioSlice.getDouble(i + 1) >= 0)) {
                 countz++;
             }
         }
 
-        countz = countz / 2;
+        //countz = countz / 2;
 
         return countz / (count - 1.);
     }

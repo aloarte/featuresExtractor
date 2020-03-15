@@ -1,5 +1,6 @@
 package components;
 
+import org.nd4j.linalg.api.iter.NdIndexIterator;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.indexing.NDArrayIndex;
 
@@ -26,9 +27,17 @@ public class EnergyProcessor {
         if (L != subWinLength * numOfShortBlocks) {
             currentAudioSlice = currentAudioSlice.get(NDArrayIndex.interval(0, subWinLength * numOfShortBlocks));
         }
-        INDArray subWindows = currentAudioSlice.reshape(subWinLength, numOfShortBlocks).dup();
-        double s = (double) (pow(subWindows, 2).sumNumber()) / (Eol + epsValue);
-        return (-s * Math.log(s + epsValue));
+        INDArray subWindows = (currentAudioSlice.reshape(numOfShortBlocks, subWinLength).transpose()).dup();
+        INDArray s = (pow(subWindows, 2).sum(0)).div(Eol + epsValue);
+
+        NdIndexIterator iter = new NdIndexIterator(s.rows(), s.columns());
+
+        while (iter.hasNext()) {
+            int[] nextIndex = iter.next();
+            double value = s.getDouble(nextIndex);
+            s.put(nextIndex[0], nextIndex[1], (Math.log(value + epsValue) / Math.log(2)) * value);
+        }
+        return -((Double) s.sumNumber());
     }
 
     double extractEnergy(INDArray currentAudioSlice) {

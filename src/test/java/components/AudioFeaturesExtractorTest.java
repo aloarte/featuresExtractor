@@ -7,6 +7,7 @@ import org.nd4j.linalg.api.ndarray.INDArray;
 import testutils.WavUtils;
 
 import static testutils.TestingConstants.TEST_SAMPLE;
+import static testutils.TestingConstants.TEST_SAMPLE_KNIFE;
 
 public class AudioFeaturesExtractorTest {
 
@@ -36,9 +37,10 @@ public class AudioFeaturesExtractorTest {
     public void extractAudioFeatures() throws Exception {
 
         // Transform the input file into a float[] array
-        double[] samples = wavUtils.load_wav(TEST_SAMPLE);
+        double[] samples = wavUtils.load_wav(TEST_SAMPLE_KNIFE);
         // Extract globalFeatures
-        INDArray features = SUT.extractAudioFeatures(samples, 22050, 2200, 2200);
+        INDArray javaFeatures = SUT.extractAudioFeatures(samples, 22050, 220, 220);
+
 
     }
 

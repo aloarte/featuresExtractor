@@ -81,17 +81,23 @@ public class SamplesReaderUtils {
             Scanner myReader = new Scanner(fileRead);
 
             int index = 0;
-            double[] doubleSamplesData = new double[136];
+            //double[] doubleSamplesData = new double[136];
+            List<Double> doubleSamplesData = new ArrayList<>();
             while (myReader.hasNextLine()) {
                 String lane = myReader.nextLine();
                 String[] splittedLane = lane.split(",");
                 for (String laneElement : splittedLane) {
-                    doubleSamplesData[index] = Double.parseDouble(laneElement);
+                    doubleSamplesData.add(Double.parseDouble(laneElement));
                     index++;
                 }
             }
             myReader.close();
-            return doubleSamplesData;
+
+            double[] retSamples = new double[doubleSamplesData.size()];
+            for (int i = 0; i < retSamples.length; i++) {
+                retSamples[i] = doubleSamplesData.get(i);
+            }
+            return retSamples;
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
@@ -99,6 +105,7 @@ public class SamplesReaderUtils {
         }
 
     }
+
 
     public static double[] readLane(String readLane) {
         String[] elements = readLane.split(",");

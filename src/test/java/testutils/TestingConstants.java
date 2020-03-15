@@ -19,9 +19,14 @@ public class TestingConstants {
     public final static String TEST_SAMPLE_DOUBLE_INDARRAY_FFT_C_AUDIO_SLICE = TEST_RESOURCES_PATH + "\\FFTCurrentAudioSliceSample.txt";
     public final static String TEST_SAMPLE_DOUBLE_INDARRAY_FFT_P_AUDIO_SLICE = TEST_RESOURCES_PATH + "\\FFTPreviousAudioSliceSample.txt";
 
+    public final static String TEST_SAMPLE_DOUBLE_INDARRAY_C_AUDIO_SLICE_CONTROL = TEST_RESOURCES_PATH + "\\ControlCurrentAudioSliceSample.txt";
+    public final static String TEST_SAMPLE_DOUBLE_INDARRAY_FFT_C_AUDIO_SLICE_CONTROL = TEST_RESOURCES_PATH + "\\ControlFFTCurrentAudioSliceSample.txt";
+    public final static String TEST_SAMPLE_DOUBLE_INDARRAY_FFT_P_AUDIO_SLICE_CONTROL = TEST_RESOURCES_PATH + "\\ControlFFTPreviousAudioSliceSample.txt";
+
     public final static String TEST_SAMPLE_SHORT_FEATURE = TEST_RESOURCES_PATH + "\\short_feature.text";
     public final static String TEST_SAMPLE_MID_FEATURE = TEST_RESOURCES_PATH + "\\mid_feature.text";
     public final static String TEST_SAMPLE_FEATURES = TEST_RESOURCES_PATH + "\\mid_feature_mean.text";
+    public final static String TEST_SAMPLE_CONTROL_SLICE_PYTHON_FEATURES = TEST_RESOURCES_PATH + "\\PythonSliceControlFeatures.txt";
 
 
     //Mocked values for the whole AudioFeatures.

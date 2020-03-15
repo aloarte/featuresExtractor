@@ -108,10 +108,16 @@ public class MfccsProcessor {
             INDArray rid = Nd4j.arange((cenTrFreq * nFFT / frequency_rate) + 1,
                     (highTrFreq * nFFT / frequency_rate) + 1);
             double rslope = heights.getDouble(i) / (highTrFreq - cenTrFreq);
-            fbank.putScalar(new int[]{i, lid.getInt(0)},
-                    (lslope * (nfreqs.getDouble(lid.getInt(0)) - lowTrFreq)));
-            fbank.putScalar(new int[]{i, (int) rid.getDouble(0)},
-                    (rslope * (highTrFreq - nfreqs.getDouble(rid.getInt(0)))));
+
+            if (lid.size(1) > 0) {
+                fbank.putScalar(new int[]{i, lid.getInt(0)},
+                        (lslope * (nfreqs.getDouble(lid.getInt(0)) - lowTrFreq)));
+            }
+            if (rid.size(1) > 0) {
+                fbank.putScalar(new int[]{i, (int) rid.getDouble(0)},
+                        (rslope * (highTrFreq - nfreqs.getDouble(rid.getInt(0)))));
+            }
+
         }
 
         this.fbank = fbank;

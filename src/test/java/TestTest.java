@@ -45,7 +45,7 @@ public class TestTest {
         AudioFeaturesManager audioFeaturesManager = new AudioFeaturesManager();
 
 
-        List<AudioFeatures> audioFeaturesJava = audioFeaturesManager.processAudioSource(samples, new ModuleParams(22050, 1, 1, 1, 1));
+        List<AudioFeatures> audioFeaturesJava = audioFeaturesManager.processAudioSource(samples, new ModuleParams(22050, 0.01, 0.01, 1, 1));
 
         assertNotNull(audioFeatures);
 

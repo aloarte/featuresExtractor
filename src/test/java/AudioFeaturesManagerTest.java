@@ -32,7 +32,7 @@ public class AudioFeaturesManagerTest {
         // Transform the input file into a float[] array
         double[] samples = wavUtils.load_wav(TEST_SAMPLE);
 
-        ModuleParams moduleParams = new ModuleParams(22050, 1, 1, 1, 1);
+        ModuleParams moduleParams = new ModuleParams(22050, 1, 1, 0.01, 0.01);
         List<StatisticalMeasureType> measureTypes = new ArrayList<>();
         measureTypes.add(StatisticalMeasureType.Mean);
         measureTypes.add(StatisticalMeasureType.StandardDeviation);
