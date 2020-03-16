@@ -15,14 +15,12 @@ public class SpectralProcessorTest {
     private SpectralProcessor SUT;
 
     private INDArray fftCurrentSliceData;
-
-
     private INDArray fftPreviousSliceData;
 
 
     @Before
     public void startUp() {
-        SUT = new SpectralProcessor(EPS_CONSTANT);
+        SUT = SpectralProcessor.getInstance(EPS_CONSTANT);
         fftCurrentSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_DOUBLE_INDARRAY_FFT_C_AUDIO_SLICE);
         fftPreviousSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_DOUBLE_INDARRAY_FFT_P_AUDIO_SLICE);
 

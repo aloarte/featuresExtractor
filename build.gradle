@@ -16,7 +16,7 @@ dependencies {
     implementation 'fr.delthas:javamp3:1.0.1'
     implementation "org.nd4j:nd4j-native-platform:1.0.0-alpha"
     implementation "com.github.wendykierp:JTransforms:3.1"
-
+    implementation "org.slf4j:slf4j-jdk14:1.7.25"
 
 
     testImplementation "junit:junit:4.12"

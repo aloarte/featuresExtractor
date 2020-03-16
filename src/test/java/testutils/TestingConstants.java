@@ -15,6 +15,9 @@ public class TestingConstants {
     public final static String TEST_SAMPLE_KNIFE = TEST_RESOURCES_PATH + "\\knife.wav";
     public final static String TEST_SAMPLE_KNIFE_READ = TEST_RESOURCES_PATH + "\\knife_samples.text";
 
+    public final static String TEST_SAMPLE_DOUBLE_INDARRAY_C_AUDIO_SLICE_KNIFE_22220 = TEST_RESOURCES_PATH + "\\CurrentAudioSlice22220Knife";
+
+
     public final static String TEST_SAMPLE_DOUBLE_INDARRAY_C_AUDIO_SLICE = TEST_RESOURCES_PATH + "\\CurrentAudioSliceSample.txt";
     public final static String TEST_SAMPLE_DOUBLE_INDARRAY_FFT_C_AUDIO_SLICE = TEST_RESOURCES_PATH + "\\FFTCurrentAudioSliceSample.txt";
     public final static String TEST_SAMPLE_DOUBLE_INDARRAY_FFT_P_AUDIO_SLICE = TEST_RESOURCES_PATH + "\\FFTPreviousAudioSliceSample.txt";
@@ -67,9 +70,9 @@ public class TestingConstants {
 
 
     //Real values
-    public static final double TEST_AUDIO_ZCR_VALUE = 0.10435571687840291;
-    public static final double TEST_AUDIO_ENERGY_VALUE = 0.017980906860628365;
-    public static final double TEST_AUDIO_ENERGY_ENTROPY_VALUE = 0.0033633506543576165;
+    public static final double TEST_AUDIO_ZCR_VALUE = 0.03636363636363636;
+    public static final double TEST_AUDIO_ENERGY_VALUE = 0.04695406827059659;
+    public static final double TEST_AUDIO_ENERGY_ENTROPY_VALUE = 2.874689817428589;
     public static final double TEST_AUDIO_SPECTRAL_CENTROID_VALUE = 0.08274951261117233;
     public static final double TEST_AUDIO_SPECTRAL_SPREAD_VALUE = 305.10231623145324;
     public static final double TEST_AUDIO_SPECTRAL_ENTROPY_VALUE = 5.949076192249108E-7;

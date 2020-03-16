@@ -8,12 +8,18 @@ import static org.nd4j.linalg.ops.transforms.Transforms.pow;
 
 public class EnergyProcessor {
 
+    private static EnergyProcessor instance;
+
     private double epsValue;
 
-    public EnergyProcessor(double epsValue) {
-        this.epsValue = epsValue;
-    }
+    public static EnergyProcessor getInstance(double epsValue) {
+        if (instance == null) {
+            instance = new EnergyProcessor();
+            instance.epsValue = epsValue;
 
+        }
+        return instance;
+    }
 
     double extractEnergyEntropy(INDArray currentAudioSlice, int numOfShortBlocks) {
 

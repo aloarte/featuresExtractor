@@ -26,10 +26,10 @@ public class FeaturesProcessor {
         validator.verifySliceValues(currentAudioSlice, fftAudioSlice, fftPreviousAudioSlice);
 
         //Initialize the processors
-        MfccsProcessor mfccsProcessor = new MfccsProcessor(frequencyRate, nFFT);
-        ChromaProcessor chromaProcessor = new ChromaProcessor(nFFT, frequencyRate);
-        EnergyProcessor energyProcessor = new EnergyProcessor(EPS_CONSTANT);
-        SpectralProcessor spectralProcessor = new SpectralProcessor((EPS_CONSTANT));
+        MfccsProcessor mfccsProcessor = MfccsProcessor.getInstance(frequencyRate, nFFT);
+        ChromaProcessor chromaProcessor = ChromaProcessor.getInstance(frequencyRate, nFFT);
+        EnergyProcessor energyProcessor = EnergyProcessor.getInstance(EPS_CONSTANT);
+        SpectralProcessor spectralProcessor = SpectralProcessor.getInstance(EPS_CONSTANT);
 
         INDArray extractedFeatures = Nd4j.zeros(TOTAL_FEATURES, 1);
 

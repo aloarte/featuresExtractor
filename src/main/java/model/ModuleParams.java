@@ -34,6 +34,8 @@ public class ModuleParams {
      */
     private int shortTermStepSize;
 
+    private boolean logProcessesDurationEnabled = false;
+
     public ModuleParams(int frequencyRate, double shortTermWindow, double shortTermStep, double midTermWindow, double midTermStep) {
         statisticalMeasures = new ArrayList<>();
         statisticalMeasures.add(StatisticalMeasureType.Mean);
@@ -64,39 +66,27 @@ public class ModuleParams {
         return frequencyRate;
     }
 
-    public void setFrequencyRate(int frequencyRate) {
-        this.frequencyRate = frequencyRate;
-    }
-
     public int getMidTermWindowSize() {
         return midTermWindowSize;
-    }
-
-    public void setMidTermWindowSize(int midTermWindowSize) {
-        this.midTermWindowSize = midTermWindowSize;
     }
 
     public int getMidTermStepSize() {
         return midTermStepSize;
     }
 
-    public void setMidTermStepSize(int midTermStepSize) {
-        this.midTermStepSize = midTermStepSize;
-    }
-
     public int getShortTermWindowSize() {
         return shortTermWindowSize;
-    }
-
-    public void setShortTermWindowSize(int shortTermWindowSize) {
-        this.shortTermWindowSize = shortTermWindowSize;
     }
 
     public int getShortTermStepSize() {
         return shortTermStepSize;
     }
 
-    public void setShortTermStepSize(int shortTermStepSize) {
-        this.shortTermStepSize = shortTermStepSize;
+    public boolean isLogProcessesDurationEnabled() {
+        return logProcessesDurationEnabled;
+    }
+
+    public void enableLogProcessesDuration() {
+        this.logProcessesDurationEnabled = true;
     }
 }

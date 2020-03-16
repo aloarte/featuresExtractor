@@ -17,11 +17,15 @@ public class MfccsProcessor {
     private INDArray fbank;
     private INDArray freqs;
 
+    public static MfccsProcessor instance;
 
-    public MfccsProcessor(int frequency_rate, int nFFT) {
+    public static MfccsProcessor getInstance(int frequency_rate, int nFFT) {
+        if (instance == null) {
+            instance = new MfccsProcessor();
+            instance.extractMfccInitFilterBanks(frequency_rate, nFFT);
 
-        extractMfccInitFilterBanks(frequency_rate, nFFT);
-
+        }
+        return instance;
     }
 
     public double[] extractMFCC(INDArray fftAudioSlice, int n_mfcc) {

@@ -29,7 +29,7 @@ public class AudioFeaturesExtractorTest {
 
 
         // Extract globalFeatures
-        INDArray features = SUT.globalFeatureExtraction(samples, new ModuleParams(22050, 1, 1, 1, 1));
+        INDArray features = SUT.globalFeatureExtraction(samples, new ModuleParams(22050, 0.01, 0.01, 1, 1));
 
     }
 

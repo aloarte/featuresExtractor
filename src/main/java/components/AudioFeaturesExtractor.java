@@ -129,14 +129,26 @@ public class AudioFeaturesExtractor {
 
     public INDArray globalFeatureExtraction(double[] samples, final ModuleParams moduleParams) throws AudioExtractionException {
 
+        long timeBefore = System.currentTimeMillis();
+        long timeAfter;
+
         //Extract the matrix with the [32 features] x [N window samples]
         INDArray matrixExtractedFeatures = extractAudioFeatures(samples, moduleParams.getFrequencyRate(), moduleParams.getShortTermWindowSize(), moduleParams.getShortTermStepSize());
 
-        System.out.println("globalFeatureExtraction: matrixExtractedFeatures [" + matrixExtractedFeatures.shape()[0] + "][" + matrixExtractedFeatures.shape()[1] + "]");
+        if (moduleParams.isLogProcessesDurationEnabled()) {
+            timeAfter = System.currentTimeMillis();
+            System.out.println("stFeatures extracted (" + (timeAfter - timeBefore) + ") : matrixExtractedFeatures [" + matrixExtractedFeatures.shape()[0] + "][" + matrixExtractedFeatures.shape()[1] + "]");
+            timeBefore = timeAfter;
+        }
 
         //Apply statistic operations to each N sample for each of the 32 features. Extract a matrix of [32 features] x [N statistic operations]
         INDArray mtFeatures = statisticsExtractor.obtainAudioFeaturesStatistics(matrixExtractedFeatures, moduleParams);
-        System.out.println("globalFeatureExtraction: mtFeatures [" + mtFeatures.shape()[0] + "][" + mtFeatures.shape()[1] + "]");
+
+
+        if (moduleParams.isLogProcessesDurationEnabled()) {
+            timeAfter = System.currentTimeMillis();
+            System.out.println("mtFeatures extracted (" + (timeAfter - timeBefore) + ") : mtFeatures [" + mtFeatures.shape()[0] + "][" + mtFeatures.shape()[1] + "]");
+        }
 
         return mtFeatures;
 

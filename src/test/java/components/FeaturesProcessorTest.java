@@ -32,9 +32,9 @@ public class FeaturesProcessorTest {
 //        System.out.println("fftPreviousSliceData["+fftPreviousSliceData.shape()[0]+"]["+fftPreviousSliceData.shape()[1]+"]");
 
 
-        currentSliceData = Nd4j.create(SamplesReaderUtils.readExtractedFeaturesData((TEST_SAMPLE_DOUBLE_INDARRAY_C_AUDIO_SLICE_CONTROL)));
-        fftCurrentSliceData = Nd4j.create(SamplesReaderUtils.readExtractedFeaturesData((TEST_SAMPLE_DOUBLE_INDARRAY_FFT_C_AUDIO_SLICE_CONTROL)));
-        fftPreviousSliceData = Nd4j.create(SamplesReaderUtils.readExtractedFeaturesData((TEST_SAMPLE_DOUBLE_INDARRAY_FFT_P_AUDIO_SLICE_CONTROL)));
+        currentSliceData = Nd4j.create(SamplesReaderUtils.readExtractedFeaturesData(TEST_SAMPLE_DOUBLE_INDARRAY_C_AUDIO_SLICE_KNIFE_22220));
+        fftCurrentSliceData = Nd4j.create(SamplesReaderUtils.readExtractedFeaturesData(TEST_SAMPLE_DOUBLE_INDARRAY_FFT_C_AUDIO_SLICE_CONTROL));
+        fftPreviousSliceData = Nd4j.create(SamplesReaderUtils.readExtractedFeaturesData(TEST_SAMPLE_DOUBLE_INDARRAY_FFT_P_AUDIO_SLICE_CONTROL));
 
         System.out.println("currentSliceData[" + currentSliceData.shape()[0] + "][" + currentSliceData.shape()[1] + "]");
         System.out.println("fftCurrentSliceData[" + fftCurrentSliceData.shape()[0] + "][" + fftCurrentSliceData.shape()[1] + "]");

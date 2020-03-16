@@ -8,10 +8,16 @@ import static org.nd4j.linalg.ops.transforms.Transforms.pow;
 
 public class SpectralProcessor {
 
+    private static SpectralProcessor instance;
     private double epsValue;
 
-    public SpectralProcessor(double epsValue) {
-        this.epsValue = epsValue;
+    public static SpectralProcessor getInstance(double epsValue) {
+        if (instance == null) {
+            instance = new SpectralProcessor();
+            instance.epsValue = epsValue;
+
+        }
+        return instance;
     }
 
 

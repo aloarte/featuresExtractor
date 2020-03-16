@@ -12,16 +12,21 @@ import java.util.HashSet;
 
 public class ChromaProcessor {
 
+    public static ChromaProcessor instance;
     private INDArray nChroma;
     private INDArray nFreqsPerChroma;
-    private int frequency_rate;
-    private String[] ChromaNames = {"A", "A#", "B", "C", "C#", "D",
-            "D#", "E", "F", "F#", "G", "G#"};
 
-    public ChromaProcessor(int nFFT, int frequency_rate) {
-        this.frequency_rate = frequency_rate;
-        extractChomaFeaturesIniti(nFFT);
+    private String[] chromaNames;
+
+    public static ChromaProcessor getInstance(int frequency_rate, int nFFT) {
+        if (instance == null) {
+            instance = new ChromaProcessor();
+            instance.extractChomaFeaturesIniti(frequency_rate, nFFT);
+            instance.chromaNames = new String[]{"A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"};
+        }
+        return instance;
     }
+
 
     public double[] extractChromaFeatures(INDArray fftAudioSlice) {
         //INDArray spec = Transforms.pow(fftAudioSlice, 2);
@@ -48,7 +53,7 @@ public class ChromaProcessor {
 
     }
 
-    private void extractChomaFeaturesIniti(int nFFT) {
+    private void extractChomaFeaturesIniti(int frequency_rate, int nFFT) {
         INDArray freqs = Nd4j.arange(nFFT);
         freqs = freqs.add(1).mul(frequency_rate).div(2 * nFFT);
 
