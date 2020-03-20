@@ -8,6 +8,7 @@ import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.indexing.NDArrayIndex;
 import org.nd4j.linalg.ops.transforms.Transforms;
+import utils.ComplexRealMatrixParser;
 
 import java.util.Arrays;
 
@@ -115,12 +116,17 @@ public class AudioFeaturesExtractor {
         //Parse data to double array
         double[] audioSliceValues = currentAudioSlice.toDoubleVector();
 
+        //Fake the imaginary component of each real value before the fft calculation
+        double[] audioSliceComplexValues = ComplexRealMatrixParser.parseFromRealToComplex(audioSliceValues);
+
         //Get the FastFourierTransform of the audioSlice
-        DoubleFFT_1D fastFourierTransform = new DoubleFFT_1D(audioSliceValues.length);
-        fastFourierTransform.realForward(audioSliceValues);
+        DoubleFFT_1D fastFourierTransform = new DoubleFFT_1D(audioSliceComplexValues.length);
+        fastFourierTransform.realForward(audioSliceComplexValues);
+
+        double[] audioSliceRealValues = ComplexRealMatrixParser.parseFromComplexToReal(audioSliceComplexValues);
 
         //Replace the values
-        audioSliceValues = Arrays.copyOfRange(audioSliceValues, 0, fftWindowSize);
+        audioSliceValues = Arrays.copyOfRange(audioSliceRealValues, 0, fftWindowSize);
 
         //Build a INDArray from the double[] with the FFT of slice
         return Nd4j.create(audioSliceValues).div(audioSliceValues.length);
