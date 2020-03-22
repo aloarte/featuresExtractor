@@ -18,7 +18,7 @@ public class ChromaProcessorTest {
     @Before
     public void startUp() {
         SUT = ChromaProcessor.getInstance(TEST_FREQUENCY_RATE, TEST_NFFT);
-        fftCurrentSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_DOUBLE_INDARRAY_FFT_C_AUDIO_SLICE);
+        fftCurrentSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_DOUBLE_INDARRAY_FFT_C_AUDIO_SLICE_KNIFE);
 
     }
 

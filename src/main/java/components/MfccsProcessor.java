@@ -48,9 +48,21 @@ public class MfccsProcessor {
         //Apply the filter bank
         INDArray mspec = fftAudioSlice.mmul(fbank.transpose()).add(EPS_CONSTANT);
 
+        NdIndexIterator iter = new NdIndexIterator(mspec.rows(), mspec.columns());
+
+        while (iter.hasNext()) {
+            int[] nextIndex = iter.next();
+            double value = mspec.getDouble(nextIndex);
+            mspec.put(nextIndex[0], nextIndex[1], (Math.log(value) / Math.log(10)));
+        }
+
+
+        //TODO: Review the filterbank
+
+
         DoubleDCT_1D mydtc = new DoubleDCT_1D(mspec.length());
         double[] ceps = mspec.toDoubleVector();
-        mydtc.forward(ceps, false);
+        mydtc.forward(ceps, true);
         ceps = Arrays.copyOfRange(ceps, 0, n_mfcc);
 
         return ceps;

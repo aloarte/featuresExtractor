@@ -25,16 +25,16 @@ public class EnergyProcessor {
 
 
         //Computes entropy of energy
-        double Eol = (double) pow(currentAudioSlice, 2).sumNumber(); //total frame energy
-        int L = currentAudioSlice.length();
+        int sliceLength = currentAudioSlice.length();
+        double totalEnergy = (double) pow(currentAudioSlice, 2).sumNumber(); //total frame energy
 
-        int subWinLength = (int) (Math.floor(L / numOfShortBlocks)); //subframe length
+        int subWinLength = (int) (Math.floor(sliceLength / numOfShortBlocks)); //subframe length
         //System.out.println("Shape X: " + x.shapeInfoToString());
-        if (L != subWinLength * numOfShortBlocks) {
+        if (sliceLength != subWinLength * numOfShortBlocks) {
             currentAudioSlice = currentAudioSlice.get(NDArrayIndex.interval(0, subWinLength * numOfShortBlocks));
         }
         INDArray subWindows = (currentAudioSlice.reshape(numOfShortBlocks, subWinLength).transpose()).dup();
-        INDArray s = (pow(subWindows, 2).sum(0)).div(Eol + epsValue);
+        INDArray s = (pow(subWindows, 2).sum(0)).div(totalEnergy + epsValue);
 
         NdIndexIterator iter = new NdIndexIterator(s.rows(), s.columns());
 

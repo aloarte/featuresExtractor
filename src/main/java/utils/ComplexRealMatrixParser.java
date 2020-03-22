@@ -23,12 +23,17 @@ public class ComplexRealMatrixParser {
      * @param complexVector complex vector with size N
      * @return vector with only the real values from the complexValue vector. Size 2/N
      */
-    public static double[] parseFromComplexToReal(double[] complexVector) {
+    public static double[] parseAbsValueFromComplexToReal(double[] complexVector) {
         double[] realMatrix = new double[complexVector.length / 2];
         for (int i = 0; i < complexVector.length; i += 2) {
-            realMatrix[(i / 2)] = complexVector[i];
+
+            realMatrix[(i / 2)] = getAbsoluteValueFromComplexNumber(complexVector[i], complexVector[i + 1]);
         }
         return realMatrix;
+    }
+
+    public static double getAbsoluteValueFromComplexNumber(double realValue, double imaginaryValue) {
+        return Math.sqrt(Math.pow(realValue, 2) + Math.pow(imaginaryValue, 2));
     }
 
 }

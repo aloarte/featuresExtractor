@@ -2,6 +2,7 @@ package components;
 
 import model.exceptions.AudioExtractionException;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
@@ -33,8 +34,8 @@ public class FeaturesProcessorTest {
 
 
         currentSliceData = Nd4j.create(SamplesReaderUtils.readExtractedFeaturesData(TEST_SAMPLE_DOUBLE_INDARRAY_C_AUDIO_SLICE_KNIFE_22220));
-        fftCurrentSliceData = Nd4j.create(SamplesReaderUtils.readExtractedFeaturesData(TEST_SAMPLE_DOUBLE_INDARRAY_FFT_C_AUDIO_SLICE_CONTROL));
-        fftPreviousSliceData = Nd4j.create(SamplesReaderUtils.readExtractedFeaturesData(TEST_SAMPLE_DOUBLE_INDARRAY_FFT_P_AUDIO_SLICE_CONTROL));
+        fftCurrentSliceData = Nd4j.create(SamplesReaderUtils.readExtractedFeaturesData(TEST_SAMPLE_DOUBLE_INDARRAY_FFT_C_AUDIO_SLICE_KNIFE));
+        fftPreviousSliceData = Nd4j.create(SamplesReaderUtils.readExtractedFeaturesData(TEST_SAMPLE_DOUBLE_INDARRAY_PFFT_C_AUDIO_SLICE_KNIFE));
 
         System.out.println("currentSliceData[" + currentSliceData.shape()[0] + "][" + currentSliceData.shape()[1] + "]");
         System.out.println("fftCurrentSliceData[" + fftCurrentSliceData.shape()[0] + "][" + fftCurrentSliceData.shape()[1] + "]");
@@ -43,6 +44,7 @@ public class FeaturesProcessorTest {
     }
 
 
+    @Ignore
     @Test
     public void extractFeaturesFromSlice() throws AudioExtractionException {
 

@@ -111,7 +111,7 @@ public class AudioFeaturesExtractor {
      * @param fftWindowSize     Size of the FFT window
      * @return INDArray with the FFT already calculated
      */
-    private INDArray calculateFftFromAudioSlice(INDArray currentAudioSlice, int fftWindowSize) {
+    public INDArray calculateFftFromAudioSlice(INDArray currentAudioSlice, int fftWindowSize) {
 
         //Parse data to double array
         double[] audioSliceValues = currentAudioSlice.toDoubleVector();
@@ -123,7 +123,10 @@ public class AudioFeaturesExtractor {
         DoubleFFT_1D fastFourierTransform = new DoubleFFT_1D(audioSliceComplexValues.length);
         fastFourierTransform.realForward(audioSliceComplexValues);
 
-        double[] audioSliceRealValues = ComplexRealMatrixParser.parseFromComplexToReal(audioSliceComplexValues);
+        //The second value is zero
+        audioSliceComplexValues[1] = 0;
+
+        double[] audioSliceRealValues = ComplexRealMatrixParser.parseAbsValueFromComplexToReal(audioSliceComplexValues);
 
         //Replace the values
         audioSliceValues = Arrays.copyOfRange(audioSliceRealValues, 0, fftWindowSize);

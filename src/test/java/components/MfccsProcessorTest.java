@@ -1,7 +1,6 @@
 package components;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import testutils.INDArrayUtils;
@@ -20,11 +19,11 @@ public class MfccsProcessorTest {
 
     @Before
     public void startUp() {
-        fftCurrentSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_DOUBLE_INDARRAY_FFT_C_AUDIO_SLICE);
+        fftCurrentSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_DOUBLE_INDARRAY_FFT_C_AUDIO_SLICE_KNIFE);
         SUT = MfccsProcessor.getInstance(TEST_FREQUENCY_RATE, TEST_NFFT);
     }
 
-    @Ignore
+
     @Test
     public void extractMFCC() {
 
