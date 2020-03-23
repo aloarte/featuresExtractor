@@ -126,12 +126,19 @@ public class MfccsProcessor {
             double rslope = heights.getDouble(i) / (highTrFreq - cenTrFreq);
 
             if (lid.size(1) > 0) {
-                fbank.putScalar(new int[]{i, lid.getInt(0)},
-                        (lslope * (nfreqs.getDouble(lid.getInt(0)) - lowTrFreq)));
+                NdIndexIterator iteratorLid = new NdIndexIterator(lid.length());
+                while (iteratorLid.hasNext()) {
+                    int lidIndexValue = lid.getInt(iteratorLid.next()[0]);
+                    fbank.putScalar(new int[]{i, lidIndexValue}, (lslope * (nfreqs.getDouble(lidIndexValue) - lowTrFreq)));
+                }
             }
+
             if (rid.size(1) > 0) {
-                fbank.putScalar(new int[]{i, (int) rid.getDouble(0)},
-                        (rslope * (highTrFreq - nfreqs.getDouble(rid.getInt(0)))));
+                NdIndexIterator iteratorRid = new NdIndexIterator(rid.length());
+                while (iteratorRid.hasNext()) {
+                    int ridIndexValue = rid.getInt(iteratorRid.next()[0]);
+                    fbank.putScalar(new int[]{i, ridIndexValue}, (rslope * (highTrFreq - nfreqs.getDouble(ridIndexValue))));
+                }
             }
 
         }
@@ -140,4 +147,6 @@ public class MfccsProcessor {
         this.freqs = freqs;
 
     }
+
+
 }

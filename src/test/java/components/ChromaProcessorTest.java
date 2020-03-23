@@ -23,7 +23,6 @@ public class ChromaProcessorTest {
     }
 
 
-    @Ignore
     @Test
     public void stSpectralCentroidAndSpread() {
         double[] stSpectralCentroidAndSpread = SUT.extractChromaFeatures(fftCurrentSliceData);

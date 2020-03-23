@@ -71,18 +71,18 @@ public class TestingConstants {
     public static final double TEST_AUDIO_SPECTRAL_ENTROPY_VALUE = 0.33811086416244507;
     public static final double TEST_AUDIO_SPECTRAL_FLUX_VALUE = 0.011840171180665493;
     public static final double TEST_AUDIO_SPECTRAL_ROLLOFF_VALUE = 0.03636363636363636;
-    public static final double TEST_AUDIO_MFCCS_1 = -28.86255517506102;
-    public static final double TEST_AUDIO_MFCCS_2 = -1.2354393376198858;
-    public static final double TEST_AUDIO_MFCCS_3 = -1.8312703479389805;
-    public static final double TEST_AUDIO_MFCCS_4 = 0.6518264577790077;
-    public static final double TEST_AUDIO_MFCCS_5 = 0.8526818275001204;
-    public static final double TEST_AUDIO_MFCCS_6 = 0.6133792078141663;
-    public static final double TEST_AUDIO_MFCCS_7 = 0.6957112855826528;
-    public static final double TEST_AUDIO_MFCCS_8 = 0.11897623126846145;
-    public static final double TEST_AUDIO_MFCCS_9 = -0.017646815278058146;
-    public static final double TEST_AUDIO_MFCCS_10 = 0.6221583996017679;
-    public static final double TEST_AUDIO_MFCCS_11 = 1.1092659394905213;
-    public static final double TEST_AUDIO_MFCCS_12 = 1.4013296137441476;
-    public static final double TEST_AUDIO_MFCCS_13 = 1.1454753527108796;
+    public static final double TEST_AUDIO_MFCCS_1 = -28.437641002860616;
+    public static final double TEST_AUDIO_MFCCS_2 = -1.7293699202989485;
+    public static final double TEST_AUDIO_MFCCS_3 = -1.5999499383818492;
+    public static final double TEST_AUDIO_MFCCS_4 = 0.6990686767434052;
+    public static final double TEST_AUDIO_MFCCS_5 = 0.648084711212224;
+    public static final double TEST_AUDIO_MFCCS_6 = 0.7989769889152714;
+    public static final double TEST_AUDIO_MFCCS_7 = 0.6526604877038747;
+    public static final double TEST_AUDIO_MFCCS_8 = 0.014680582198975152;
+    public static final double TEST_AUDIO_MFCCS_9 = 0.1349264680267024;
+    public static final double TEST_AUDIO_MFCCS_10 = 0.5429387161693577;
+    public static final double TEST_AUDIO_MFCCS_11 = 1.0617413941496274;
+    public static final double TEST_AUDIO_MFCCS_12 = 1.5218708314532219;
+    public static final double TEST_AUDIO_MFCCS_13 = 1.0741691074174549;
 
 }
