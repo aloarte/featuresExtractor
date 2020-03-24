@@ -17,7 +17,7 @@ public class EnergyProcessorTest {
     @Before
     public void startUp() {
         SUT = EnergyProcessor.getInstance(EPS_CONSTANT);
-        currentSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_DOUBLE_INDARRAY_C_AUDIO_SLICE_KNIFE_22220);
+        currentSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_INDARRAY_C_AUDIO_SLICE);
     }
 
     @Test

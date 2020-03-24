@@ -1,3 +1,5 @@
+package facade;
+
 import model.AudioFeatures;
 import model.ModuleParams;
 import model.enums.StatisticalMeasureType;
@@ -11,9 +13,11 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+import static testutils.TestingConstants.TEST_FREQUENCY_RATE;
 import static testutils.TestingConstants.TEST_SAMPLE;
 
 public class AudioFeaturesManagerTest {
+
 
     private WavUtils wavUtils;
 
@@ -32,7 +36,7 @@ public class AudioFeaturesManagerTest {
         // Transform the input file into a float[] array
         double[] samples = wavUtils.load_wav(TEST_SAMPLE);
 
-        ModuleParams moduleParams = new ModuleParams(22050, 0.01, 0.01, 1, 1);
+        ModuleParams moduleParams = new ModuleParams(TEST_FREQUENCY_RATE, 0.01, 0.01, 1, 1);
         List<StatisticalMeasureType> measureTypes = new ArrayList<>();
         measureTypes.add(StatisticalMeasureType.Mean);
         measureTypes.add(StatisticalMeasureType.StandardDeviation);

@@ -19,9 +19,9 @@ public class MethodsEntryValidatorTest {
     @Before
     public void startUp() {
         SUT = new MethodsEntryValidator();
-        currentSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_DOUBLE_INDARRAY_C_AUDIO_SLICE_KNIFE_22220);
-        fftCurrentSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_DOUBLE_INDARRAY_FFT_C_AUDIO_SLICE_KNIFE);
-        fftPreviousSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_DOUBLE_INDARRAY_PFFT_C_AUDIO_SLICE_KNIFE);
+        currentSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_INDARRAY_C_AUDIO_SLICE);
+        fftCurrentSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_INDARRAY_FFT_C_AUDIO_SLICE);
+        fftPreviousSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_INDARRAY_FFT_P_AUDIO_SLICE);
     }
 
 

@@ -31,8 +31,8 @@ This library obtain the following audio features:
 * **Spectral spread:** The second central moment of the spectrum.
 * **Spectral entropy:** Entropy of the normalized spectral energies for a set of sub-frames.
 * **Spectral flux:** The squared difference between the normalized magnitudes of the spectra of the two successive frames.
-* **Spectral rolloff: **The frequency below which 90% of the magnitude distribution of the spectrum is concentrated
-* **MFCCs: **Mel Frequency Cepstral Coefficients
+* **Spectral rolloff:**The frequency below which 90% of the magnitude distribution of the spectrum is concentrated
+* **MFCCs:**Mel Frequency Cepstral Coefficients
 * **Chroma Vector:** A 12-element representation of the spectral energy where the bins represent the 12 equal-tempered pitch classes of western-type music (semitone spacing).
 * **Chroma deviation:** The standard deviation of the 12 chroma coefficients.
 
@@ -44,7 +44,7 @@ To use this library, import it into your project using maven or gradle.
 
 [TBC]
 
-Once is imported, use the AudioFeaturesManager class to extract the audio features:
+Once is imported, use the facade.AudioFeaturesManager class to extract the audio features:
 
 ```java
  AudioFeaturesManager audioFeaturesManager = new AudioFeaturesManager();

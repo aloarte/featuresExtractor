@@ -1,13 +1,7 @@
-import model.AudioFeatures;
-import model.ModuleParams;
 import model.exceptions.AudioExtractionException;
 import org.junit.Before;
 import org.junit.Test;
 import testutils.WavUtils;
-
-import java.util.List;
-
-import static testutils.TestingConstants.TEST_SAMPLE_KNIFE;
 
 public class TestTest {
 
@@ -34,16 +28,16 @@ public class TestTest {
 //        System.out.println("MidFeatureData[" + midFeatureData.length + "][" + midFeatureData[0].length + "]");
 //        System.out.println("ExtractedFeatures[" + extractedFeatures.length + "]");
 //
-//        DataParserPyAudioAnalisis dataParserPyAudioAnalisis = new DataParserPyAudioAnalisis();
+//        facade.DataParserPyAudioAnalisis dataParserPyAudioAnalisis = new facade.DataParserPyAudioAnalisis();
 //
 //        List<AudioFeatures> audioFeatures = dataParserPyAudioAnalisis.parseAudioFeaturesPython(Nd4j.create(extractedFeatures), new ModuleParams(22050, 1, 1, 1, 1));
 
 
-        double[] samples = wavUtils.load_wav(TEST_SAMPLE_KNIFE);
-        AudioFeaturesManager audioFeaturesManager = new AudioFeaturesManager();
-        ModuleParams moduleParams = new ModuleParams(22050, 0.01, 0.01, 1, 1);
-        moduleParams.enableLogProcessesDuration();
-        List<AudioFeatures> audioFeaturesJava = audioFeaturesManager.processAudioSource(samples, moduleParams);
+//        double[] samples = wavUtils.load_wav(TEST_SAMPLE_KNIFE);
+//        facade.AudioFeaturesManager audioFeaturesManager = new facade.AudioFeaturesManager();
+//        ModuleParams moduleParams = new ModuleParams(22050, 0.01, 0.01, 1, 1);
+//        moduleParams.enableLogProcessesDuration();
+//        List<AudioFeatures> audioFeaturesJava = audioFeaturesManager.processAudioSource(samples, moduleParams);
 
         //assertNotNull(audioFeatures);
 

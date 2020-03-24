@@ -34,4 +34,8 @@ public class TestUtils {
         //Read and return the value
         return new byte[0];
     }
+
+    public static double getRoundDouble(double numberWithoutRound, double roundPrecision) {
+        return (double) Math.round(numberWithoutRound * roundPrecision) / roundPrecision;
+    }
 }

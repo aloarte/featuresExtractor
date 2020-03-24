@@ -1,12 +1,13 @@
 package components;
 
+import facade.DataParser;
+import model.AudioFeatures;
 import model.exceptions.AudioExtractionException;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.nd4j.linalg.api.ndarray.INDArray;
-import org.nd4j.linalg.factory.Nd4j;
-import testutils.SamplesReaderUtils;
+import testutils.INDArrayUtils;
+import testutils.TestUtils;
 
 import static constants.FeaturesNumbersConstants.TOTAL_FEATURES;
 import static org.hamcrest.CoreMatchers.is;
@@ -20,22 +21,20 @@ public class FeaturesProcessorTest {
     private INDArray fftCurrentSliceData;
     private INDArray fftPreviousSliceData;
     private FeaturesProcessor SUT;
+    DataParser dataParser;
+
+    private double roundPrecision = 1000000d;
+
 
     @Before
     public void startUp() {
         SUT = new FeaturesProcessor();
-//        currentSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_DOUBLE_INDARRAY_C_AUDIO_SLICE);
-//        fftCurrentSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_DOUBLE_INDARRAY_FFT_C_AUDIO_SLICE);
-//        fftPreviousSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_DOUBLE_INDARRAY_FFT_P_AUDIO_SLICE);
-//
-//        System.out.println("currentSliceData["+currentSliceData.shape()[0]+"]["+currentSliceData.shape()[1]+"]");
-//        System.out.println("fftCurrentSliceData["+fftCurrentSliceData.shape()[0]+"]["+fftCurrentSliceData.shape()[1]+"]");
-//        System.out.println("fftPreviousSliceData["+fftPreviousSliceData.shape()[0]+"]["+fftPreviousSliceData.shape()[1]+"]");
 
+        dataParser = new DataParser();
 
-        currentSliceData = Nd4j.create(SamplesReaderUtils.readExtractedFeaturesData(TEST_SAMPLE_DOUBLE_INDARRAY_C_AUDIO_SLICE_KNIFE_22220));
-        fftCurrentSliceData = Nd4j.create(SamplesReaderUtils.readExtractedFeaturesData(TEST_SAMPLE_DOUBLE_INDARRAY_FFT_C_AUDIO_SLICE_KNIFE));
-        fftPreviousSliceData = Nd4j.create(SamplesReaderUtils.readExtractedFeaturesData(TEST_SAMPLE_DOUBLE_INDARRAY_PFFT_C_AUDIO_SLICE_KNIFE));
+        currentSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_INDARRAY_C_AUDIO_SLICE);
+        fftCurrentSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_INDARRAY_FFT_C_AUDIO_SLICE);
+        fftPreviousSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_INDARRAY_FFT_P_AUDIO_SLICE);
 
         System.out.println("currentSliceData[" + currentSliceData.shape()[0] + "][" + currentSliceData.shape()[1] + "]");
         System.out.println("fftCurrentSliceData[" + fftCurrentSliceData.shape()[0] + "][" + fftCurrentSliceData.shape()[1] + "]");
@@ -44,17 +43,41 @@ public class FeaturesProcessorTest {
     }
 
 
-    @Ignore
     @Test
     public void extractFeaturesFromSlice() throws AudioExtractionException {
 
-        INDArray extractedFeatures = SUT.extractFeaturesFromSlice(currentSliceData, fftCurrentSliceData, fftPreviousSliceData, 22050, 110);
+        INDArray extractedFeatures = SUT.extractFeaturesFromSlice(currentSliceData, fftCurrentSliceData, fftPreviousSliceData, TEST_FREQUENCY_RATE, TEST_NFFT);
         assertNotNull(extractedFeatures);
         assertThat(extractedFeatures.shape()[0], is(TOTAL_FEATURES));
         assertThat(extractedFeatures.shape()[1], is(1));
 
-        //Get the control features from the python file
-        INDArray pythonFeatures = Nd4j.create(SamplesReaderUtils.readExtractedFeaturesData(TEST_SAMPLE_CONTROL_SLICE_PYTHON_FEATURES));
+        AudioFeatures extractedFeaturesFromSlice = dataParser.parseAudioFeature(extractedFeatures, 0);
+        assertNotNull(extractedFeaturesFromSlice);
+
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getZeroCrossingRate(), roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_ZCR_VALUE, roundPrecision)));
+
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getEnergyFeatures().getEnergy(), roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_ENERGY_VALUE, roundPrecision)));
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getEnergyFeatures().getEntropyOfEnergy(), roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_ENERGY_ENTROPY_VALUE, roundPrecision)));
+
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getSpectralFeatures().getSpectralCentroid(), roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_SPECTRAL_CENTROID_VALUE, roundPrecision)));
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getSpectralFeatures().getSpectralEntropy(), roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_SPECTRAL_ENTROPY_VALUE, roundPrecision)));
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getSpectralFeatures().getSpectralFlux(), roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_SPECTRAL_FLUX_VALUE, roundPrecision)));
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getSpectralFeatures().getSpectralRolloff(), roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_SPECTRAL_ROLLOFF_VALUE, roundPrecision)));
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getSpectralFeatures().getSpectralSpread(), roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_SPECTRAL_SPREAD_VALUE, roundPrecision)));
+
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getMfcCs().getMfccsValues()[0], roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_MFCCS[0], roundPrecision)));
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getMfcCs().getMfccsValues()[1], roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_MFCCS[1], roundPrecision)));
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getMfcCs().getMfccsValues()[2], roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_MFCCS[2], roundPrecision)));
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getMfcCs().getMfccsValues()[3], roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_MFCCS[3], roundPrecision)));
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getMfcCs().getMfccsValues()[4], roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_MFCCS[4], roundPrecision)));
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getMfcCs().getMfccsValues()[5], roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_MFCCS[5], roundPrecision)));
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getMfcCs().getMfccsValues()[6], roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_MFCCS[6], roundPrecision)));
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getMfcCs().getMfccsValues()[7], roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_MFCCS[7], roundPrecision)));
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getMfcCs().getMfccsValues()[8], roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_MFCCS[8], roundPrecision)));
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getMfcCs().getMfccsValues()[9], roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_MFCCS[9], roundPrecision)));
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getMfcCs().getMfccsValues()[10], roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_MFCCS[10], roundPrecision)));
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getMfcCs().getMfccsValues()[11], roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_MFCCS[11], roundPrecision)));
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getMfcCs().getMfccsValues()[12], roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_MFCCS[12], roundPrecision)));
 
 
     }

@@ -15,9 +15,9 @@ public class TestingConstants {
     public final static String TEST_SAMPLE_KNIFE = TEST_RESOURCES_PATH + "\\knife.wav";
     public final static String TEST_SAMPLE_KNIFE_READ = TEST_RESOURCES_PATH + "\\knife_samples.text";
 
-    public final static String TEST_SAMPLE_DOUBLE_INDARRAY_C_AUDIO_SLICE_KNIFE_22220 = TEST_RESOURCES_PATH + "\\CurrentAudioSlice22220Knife";
-    public final static String TEST_SAMPLE_DOUBLE_INDARRAY_FFT_C_AUDIO_SLICE_KNIFE = TEST_RESOURCES_PATH + "\\FFTAudioSliceKnife";
-    public final static String TEST_SAMPLE_DOUBLE_INDARRAY_PFFT_C_AUDIO_SLICE_KNIFE = TEST_RESOURCES_PATH + "\\previousFFTSliceKnife";
+    public final static String TEST_SAMPLE_INDARRAY_C_AUDIO_SLICE = TEST_RESOURCES_PATH + "\\CurrentAudioSlice_Knife_22220";
+    public final static String TEST_SAMPLE_INDARRAY_FFT_C_AUDIO_SLICE = TEST_RESOURCES_PATH + "\\FFTCurrentAudioSlice_Knife_22220";
+    public final static String TEST_SAMPLE_INDARRAY_FFT_P_AUDIO_SLICE = TEST_RESOURCES_PATH + "\\FFTPreviousSlice_Knife_22220";
 
     public final static String TEST_SAMPLE_SHORT_FEATURE = TEST_RESOURCES_PATH + "\\short_feature.text";
     public final static String TEST_SAMPLE_MID_FEATURE = TEST_RESOURCES_PATH + "\\mid_feature.text";
@@ -63,7 +63,7 @@ public class TestingConstants {
 
 
     //Real values
-    public static final double TEST_AUDIO_ZCR_VALUE = 0.03636363636363636;
+    public static final double TEST_AUDIO_ZCR_VALUE = 0.0365296803652968;
     public static final double TEST_AUDIO_ENERGY_VALUE = 0.04695406827059659;
     public static final double TEST_AUDIO_ENERGY_ENTROPY_VALUE = 2.874689817428589;
     public static final double TEST_AUDIO_SPECTRAL_CENTROID_VALUE = 0.15805630805031856;
@@ -71,18 +71,21 @@ public class TestingConstants {
     public static final double TEST_AUDIO_SPECTRAL_ENTROPY_VALUE = 0.33811086416244507;
     public static final double TEST_AUDIO_SPECTRAL_FLUX_VALUE = 0.011840171180665493;
     public static final double TEST_AUDIO_SPECTRAL_ROLLOFF_VALUE = 0.03636363636363636;
-    public static final double TEST_AUDIO_MFCCS_1 = -28.437641002860616;
-    public static final double TEST_AUDIO_MFCCS_2 = -1.7293699202989485;
-    public static final double TEST_AUDIO_MFCCS_3 = -1.5999499383818492;
-    public static final double TEST_AUDIO_MFCCS_4 = 0.6990686767434052;
-    public static final double TEST_AUDIO_MFCCS_5 = 0.648084711212224;
-    public static final double TEST_AUDIO_MFCCS_6 = 0.7989769889152714;
-    public static final double TEST_AUDIO_MFCCS_7 = 0.6526604877038747;
-    public static final double TEST_AUDIO_MFCCS_8 = 0.014680582198975152;
-    public static final double TEST_AUDIO_MFCCS_9 = 0.1349264680267024;
-    public static final double TEST_AUDIO_MFCCS_10 = 0.5429387161693577;
-    public static final double TEST_AUDIO_MFCCS_11 = 1.0617413941496274;
-    public static final double TEST_AUDIO_MFCCS_12 = 1.5218708314532219;
-    public static final double TEST_AUDIO_MFCCS_13 = 1.0741691074174549;
+    public static final double[] TEST_AUDIO_MFCCS = new double[]{
+            -28.437641002860616,
+            -1.7293699202989485,
+            -1.5999499383818492,
+            0.6990686767434052,
+            0.648084711212224,
+            0.7989769889152714,
+            0.6526604877038747,
+            0.014680582198975152,
+            0.1349264680267024,
+            0.5429387161693577,
+            1.0617413941496274,
+            1.5218708314532219,
+            1.0741691074174549
+    };
+
 
 }

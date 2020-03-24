@@ -1,3 +1,5 @@
+package facade;
+
 import model.*;
 import org.nd4j.linalg.api.ndarray.INDArray;
 
@@ -8,6 +10,10 @@ import static constants.FeaturesNumbersConstants.*;
 
 public class DataParser {
 
+
+    public DataParser() {
+
+    }
 
     /**
      * Parse the INDArray of statistical measures of the extracted features into a list of AudioFeatures
@@ -21,15 +27,15 @@ public class DataParser {
             List<AudioFeatures> parsedFeatures = new ArrayList<>();
             for (int statisticalMeasureIndex = 0; statisticalMeasureIndex < moduleParams.getStatisticalMeasuresNumber(); statisticalMeasureIndex++) {
                 //Create the AudioFeatures class and set the statistical measure type
-                AudioFeatures audioFeatures = new AudioFeatures();
+                AudioFeatures audioFeatures = parseAudioFeature(smExtractedFeatures, statisticalMeasureIndex);
                 audioFeatures.setStatisticalMeasureType(moduleParams.getStatisticalMeasures().get(statisticalMeasureIndex));
 
-                //Add each set of features to the final AudioFeatures class
-                audioFeatures.setZeroCrossingRate(smExtractedFeatures.getDouble(statisticalMeasureIndex));
-                audioFeatures.setEnergyFeatures(parseEnergyFeatures(smExtractedFeatures, statisticalMeasureIndex));
-                audioFeatures.setSpectralFeatures(parseSpectralFeatures(smExtractedFeatures, statisticalMeasureIndex));
-                audioFeatures.setMfcCs(parseMFFCS(smExtractedFeatures, statisticalMeasureIndex));
-                audioFeatures.setChromaFeatures(parseChromaFeatures(smExtractedFeatures, statisticalMeasureIndex));
+//                //Add each set of features to the final AudioFeatures class
+//                audioFeatures.setZeroCrossingRate(smExtractedFeatures.getDouble(statisticalMeasureIndex));
+//                audioFeatures.setEnergyFeatures(parseEnergyFeatures(smExtractedFeatures, statisticalMeasureIndex));
+//                audioFeatures.setSpectralFeatures(parseSpectralFeatures(smExtractedFeatures, statisticalMeasureIndex));
+//                audioFeatures.setMfcCs(parseMFFCS(smExtractedFeatures, statisticalMeasureIndex));
+//                audioFeatures.setChromaFeatures(parseChromaFeatures(smExtractedFeatures, statisticalMeasureIndex));
 
                 //Add the AudioFeatures calculated to the list of AudioFeatures
                 parsedFeatures.add(audioFeatures);
@@ -37,6 +43,18 @@ public class DataParser {
             //Return the list of AudioFeatures
             return parsedFeatures;
         } else return null;
+    }
+
+    public AudioFeatures parseAudioFeature(INDArray smExtractedFeatures, int statisticalMeasureIndex) {
+        AudioFeatures audioFeatures = new AudioFeatures();
+        //Add each set of features to the final AudioFeatures class
+        audioFeatures.setZeroCrossingRate(smExtractedFeatures.getDouble(statisticalMeasureIndex));
+        audioFeatures.setEnergyFeatures(parseEnergyFeatures(smExtractedFeatures, statisticalMeasureIndex));
+        audioFeatures.setSpectralFeatures(parseSpectralFeatures(smExtractedFeatures, statisticalMeasureIndex));
+        audioFeatures.setMfcCs(parseMFFCS(smExtractedFeatures, statisticalMeasureIndex));
+        audioFeatures.setChromaFeatures(parseChromaFeatures(smExtractedFeatures, statisticalMeasureIndex));
+
+        return audioFeatures;
     }
 
     /**

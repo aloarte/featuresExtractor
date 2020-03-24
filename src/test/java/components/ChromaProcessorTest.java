@@ -18,11 +18,11 @@ public class ChromaProcessorTest {
     @Before
     public void startUp() {
         SUT = ChromaProcessor.getInstance(TEST_FREQUENCY_RATE, TEST_NFFT);
-        fftCurrentSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_DOUBLE_INDARRAY_FFT_C_AUDIO_SLICE_KNIFE);
+        fftCurrentSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_INDARRAY_FFT_C_AUDIO_SLICE);
 
     }
 
-
+    @Ignore
     @Test
     public void stSpectralCentroidAndSpread() {
         double[] stSpectralCentroidAndSpread = SUT.extractChromaFeatures(fftCurrentSliceData);

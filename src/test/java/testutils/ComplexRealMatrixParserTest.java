@@ -9,8 +9,8 @@ import utils.ComplexRealMatrixParser;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static testutils.TestingConstants.TEST_SAMPLE_DOUBLE_INDARRAY_C_AUDIO_SLICE_KNIFE_22220;
-import static testutils.TestingConstants.TEST_SAMPLE_DOUBLE_INDARRAY_FFT_C_AUDIO_SLICE_KNIFE;
+import static testutils.TestingConstants.TEST_SAMPLE_INDARRAY_C_AUDIO_SLICE;
+import static testutils.TestingConstants.TEST_SAMPLE_INDARRAY_FFT_C_AUDIO_SLICE;
 
 public class ComplexRealMatrixParserTest {
 
@@ -19,15 +19,18 @@ public class ComplexRealMatrixParserTest {
 
     @Before
     public void startUp() {
-        currentSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_DOUBLE_INDARRAY_C_AUDIO_SLICE_KNIFE_22220);
-        currentFFTSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_DOUBLE_INDARRAY_FFT_C_AUDIO_SLICE_KNIFE);
+        currentSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_INDARRAY_C_AUDIO_SLICE);
+        currentFFTSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_INDARRAY_FFT_C_AUDIO_SLICE);
 
     }
 
     @Test
-    public void parseFromReralToComplexTest() {
+    public void parseRealComplexTest() {
         double[] realMatrix = new double[]{5, -3, 45};
+        double[] realAbsMatrix = new double[]{5, 3, 45};
+
         double[] complexMatrix = new double[]{5, 0, -3, 0, 45, 0};
+
 
         double[] calculatedComplexMatrix = ComplexRealMatrixParser.parseFromRealToComplex(realMatrix);
         for (int i = 0; i < calculatedComplexMatrix.length; i++) {
@@ -36,7 +39,7 @@ public class ComplexRealMatrixParserTest {
 
         double[] calculatedRealMatrix = ComplexRealMatrixParser.parseAbsValueFromComplexToReal(calculatedComplexMatrix);
         for (int i = 0; i < calculatedRealMatrix.length; i++) {
-            assertThat(calculatedRealMatrix[i], is(realMatrix[i]));
+            assertThat(calculatedRealMatrix[i], is(realAbsMatrix[i]));
         }
 
     }
@@ -55,17 +58,6 @@ public class ComplexRealMatrixParserTest {
 
     }
 
-    @Test
-    public void matrixDCTtest() {
-        double[] testArray = new double[]{1, 2, 3, 4};
-
-        DoubleDCT_1D mydtc = new DoubleDCT_1D(testArray.length);
-        mydtc.forward(testArray, true);
-
-        System.out.println();
-
-
-    }
 
     @Test
     public void realSliceFFT() {

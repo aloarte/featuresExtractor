@@ -21,8 +21,8 @@ public class SpectralProcessorTest {
     @Before
     public void startUp() {
         SUT = SpectralProcessor.getInstance(EPS_CONSTANT);
-        fftCurrentSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_DOUBLE_INDARRAY_FFT_C_AUDIO_SLICE_KNIFE);
-        fftPreviousSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_DOUBLE_INDARRAY_PFFT_C_AUDIO_SLICE_KNIFE);
+        fftCurrentSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_INDARRAY_FFT_C_AUDIO_SLICE);
+        fftPreviousSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_INDARRAY_FFT_P_AUDIO_SLICE);
 
     }
 
