@@ -84,7 +84,7 @@ public class SpectralFeatures {
 
     @Override
     public String toString() {
-        return "----- Spectral Features ----\n " +
+        return " Spectral Features \n " +
                 "- Spectral centroid: " + getSpectralCentroid() + "\n" +
                 "- Spectral spread: " + getSpectralSpread() + "\n" +
                 "- Spectral entropy: " + getSpectralEntropy() + "\n" +

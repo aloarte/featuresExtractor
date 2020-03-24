@@ -107,12 +107,12 @@ public class AudioFeatures implements Serializable {
 
     @Override
     public String toString() {
-        return "++++++++++++++ Audio Features (" + getStatisticalMeasureType().name() + "): +++++\n " +
-                "----- ZCR: " + getZeroCrossingRate() + "\n" +
+        return "Audio Features (" + getStatisticalMeasureType().name() + "):\n " +
+                " ZCR: " + getZeroCrossingRate() + "\n" +
                 getEnergyFeatures().toString() +
                 getSpectralFeatures().toString() +
                 getChromaFeatures().toString() +
                 getMfcCs().toString() +
-                "+++++++++++++++++++++++++++++++++++++++++++++++++\n";
+                "\n";
     }
 }

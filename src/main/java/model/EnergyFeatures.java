@@ -42,7 +42,7 @@ public class EnergyFeatures {
 
     @Override
     public String toString() {
-        return "----- Energy Features: ------\n " +
+        return " Energy Features: \n " +
                 "- Energy: " + getEnergy() + "\n" +
                 "- Entropy: " + getEntropyOfEnergy() + "\n";
     }

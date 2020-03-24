@@ -61,7 +61,7 @@ public class ChromaFeatures {
 
     @Override
     public String toString() {
-        return "----- Chroma Features: -----\n " +
+        return " Chroma Features:\n " +
                 "- Chroma vector\n" +
                 " [0]: " + getChromaVector()[0] + "\n" +
                 " [1]: " + getChromaVector()[1] + "\n" +

@@ -111,7 +111,7 @@ public class AudioFeaturesExtractor {
      * @param fftWindowSize     Size of the FFT window
      * @return INDArray with the FFT already calculated
      */
-    public INDArray calculateFftFromAudioSlice(INDArray currentAudioSlice, int fftWindowSize) {
+    INDArray calculateFftFromAudioSlice(INDArray currentAudioSlice, int fftWindowSize) {
 
         //Parse data to double array
         double[] audioSliceValues = currentAudioSlice.toDoubleVector();

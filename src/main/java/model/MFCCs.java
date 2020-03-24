@@ -40,7 +40,7 @@ public class MFCCs {
 
     @Override
     public String toString() {
-        return "----- MFCCs Features: -----\n " +
+        return " MFCCs Features: \n " +
                 "- Vector\n" +
                 " [0]: " + getMfccsValues()[0] + "\n" +
                 " [1]: " + getMfccsValues()[1] + "\n" +

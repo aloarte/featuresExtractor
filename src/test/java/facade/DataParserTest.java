@@ -43,31 +43,33 @@ public class DataParserTest {
         testFeatures.putScalar(5, TEST_AF_SF_E);
         testFeatures.putScalar(6, TEST_AF_SF_F);
         testFeatures.putScalar(7, TEST_AF_SF_R);
-        testFeatures.putScalar(8, TEST_AF_MFCC_1);
-        testFeatures.putScalar(9, TEST_AF_MFCC_2);
-        testFeatures.putScalar(10, TEST_AF_MFCC_3);
-        testFeatures.putScalar(11, TEST_AF_MFCC_4);
-        testFeatures.putScalar(12, TEST_AF_MFCC_5);
-        testFeatures.putScalar(13, TEST_AF_MFCC_6);
-        testFeatures.putScalar(14, TEST_AF_MFCC_7);
-        testFeatures.putScalar(15, TEST_AF_MFCC_8);
-        testFeatures.putScalar(16, TEST_AF_MFCC_9);
-        testFeatures.putScalar(17, TEST_AF_MFCC_10);
-        testFeatures.putScalar(18, TEST_AF_MFCC_11);
-        testFeatures.putScalar(19, TEST_AF_MFCC_12);
-        testFeatures.putScalar(20, TEST_AF_MFCC_13);
-        testFeatures.putScalar(21, TEST_AF_CF_CV_1);
-        testFeatures.putScalar(22, TEST_AF_CF_CV_2);
-        testFeatures.putScalar(23, TEST_AF_CF_CV_3);
-        testFeatures.putScalar(24, TEST_AF_CF_CV_4);
-        testFeatures.putScalar(25, TEST_AF_CF_CV_5);
-        testFeatures.putScalar(26, TEST_AF_CF_CV_6);
-        testFeatures.putScalar(27, TEST_AF_CF_CV_7);
-        testFeatures.putScalar(28, TEST_AF_CF_CV_8);
-        testFeatures.putScalar(29, TEST_AF_CF_CV_9);
-        testFeatures.putScalar(30, TEST_AF_CF_CV_10);
-        testFeatures.putScalar(31, TEST_AF_CF_CV_11);
-        testFeatures.putScalar(32, TEST_AF_CF_CV_12);
+
+        testFeatures.putScalar(8, TEST_AF_MFCC[0]);
+        testFeatures.putScalar(9, TEST_AF_MFCC[1]);
+        testFeatures.putScalar(10, TEST_AF_MFCC[2]);
+        testFeatures.putScalar(11, TEST_AF_MFCC[3]);
+        testFeatures.putScalar(12, TEST_AF_MFCC[4]);
+        testFeatures.putScalar(13, TEST_AF_MFCC[5]);
+        testFeatures.putScalar(14, TEST_AF_MFCC[6]);
+        testFeatures.putScalar(15, TEST_AF_MFCC[7]);
+        testFeatures.putScalar(16, TEST_AF_MFCC[8]);
+        testFeatures.putScalar(17, TEST_AF_MFCC[9]);
+        testFeatures.putScalar(18, TEST_AF_MFCC[10]);
+        testFeatures.putScalar(19, TEST_AF_MFCC[11]);
+        testFeatures.putScalar(20, TEST_AF_MFCC[12]);
+
+        testFeatures.putScalar(21, TEST_AF_CF_CV[0]);
+        testFeatures.putScalar(22, TEST_AF_CF_CV[1]);
+        testFeatures.putScalar(23, TEST_AF_CF_CV[2]);
+        testFeatures.putScalar(24, TEST_AF_CF_CV[3]);
+        testFeatures.putScalar(25, TEST_AF_CF_CV[4]);
+        testFeatures.putScalar(26, TEST_AF_CF_CV[5]);
+        testFeatures.putScalar(27, TEST_AF_CF_CV[6]);
+        testFeatures.putScalar(28, TEST_AF_CF_CV[7]);
+        testFeatures.putScalar(29, TEST_AF_CF_CV[8]);
+        testFeatures.putScalar(30, TEST_AF_CF_CV[9]);
+        testFeatures.putScalar(31, TEST_AF_CF_CV[10]);
+        testFeatures.putScalar(32, TEST_AF_CF_CV[11]);
         testFeatures.putScalar(33, TEST_AF_CF_CE);
 
     }
@@ -111,19 +113,19 @@ public class DataParserTest {
         assertNotNull(parsedMfccs);
         assertThat(parsedMfccs.getMfccsValues().length, is(MFCCS_FEATURES));
 
-        assertThat(TestUtils.getRoundDouble(parsedMfccs.getMfccsValues()[0], roundPrecision), is(TEST_AF_MFCC_1));
-        assertThat(TestUtils.getRoundDouble(parsedMfccs.getMfccsValues()[1], roundPrecision), is(TEST_AF_MFCC_2));
-        assertThat(TestUtils.getRoundDouble(parsedMfccs.getMfccsValues()[2], roundPrecision), is(TEST_AF_MFCC_3));
-        assertThat(TestUtils.getRoundDouble(parsedMfccs.getMfccsValues()[3], roundPrecision), is(TEST_AF_MFCC_4));
-        assertThat(TestUtils.getRoundDouble(parsedMfccs.getMfccsValues()[4], roundPrecision), is(TEST_AF_MFCC_5));
-        assertThat(TestUtils.getRoundDouble(parsedMfccs.getMfccsValues()[5], roundPrecision), is(TEST_AF_MFCC_6));
-        assertThat(TestUtils.getRoundDouble(parsedMfccs.getMfccsValues()[6], roundPrecision), is(TEST_AF_MFCC_7));
-        assertThat(TestUtils.getRoundDouble(parsedMfccs.getMfccsValues()[7], roundPrecision), is(TEST_AF_MFCC_8));
-        assertThat(TestUtils.getRoundDouble(parsedMfccs.getMfccsValues()[8], roundPrecision), is(TEST_AF_MFCC_9));
-        assertThat(TestUtils.getRoundDouble(parsedMfccs.getMfccsValues()[9], roundPrecision), is(TEST_AF_MFCC_10));
-        assertThat(TestUtils.getRoundDouble(parsedMfccs.getMfccsValues()[10], roundPrecision), is(TEST_AF_MFCC_11));
-        assertThat(TestUtils.getRoundDouble(parsedMfccs.getMfccsValues()[11], roundPrecision), is(TEST_AF_MFCC_12));
-        assertThat(TestUtils.getRoundDouble(parsedMfccs.getMfccsValues()[12], roundPrecision), is(TEST_AF_MFCC_13));
+        assertThat(TestUtils.getRoundDouble(parsedMfccs.getMfccsValues()[0], roundPrecision), is(TEST_AF_MFCC[0]));
+        assertThat(TestUtils.getRoundDouble(parsedMfccs.getMfccsValues()[1], roundPrecision), is(TEST_AF_MFCC[1]));
+        assertThat(TestUtils.getRoundDouble(parsedMfccs.getMfccsValues()[2], roundPrecision), is(TEST_AF_MFCC[2]));
+        assertThat(TestUtils.getRoundDouble(parsedMfccs.getMfccsValues()[3], roundPrecision), is(TEST_AF_MFCC[3]));
+        assertThat(TestUtils.getRoundDouble(parsedMfccs.getMfccsValues()[4], roundPrecision), is(TEST_AF_MFCC[4]));
+        assertThat(TestUtils.getRoundDouble(parsedMfccs.getMfccsValues()[5], roundPrecision), is(TEST_AF_MFCC[5]));
+        assertThat(TestUtils.getRoundDouble(parsedMfccs.getMfccsValues()[6], roundPrecision), is(TEST_AF_MFCC[6]));
+        assertThat(TestUtils.getRoundDouble(parsedMfccs.getMfccsValues()[7], roundPrecision), is(TEST_AF_MFCC[7]));
+        assertThat(TestUtils.getRoundDouble(parsedMfccs.getMfccsValues()[8], roundPrecision), is(TEST_AF_MFCC[8]));
+        assertThat(TestUtils.getRoundDouble(parsedMfccs.getMfccsValues()[9], roundPrecision), is(TEST_AF_MFCC[9]));
+        assertThat(TestUtils.getRoundDouble(parsedMfccs.getMfccsValues()[10], roundPrecision), is(TEST_AF_MFCC[10]));
+        assertThat(TestUtils.getRoundDouble(parsedMfccs.getMfccsValues()[11], roundPrecision), is(TEST_AF_MFCC[11]));
+        assertThat(TestUtils.getRoundDouble(parsedMfccs.getMfccsValues()[12], roundPrecision), is(TEST_AF_MFCC[12]));
 
     }
 
@@ -131,18 +133,18 @@ public class DataParserTest {
     public void parseChromaFeatures() throws Exception {
         ChromaFeatures parsedChromaFeatures = SUT.parseChromaFeatures(testFeatures, 0);
         assertNotNull(parsedChromaFeatures);
-        assertThat(TestUtils.getRoundDouble(parsedChromaFeatures.getChromaVector()[0], roundPrecision), is(TEST_AF_CF_CV_1));
-        assertThat(TestUtils.getRoundDouble(parsedChromaFeatures.getChromaVector()[1], roundPrecision), is(TEST_AF_CF_CV_2));
-        assertThat(TestUtils.getRoundDouble(parsedChromaFeatures.getChromaVector()[2], roundPrecision), is(TEST_AF_CF_CV_3));
-        assertThat(TestUtils.getRoundDouble(parsedChromaFeatures.getChromaVector()[3], roundPrecision), is(TEST_AF_CF_CV_4));
-        assertThat(TestUtils.getRoundDouble(parsedChromaFeatures.getChromaVector()[4], roundPrecision), is(TEST_AF_CF_CV_5));
-        assertThat(TestUtils.getRoundDouble(parsedChromaFeatures.getChromaVector()[5], roundPrecision), is(TEST_AF_CF_CV_6));
-        assertThat(TestUtils.getRoundDouble(parsedChromaFeatures.getChromaVector()[6], roundPrecision), is(TEST_AF_CF_CV_7));
-        assertThat(TestUtils.getRoundDouble(parsedChromaFeatures.getChromaVector()[7], roundPrecision), is(TEST_AF_CF_CV_8));
-        assertThat(TestUtils.getRoundDouble(parsedChromaFeatures.getChromaVector()[8], roundPrecision), is(TEST_AF_CF_CV_9));
-        assertThat(TestUtils.getRoundDouble(parsedChromaFeatures.getChromaVector()[9], roundPrecision), is(TEST_AF_CF_CV_10));
-        assertThat(TestUtils.getRoundDouble(parsedChromaFeatures.getChromaVector()[10], roundPrecision), is(TEST_AF_CF_CV_11));
-        assertThat(TestUtils.getRoundDouble(parsedChromaFeatures.getChromaVector()[11], roundPrecision), is(TEST_AF_CF_CV_12));
+        assertThat(TestUtils.getRoundDouble(parsedChromaFeatures.getChromaVector()[0], roundPrecision), is(TEST_AF_CF_CV[0]));
+        assertThat(TestUtils.getRoundDouble(parsedChromaFeatures.getChromaVector()[1], roundPrecision), is(TEST_AF_CF_CV[1]));
+        assertThat(TestUtils.getRoundDouble(parsedChromaFeatures.getChromaVector()[2], roundPrecision), is(TEST_AF_CF_CV[2]));
+        assertThat(TestUtils.getRoundDouble(parsedChromaFeatures.getChromaVector()[3], roundPrecision), is(TEST_AF_CF_CV[3]));
+        assertThat(TestUtils.getRoundDouble(parsedChromaFeatures.getChromaVector()[4], roundPrecision), is(TEST_AF_CF_CV[4]));
+        assertThat(TestUtils.getRoundDouble(parsedChromaFeatures.getChromaVector()[5], roundPrecision), is(TEST_AF_CF_CV[5]));
+        assertThat(TestUtils.getRoundDouble(parsedChromaFeatures.getChromaVector()[6], roundPrecision), is(TEST_AF_CF_CV[6]));
+        assertThat(TestUtils.getRoundDouble(parsedChromaFeatures.getChromaVector()[7], roundPrecision), is(TEST_AF_CF_CV[7]));
+        assertThat(TestUtils.getRoundDouble(parsedChromaFeatures.getChromaVector()[8], roundPrecision), is(TEST_AF_CF_CV[8]));
+        assertThat(TestUtils.getRoundDouble(parsedChromaFeatures.getChromaVector()[9], roundPrecision), is(TEST_AF_CF_CV[9]));
+        assertThat(TestUtils.getRoundDouble(parsedChromaFeatures.getChromaVector()[10], roundPrecision), is(TEST_AF_CF_CV[10]));
+        assertThat(TestUtils.getRoundDouble(parsedChromaFeatures.getChromaVector()[11], roundPrecision), is(TEST_AF_CF_CV[11]));
         assertThat(TestUtils.getRoundDouble(parsedChromaFeatures.getChromaDeviation(), roundPrecision), is(TEST_AF_CF_CE));
     }
 }
