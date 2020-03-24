@@ -42,9 +42,9 @@ public class FeaturesProcessor {
         double[] spectralCentroidSpread = spectralProcessor.extractSpectralCentroidAndSpread(fftAudioSlice, frequencyRate);
         extractedFeatures.putScalar(3, spectralCentroidSpread[0]); // Spectral centroid
         extractedFeatures.putScalar(4, spectralCentroidSpread[1]); //Spectral spread
-        extractedFeatures.putScalar(5, spectralProcessor.extractSpectralEntropy(fftAudioSlice, 10));
+        extractedFeatures.putScalar(5, spectralProcessor.extractSpectralEntropy(fftAudioSlice));
         extractedFeatures.putScalar(6, spectralProcessor.extractSpectralFlux(fftAudioSlice, fftPreviousAudioSlice));
-        extractedFeatures.putScalar(7, spectralProcessor.extractSpectralRollOff(fftAudioSlice, 0.90, frequencyRate));
+        extractedFeatures.putScalar(7, spectralProcessor.extractSpectralRollOff(fftAudioSlice));
 
         // 9 -21: MFCCS
         double[] stMFCCs = mfccsProcessor.extractMFCC(fftAudioSlice, MFCCS_FEATURES);

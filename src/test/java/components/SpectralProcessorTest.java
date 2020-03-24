@@ -29,7 +29,7 @@ public class SpectralProcessorTest {
 
     @Test
     public void extractSpectralCentroidAndSpread() {
-        double[] stSpectralCentroidAndSpread = SUT.extractSpectralCentroidAndSpread(fftCurrentSliceData, 22050);
+        double[] stSpectralCentroidAndSpread = SUT.extractSpectralCentroidAndSpread(fftCurrentSliceData, TEST_FREQUENCY_RATE);
         assertNotNull(stSpectralCentroidAndSpread);
         assertThat(stSpectralCentroidAndSpread.length, is(2));
         assertThat(stSpectralCentroidAndSpread[0], is(TEST_AUDIO_SPECTRAL_CENTROID_VALUE));
@@ -38,7 +38,7 @@ public class SpectralProcessorTest {
 
     @Test
     public void extractSpectralEntropy() {
-        double spectralEntropy = SUT.extractSpectralEntropy(fftCurrentSliceData, 10);
+        double spectralEntropy = SUT.extractSpectralEntropy(fftCurrentSliceData);
         assertThat(spectralEntropy, is(TEST_AUDIO_SPECTRAL_ENTROPY_VALUE));
     }
 
@@ -50,7 +50,7 @@ public class SpectralProcessorTest {
 
     @Test
     public void extractSpectralRollOff() {
-        double spectralFlux = SUT.extractSpectralRollOff(fftCurrentSliceData, 0.90, 22050);
+        double spectralFlux = SUT.extractSpectralRollOff(fftCurrentSliceData);
         assertThat(spectralFlux, is(TEST_AUDIO_SPECTRAL_ROLLOFF_VALUE));
     }
 }

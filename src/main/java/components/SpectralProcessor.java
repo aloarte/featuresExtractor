@@ -40,7 +40,8 @@ public class SpectralProcessor {
         return res;
     }
 
-    double extractSpectralRollOff(INDArray fftAudioSlice, double c, int frequency_rate) {
+    double extractSpectralRollOff(INDArray fftAudioSlice) {
+        double c = 0.90;
         //Computes spectral roll-off
         double totalEnergy = (double) pow(fftAudioSlice, 2).sumNumber();
         int fftLength = fftAudioSlice.length();
@@ -66,7 +67,9 @@ public class SpectralProcessor {
         return (double) pow(fftAudioSlice.div(sumX).sub(fftPreviousAudioSlice.div(sumPrevX)), 2).sumNumber();
     }
 
-    double extractSpectralEntropy(INDArray fftAudioSlice, int numOfShortBlocks) {
+    double extractSpectralEntropy(INDArray fftAudioSlice) {
+
+        int numOfShortBlocks = 10;
 
         //Computes entropy of energy
         int fftLenght = fftAudioSlice.length();
