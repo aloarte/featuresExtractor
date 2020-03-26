@@ -1,6 +1,7 @@
 package testutils;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.nd4j.linalg.api.iter.NdIndexIterator;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
 
@@ -62,5 +63,29 @@ public class INDArrayUtils {
             return null;
         }
 
+    }
+
+
+    private static void writeINDArrayFilterBanks(INDArray indArrayData, String filename) {
+
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))) {
+
+            NdIndexIterator iter = new NdIndexIterator(indArrayData.length());
+            while (iter.hasNext()) {
+                int[] nextIndex = iter.next();
+                double nChromaValue = indArrayData.getDouble(nextIndex);
+
+                bw.write(nextIndex[0] + "," + nChromaValue);
+                bw.newLine();
+
+            }
+
+
+            bw.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

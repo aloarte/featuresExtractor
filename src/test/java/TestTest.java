@@ -1,7 +1,14 @@
+import model.AudioFeatures;
+import model.ModuleParams;
 import model.exceptions.AudioExtractionException;
 import org.junit.Before;
 import org.junit.Test;
 import testutils.WavUtils;
+
+import java.util.List;
+
+import static org.junit.Assert.assertNotNull;
+import static testutils.TestingConstants.TEST_SAMPLE_KNIFE;
 
 public class TestTest {
 
@@ -33,13 +40,13 @@ public class TestTest {
 //        List<AudioFeatures> audioFeatures = dataParserPyAudioAnalisis.parseAudioFeaturesPython(Nd4j.create(extractedFeatures), new ModuleParams(22050, 1, 1, 1, 1));
 
 
-//        double[] samples = wavUtils.load_wav(TEST_SAMPLE_KNIFE);
-//        facade.AudioFeaturesManager audioFeaturesManager = new facade.AudioFeaturesManager();
-//        ModuleParams moduleParams = new ModuleParams(22050, 0.01, 0.01, 1, 1);
-//        moduleParams.enableLogProcessesDuration();
-//        List<AudioFeatures> audioFeaturesJava = audioFeaturesManager.processAudioSource(samples, moduleParams);
+        double[] samples = wavUtils.load_wav(TEST_SAMPLE_KNIFE);
+        facade.AudioFeaturesManager audioFeaturesManager = new facade.AudioFeaturesManager();
+        ModuleParams moduleParams = new ModuleParams(22050, 0.01, 0.01, 1, 1);
+        moduleParams.enableLogProcessesDuration();
+        List<AudioFeatures> audioFeaturesJava = audioFeaturesManager.processAudioSource(samples, moduleParams);
 
-        //assertNotNull(audioFeatures);
+        assertNotNull(audioFeaturesJava);
 
 
     }

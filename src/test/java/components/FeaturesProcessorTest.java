@@ -65,6 +65,19 @@ public class FeaturesProcessorTest {
         assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getSpectralFeatures().getSpectralRolloff(), roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_SPECTRAL_ROLLOFF_VALUE, roundPrecision)));
         assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getSpectralFeatures().getSpectralSpread(), roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_SPECTRAL_SPREAD_VALUE, roundPrecision)));
 
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getChromaFeatures().getChromaVector()[0], roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_CHROMA_VECTORS[0], roundPrecision)));
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getChromaFeatures().getChromaVector()[1], roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_CHROMA_VECTORS[1], roundPrecision)));
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getChromaFeatures().getChromaVector()[2], roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_CHROMA_VECTORS[2], roundPrecision)));
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getChromaFeatures().getChromaVector()[3], roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_CHROMA_VECTORS[3], roundPrecision)));
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getChromaFeatures().getChromaVector()[4], roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_CHROMA_VECTORS[4], roundPrecision)));
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getChromaFeatures().getChromaVector()[5], roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_CHROMA_VECTORS[5], roundPrecision)));
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getChromaFeatures().getChromaVector()[6], roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_CHROMA_VECTORS[6], roundPrecision)));
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getChromaFeatures().getChromaVector()[7], roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_CHROMA_VECTORS[7], roundPrecision)));
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getChromaFeatures().getChromaVector()[8], roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_CHROMA_VECTORS[8], roundPrecision)));
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getChromaFeatures().getChromaVector()[9], roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_CHROMA_VECTORS[9], roundPrecision)));
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getChromaFeatures().getChromaVector()[10], roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_CHROMA_VECTORS[10], roundPrecision)));
+        assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getChromaFeatures().getChromaVector()[11], roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_CHROMA_VECTORS[11], roundPrecision)));
+
         assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getMfcCs().getMfccsValues()[0], roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_MFCCS[0], roundPrecision)));
         assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getMfcCs().getMfccsValues()[1], roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_MFCCS[1], roundPrecision)));
         assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getMfcCs().getMfccsValues()[2], roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_MFCCS[2], roundPrecision)));

@@ -5,7 +5,10 @@ import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.api.ops.impl.accum.MatchCondition;
 import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.indexing.BooleanIndexing;
+import org.nd4j.linalg.indexing.INDArrayIndex;
+import org.nd4j.linalg.indexing.NDArrayIndex;
 import org.nd4j.linalg.indexing.conditions.Conditions;
+import org.nd4j.linalg.ops.transforms.Transforms;
 
 import java.util.HashSet;
 
@@ -29,8 +32,35 @@ public class ChromaProcessor {
 
 
     public double[] extractChromaFeatures(INDArray fftAudioSlice) {
-        //INDArray spec = Transforms.pow(fftAudioSlice, 2);
-        //INDArray C = Nd4j.zeros(nChroma.length());
+        INDArray spec = Transforms.pow(fftAudioSlice, 2);
+        INDArray C = Nd4j.zeros(nChroma.length());
+
+        if (nChroma.maxNumber().intValue() < nFreqsPerChroma.shape()[0]) {
+
+            NdIndexIterator iter = new NdIndexIterator(nChroma.length());
+            while (iter.hasNext()) {
+                int[] nextIndex = iter.next();
+                int nChromaValue = nChroma.getInt(nextIndex);
+                double specValue = spec.getDouble(nextIndex) / nFreqsPerChroma.getInt(nChroma.getInt(nChromaValue));
+                C.putScalar(nChromaValue, specValue);
+
+            }
+        } else {
+            //TODO: for the execution with NFFT= 110 $ freqRate=22050 this else wont be reached. In other cases, implement this else with the solution
+        }
+
+        INDArray finalC = Nd4j.zeros(12);
+        int newD = (int) Math.ceil(C.length() / 12.0) * 12;
+        INDArray C2 = Nd4j.zeros(newD);
+        C2.put(new INDArrayIndex[]{NDArrayIndex.interval(0, C.length())}, C);
+
+
+        C2 = C2.reshape(C2.length() / 12, 12);
+
+        finalC = Nd4j.sum(C2, 0).transpose();
+        finalC = finalC.div(Nd4j.sum(spec));
+
+
         /**
          if(nChroma.maxNumber().intValue()<nChroma.shape()[0]){
          C = spec.div(nFreqsPerChroma);
@@ -39,17 +69,9 @@ public class ChromaProcessor {
          C.put(new INDArrayIndex[]{
          NDArrayIndex.interval(0,I-1)}, spec);
          C = C.div(nFreqsPerChroma);
-         }
-         **/
-        //INDArray finalC = Nd4j.zeros(12);
-        //int newD = (int)Math.ceil(C.length()/(12.0) * 12);
-        //INDArray C2 = Nd4j.zeros(newD);
-        //C2.put(new INDArrayIndex[]{NDArrayIndex.interval(0,C.length())},C);
-        //C2 = C2.reshape((int)C2.length()/12,12);
+         }*/
 
-        //finalC = Nd4j.sum(C2,0).transpose();
-        //finalC = finalC.div(Nd4j.sum(spec));
-        return new double[12];
+        return finalC.toDoubleVector();
 
     }
 
@@ -63,7 +85,7 @@ public class ChromaProcessor {
         while (iter.hasNext()) {
             int[] nextIndex = iter.next();
             double oldNextVal = nChroma.getDouble(nextIndex);
-            double newNextVal = Math.round(12 * Math.log(oldNextVal / Cp));
+            double newNextVal = Math.round(12 * (Math.log(oldNextVal / Cp) / Math.log(2)));
             nChroma.putScalar(nextIndex, newNextVal);
         }
 
@@ -91,4 +113,5 @@ public class ChromaProcessor {
 
 
     }
+
 }

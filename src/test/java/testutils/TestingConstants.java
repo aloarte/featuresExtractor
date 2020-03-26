@@ -51,6 +51,8 @@ public class TestingConstants {
     };
 
     public final static double TEST_AF_CF_CE = 0.221;
+
+
     public final static double[] TEST_AF_MFCC = new double[]{
             0.511,
             0.512,
@@ -75,6 +77,23 @@ public class TestingConstants {
     public static final double TEST_AUDIO_SPECTRAL_ENTROPY_VALUE = 0.33811086416244507;
     public static final double TEST_AUDIO_SPECTRAL_FLUX_VALUE = 0.011840171180665493;
     public static final double TEST_AUDIO_SPECTRAL_ROLLOFF_VALUE = 0.03636363636363636;
+
+    public final static double[] TEST_AUDIO_CHROMA_VECTORS = new double[]{
+            6.962777115404606E-4,
+            3.2503227703273296E-4,
+            0.006819647271186113,
+            3.5835062590194866E-5,
+            4.236512759234756E-4,
+            0.008156128227710724,
+            4.2059771658387035E-5,
+            9.486882481724024E-4,
+            0.0018542396137490869,
+            0.0013018104946240783,
+            0.17083711922168732,
+            9.45154344663024E-4
+    };
+
+
     public static final double[] TEST_AUDIO_MFCCS = new double[]{
             -28.437641002860616,
             -1.7293699202989485,
