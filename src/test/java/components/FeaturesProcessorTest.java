@@ -17,12 +17,11 @@ import static testutils.TestingConstants.*;
 
 public class FeaturesProcessorTest {
 
+    DataParser dataParser;
     private INDArray currentSliceData;
     private INDArray fftCurrentSliceData;
     private INDArray fftPreviousSliceData;
     private FeaturesProcessor SUT;
-    DataParser dataParser;
-
     private double roundPrecision = 1000000d;
 
 
@@ -32,9 +31,9 @@ public class FeaturesProcessorTest {
 
         dataParser = new DataParser();
 
-        currentSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_INDARRAY_C_AUDIO_SLICE);
-        fftCurrentSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_INDARRAY_FFT_C_AUDIO_SLICE);
-        fftPreviousSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_INDARRAY_FFT_P_AUDIO_SLICE);
+        currentSliceData = INDArrayUtils.readAudioSliceFromFile(TEST_SAMPLE_INDARRAY_C_AUDIO_SLICE);
+        fftCurrentSliceData = INDArrayUtils.readAudioSliceFromFile(TEST_SAMPLE_INDARRAY_FFT_C_AUDIO_SLICE);
+        fftPreviousSliceData = INDArrayUtils.readAudioSliceFromFile(TEST_SAMPLE_INDARRAY_FFT_P_AUDIO_SLICE);
 
         System.out.println("currentSliceData[" + currentSliceData.shape()[0] + "][" + currentSliceData.shape()[1] + "]");
         System.out.println("fftCurrentSliceData[" + fftCurrentSliceData.shape()[0] + "][" + fftCurrentSliceData.shape()[1] + "]");

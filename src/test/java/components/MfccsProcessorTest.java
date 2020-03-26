@@ -19,7 +19,7 @@ public class MfccsProcessorTest {
 
     @Before
     public void startUp() {
-        fftCurrentSliceData = INDArrayUtils.readINDArrayFromFile(TEST_SAMPLE_INDARRAY_FFT_C_AUDIO_SLICE);
+        fftCurrentSliceData = INDArrayUtils.readAudioSliceFromFile(TEST_SAMPLE_INDARRAY_FFT_C_AUDIO_SLICE);
         SUT = MfccsProcessor.getInstance(TEST_FREQUENCY_RATE, TEST_NFFT);
     }
 
