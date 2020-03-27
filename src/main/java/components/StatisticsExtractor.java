@@ -2,7 +2,7 @@ package components;
 
 import model.ModuleParams;
 import model.enums.StatisticalMeasureType;
-import model.exceptions.AudioExtractionException;
+import model.exceptions.AudioAnalysisException;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.indexing.INDArrayIndex;
@@ -72,7 +72,7 @@ public class StatisticsExtractor {
      * @param extractedFeaturesMatrix Features extracted in a 32 x N matrix
      * @return
      */
-    INDArray obtainAudioFeaturesStatistics(INDArray extractedFeaturesMatrix, final ModuleParams moduleParams) throws AudioExtractionException {
+    INDArray obtainAudioFeaturesStatistics(INDArray extractedFeaturesMatrix, final ModuleParams moduleParams) throws AudioAnalysisException {
 
         validator.verifyExtractedMatrix(extractedFeaturesMatrix);
 

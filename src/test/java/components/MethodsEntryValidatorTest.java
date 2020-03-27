@@ -1,9 +1,11 @@
 package components;
 
-import model.enums.AudioExtractionExceptionType;
-import model.enums.AudioReadExtractionExceptionType;
-import model.exceptions.AudioExtractionException;
-import model.exceptions.AudioReadExtractionException;
+import model.enums.AudioAnalysisExceptionType;
+import model.enums.ExtractionExceptionType;
+import model.enums.ProcessingExceptionType;
+import model.exceptions.AudioAnalysisException;
+import model.exceptions.ExtractionException;
+import model.exceptions.ProcessingException;
 import org.junit.Before;
 import org.junit.Test;
 import org.nd4j.linalg.api.ndarray.INDArray;
@@ -43,7 +45,7 @@ public class MethodsEntryValidatorTest {
     public void verifySliceValues_goodSlices() {
         try {
             SUT.verifySliceValues(currentSliceData, fftCurrentSliceData, fftPreviousSliceData);
-        } catch (AudioExtractionException exception) {
+        } catch (AudioAnalysisException exception) {
             assertNull(exception);
         }
     }
@@ -53,34 +55,46 @@ public class MethodsEntryValidatorTest {
         try {
             SUT.verifySliceValues(currentSliceData, fftCurrentSliceData, currentSliceData);
             fail("This test case should raise an exception");
-        } catch (AudioExtractionException exception) {
+        } catch (ProcessingException exception) {
             assertNotNull(exception);
-            assertThat(exception.getExtractionExceptionType(), is(AudioExtractionExceptionType.fftShapesMismatch));
+            assertThat(exception.getAudioProcessingSubtype(), is(ProcessingExceptionType.fftShapesMismatch));
+            assertThat(exception.getExtractionExceptionType(), is(AudioAnalysisExceptionType.AudioProcessing));
+        } catch (Exception e) {
+            fail("This test case should raise an ProcessingException");
         }
 
         try {
             SUT.verifySliceValues(null, fftCurrentSliceData, fftPreviousSliceData);
             fail("This test case should raise an exception");
-        } catch (AudioExtractionException exception) {
+        } catch (ProcessingException exception) {
             assertNotNull(exception);
-            assertThat(exception.getExtractionExceptionType(), is(AudioExtractionExceptionType.BadCurrentAudioSlice));
+            assertThat(exception.getAudioProcessingSubtype(), is(ProcessingExceptionType.BadCurrentAudioSlice));
+            assertThat(exception.getExtractionExceptionType(), is(AudioAnalysisExceptionType.AudioProcessing));
+        } catch (Exception e) {
+            fail("This test case should raise an ProcessingException");
         }
 
         try {
             SUT.verifySliceValues(currentSliceData, null, currentSliceData);
             fail("This test case should raise an exception");
-        } catch (AudioExtractionException exception) {
+        } catch (ProcessingException exception) {
             assertNotNull(exception);
-            assertThat(exception.getExtractionExceptionType(), is(AudioExtractionExceptionType.BadCurrentFftAudioSlice));
+            assertThat(exception.getAudioProcessingSubtype(), is(ProcessingExceptionType.BadCurrentFftAudioSlice));
+            assertThat(exception.getExtractionExceptionType(), is(AudioAnalysisExceptionType.AudioProcessing));
+        } catch (Exception e) {
+            fail("This test case should raise an ProcessingException");
         }
 
         try {
             SUT.verifySliceValues(currentSliceData, fftCurrentSliceData, null);
             fail("This test case should raise an exception");
-        } catch (AudioExtractionException exception) {
+        } catch (ProcessingException exception) {
             assertNotNull(exception);
-            assertThat(exception.getExtractionExceptionType(), is(AudioExtractionExceptionType.BadPreviousAudioSlice));
+            assertThat(exception.getAudioProcessingSubtype(), is(ProcessingExceptionType.BadPreviousAudioSlice));
+            assertThat(exception.getExtractionExceptionType(), is(AudioAnalysisExceptionType.AudioProcessing));
 
+        } catch (Exception e) {
+            fail("This test case should raise an ProcessingException");
         }
     }
 
@@ -88,8 +102,10 @@ public class MethodsEntryValidatorTest {
     public void verifyExtractedMatrix_goodMatrix() {
         try {
             SUT.verifyExtractedMatrix(shortTermFeatures);
-        } catch (AudioExtractionException exception) {
+        } catch (ExtractionException exception) {
             fail("This test can't raise an exception");
+        } catch (Exception e) {
+            fail("This test case should raise an ExtractionException");
         }
     }
 
@@ -98,17 +114,24 @@ public class MethodsEntryValidatorTest {
         try {
             SUT.verifyExtractedMatrix(Nd4j.zeros(shortTermFeatures.rows() - 1, shortTermFeatures.columns()));
             fail("This test case should raise an exception");
-        } catch (AudioExtractionException exception) {
+        } catch (ExtractionException exception) {
             assertNotNull(exception);
-            assertThat(exception.getExtractionExceptionType(), is(AudioExtractionExceptionType.WrongNumberOfFeaturesExtracted));
+            assertThat(exception.getExtractionExceptionType(), is(AudioAnalysisExceptionType.AudioExtraction));
+            assertThat(exception.getExtractionExceptionSubtype(), is(ExtractionExceptionType.WrongNumberOfFeaturesExtracted));
+        } catch (Exception e) {
+            fail("This test case should raise an ExtractionException");
         }
 
         try {
             SUT.verifyExtractedMatrix(null);
             fail("This test case should raise an exception");
-        } catch (AudioExtractionException exception) {
+        } catch (ExtractionException exception) {
             assertNotNull(exception);
-            assertThat(exception.getExtractionExceptionType(), is(AudioExtractionExceptionType.BadExtractedFeaturesMatrix));
+            assertThat(exception.getExtractionExceptionType(), is(AudioAnalysisExceptionType.AudioExtraction));
+            assertThat(exception.getExtractionExceptionSubtype(), is(ExtractionExceptionType.BadExtractedFeaturesMatrix));
+
+        } catch (Exception e) {
+            fail("This test case should raise an ExtractionException");
         }
     }
 
@@ -116,7 +139,7 @@ public class MethodsEntryValidatorTest {
     public void validateAudioSource_goodAudioSource() {
         try {
             SUT.validateAudioSource(audioDataSource, TEST_FREQUENCY_RATE);
-        } catch (AudioReadExtractionException exception) {
+        } catch (ExtractionException exception) {
             fail("This test can't raise an exception");
         }
     }
@@ -126,30 +149,35 @@ public class MethodsEntryValidatorTest {
         try {
             SUT.validateAudioSource(null, TEST_FREQUENCY_RATE);
             fail("This test case should raise an exception");
-        } catch (AudioReadExtractionException exception) {
+        } catch (ExtractionException exception) {
             assertNotNull(exception);
-            assertThat(exception.getReadExtractionExceptionType(), is(AudioReadExtractionExceptionType.NullRawAudioSource));
+            assertThat(exception.getExtractionExceptionSubtype(), is(ExtractionExceptionType.NullRawAudioSource));
+        } catch (Exception e) {
+            fail("This test case should raise an ExtractionException");
         }
 
         try {
             SUT.validateAudioSource(new double[2], TEST_FREQUENCY_RATE);
             fail("This test case should raise an exception");
-        } catch (AudioReadExtractionException exception) {
+        } catch (ExtractionException exception) {
             assertNotNull(exception);
-            assertThat(exception.getReadExtractionExceptionType(), is(AudioReadExtractionExceptionType.BadAudioSourceRead));
+            assertThat(exception.getExtractionExceptionSubtype(), is(ExtractionExceptionType.BadAudioSourceRead));
+        } catch (Exception e) {
+            fail("This test case should raise an ExtractionException");
         }
 
         double[] lowValuesDataSource = new double[TEST_FREQUENCY_RATE - 1];
         for (int i = 0; i < lowValuesDataSource.length; i++) {
             lowValuesDataSource[i] = Math.random() * 100;
         }
-
         try {
             SUT.validateAudioSource(lowValuesDataSource, TEST_FREQUENCY_RATE);
             fail("This test case should raise an exception");
-        } catch (AudioReadExtractionException exception) {
+        } catch (ExtractionException exception) {
             assertNotNull(exception);
-            assertThat(exception.getReadExtractionExceptionType(), is(AudioReadExtractionExceptionType.TooLowSamples));
+            assertThat(exception.getExtractionExceptionSubtype(), is(ExtractionExceptionType.TooLowSamples));
+        } catch (Exception e) {
+            fail("This test case should raise an ExtractionException");
         }
     }
 

@@ -1,6 +1,6 @@
 package components;
 
-import model.exceptions.AudioExtractionException;
+import model.exceptions.ProcessingException;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.indexing.INDArrayIndex;
@@ -18,7 +18,7 @@ public class FeaturesProcessor {
         validator = new MethodsEntryValidator();
     }
 
-    INDArray extractFeaturesFromSlice(INDArray currentAudioSlice, INDArray fftAudioSlice, INDArray fftPreviousAudioSlice, int frequencyRate, int nFFT) throws AudioExtractionException {
+    INDArray extractFeaturesFromSlice(INDArray currentAudioSlice, INDArray fftAudioSlice, INDArray fftPreviousAudioSlice, int frequencyRate, int nFFT) throws ProcessingException {
 
         //verify the inputs
         validator.verifySliceValues(currentAudioSlice, fftAudioSlice, fftPreviousAudioSlice);

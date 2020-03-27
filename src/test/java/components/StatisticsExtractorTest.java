@@ -25,9 +25,11 @@ public class StatisticsExtractorTest {
         //SUT.calculateStandardDeviation();
     }
 
-    @Ignore
-    @Test
-    public void obtainAudioFeaturesStatistics() {
-        //SUT.obtainAudioFeaturesStatistics();
-    }
+//    @Ignore
+//    @Test
+//    public void obtainAudioFeaturesStatistics() {
+//        SUT.obtainAudioFeaturesStatistics();
+//    }
+
+
 }

@@ -2,7 +2,7 @@ package components;
 
 import facade.DataParser;
 import model.AudioFeatures;
-import model.exceptions.AudioExtractionException;
+import model.exceptions.AudioAnalysisException;
 import org.junit.Before;
 import org.junit.Test;
 import org.nd4j.linalg.api.ndarray.INDArray;
@@ -43,7 +43,7 @@ public class FeaturesProcessorTest {
 
 
     @Test
-    public void extractFeaturesFromSlice() throws AudioExtractionException {
+    public void extractFeaturesFromSlice() throws AudioAnalysisException {
 
         INDArray extractedFeatures = SUT.extractFeaturesFromSlice(currentSliceData, fftCurrentSliceData, fftPreviousSliceData, TEST_FREQUENCY_RATE, TEST_NFFT);
         assertNotNull(extractedFeatures);

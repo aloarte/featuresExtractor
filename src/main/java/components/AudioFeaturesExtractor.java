@@ -2,7 +2,7 @@ package components;
 
 import libs.CustomOperations;
 import model.ModuleParams;
-import model.exceptions.AudioExtractionException;
+import model.exceptions.AudioAnalysisException;
 import org.jtransforms.fft.DoubleFFT_1D;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
@@ -38,7 +38,7 @@ public class AudioFeaturesExtractor {
      * @return
      */
     INDArray extractAudioFeatures(double[] samples, int frequency_rate,
-                                  int sliceWindow, int step) throws AudioExtractionException {
+                                  int sliceWindow, int step) throws AudioAnalysisException {
 
 
         INDArray normalizedSamples = calculateNormalizedSamples(samples);
@@ -136,7 +136,7 @@ public class AudioFeaturesExtractor {
     }
 
 
-    public INDArray globalFeatureExtraction(double[] samples, final ModuleParams moduleParams) throws AudioExtractionException {
+    public INDArray globalFeatureExtraction(double[] samples, final ModuleParams moduleParams) throws AudioAnalysisException {
 
         long timeBefore = System.currentTimeMillis();
         long timeAfter;

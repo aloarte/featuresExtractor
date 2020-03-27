@@ -4,7 +4,7 @@ import components.AudioFeaturesExtractor;
 import components.MethodsEntryValidator;
 import model.AudioFeatures;
 import model.ModuleParams;
-import model.exceptions.AudioExtractionException;
+import model.exceptions.AudioAnalysisException;
 import org.nd4j.linalg.api.ndarray.INDArray;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class AudioFeaturesManager {
      * @param rawAudioSource raw audio source in byte[] format
      * @return
      */
-    public List<AudioFeatures> processAudioSource(final double[] rawAudioSource, final ModuleParams moduleParams) throws AudioExtractionException {
+    public List<AudioFeatures> processAudioSource(final double[] rawAudioSource, final ModuleParams moduleParams) throws AudioAnalysisException {
 
         try {
             validator.validateConfiguration(moduleParams);
@@ -43,9 +43,9 @@ public class AudioFeaturesManager {
 
             //Parse the audio features from the INDArray to the concrete AudioFeature object
             return dataParser.parseAudioFeatures(globalFeatures, moduleParams);
-        } catch (AudioExtractionException audioExtractionException) {
-            System.err.println(audioExtractionException.getMessage());
-            throw audioExtractionException;
+        } catch (AudioAnalysisException audioAnalysisException) {
+            System.err.println(audioAnalysisException.getMessage());
+            throw audioAnalysisException;
         }
 
     }
