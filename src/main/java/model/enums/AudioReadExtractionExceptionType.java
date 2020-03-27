@@ -2,5 +2,5 @@ package model.enums;
 
 public enum AudioReadExtractionExceptionType {
     NullRawAudioSource,
-    BadAudioSourceRead,
+    BadAudioSourceRead, TooLowSamples,
 }
