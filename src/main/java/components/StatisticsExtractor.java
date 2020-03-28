@@ -8,6 +8,11 @@ import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.indexing.INDArrayIndex;
 import org.nd4j.linalg.indexing.NDArrayIndex;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static constants.FeaturesNumbersConstants.TOTAL_FEATURES;
+
 public class StatisticsExtractor {
 
 
@@ -20,97 +25,98 @@ public class StatisticsExtractor {
     /**
      * Read the info from the extractedFeaturedMatrix, calculate the statistics of each feature and put it on the mtFeatures output INDArray
      *
-     * @param extractedFeaturesMatrix
-     * @param audioFeaturesStatistics
-     * @param featureIndex
-     * @param featureDataIndex
-     * @param N1
-     * @param N2
+     * @param midTermSlice
      * @param moduleParams
      * @return
      */
-    private INDArray calculateStatisticalInfo(INDArray extractedFeaturesMatrix, INDArray audioFeaturesStatistics, int featureIndex, int featureDataIndex, int N1, int N2, final ModuleParams moduleParams) {
-
-        //System.out.println("calculateStatisticalInfo: extractedFeaturesMatrix ["+ extractedFeaturesMatrix.shape()[0] +"]["+ extractedFeaturesMatrix.shape()[1] +"] audioFeaturesStatistics [" + audioFeaturesStatistics.shape()[0] +"]["+ audioFeaturesStatistics.shape()[1] +"]");
-        INDArray midTermSlice = extractedFeaturesMatrix.get(
-                NDArrayIndex.point(featureIndex),
-                NDArrayIndex.interval(N1, N2));
-
+    List<Double> calculateStatisticalInfo(INDArray midTermSlice, final ModuleParams moduleParams) {
+        List<Double> statisticalValuesPerSlice = new ArrayList<>();
         for (StatisticalMeasureType measureType : moduleParams.getStatisticalMeasures()) {
             switch (measureType) {
                 case Mean:
-                    calculateMean(midTermSlice, audioFeaturesStatistics, featureIndex, featureDataIndex);
+                    statisticalValuesPerSlice.add(Nd4j.mean(midTermSlice).sumNumber().doubleValue());
                     break;
                 case Variance:
                     break;
                 case StandardDeviation:
-                    calculateStandardDeviation(midTermSlice, audioFeaturesStatistics, featureIndex + extractedFeaturesMatrix.rows(), featureDataIndex);
+                    statisticalValuesPerSlice.add(Nd4j.std(midTermSlice).sumNumber().doubleValue());
                     break;
             }
         }
-
-        return audioFeaturesStatistics;
-    }
-
-    void calculateMean(INDArray sourceData, INDArray outputData, int beginIndex, int endIndex) {
-        outputData.put(new INDArrayIndex[]{
-                NDArrayIndex.point(beginIndex),
-                NDArrayIndex.point(endIndex)
-        }, Nd4j.mean(sourceData));
-    }
-
-    void calculateStandardDeviation(INDArray sourceData, INDArray outputData, int beginIndex, int endIndex) {
-        outputData.put(new INDArrayIndex[]{
-                NDArrayIndex.point(beginIndex),
-                NDArrayIndex.point(endIndex)
-        }, Nd4j.std(sourceData));
+        return statisticalValuesPerSlice;
     }
 
     /**
      * Normalize and appy statistic operation over the extractedFeaturesMatrix to return only the statistics numbers in each feature.
      *
-     * @param extractedFeaturesMatrix Features extracted in a 32 x N matrix
+     * @param extractedShortTermFeatures Features extracted in a 32 x N matrix
      * @return
      */
-    INDArray obtainAudioFeaturesStatistics(INDArray extractedFeaturesMatrix, final ModuleParams moduleParams) throws AudioAnalysisException {
+    INDArray obtainMidTermFeatures(INDArray extractedShortTermFeatures, final ModuleParams moduleParams) throws AudioAnalysisException {
 
-        validator.verifyExtractedMatrix(extractedFeaturesMatrix);
+        validator.verifyExtractedMatrix(extractedShortTermFeatures);
 
         //Mid-Term feature extraction
         int mtWinRation = Math.round((float) moduleParams.getMidTermWindowSize() / moduleParams.getShortTermStepSize());
         int mtStepRatio = Math.round((float) moduleParams.getMidTermStepSize() / moduleParams.getShortTermStepSize());
 
-
-        int mtWindows = (int) Math.ceil((float) extractedFeaturesMatrix.columns() / mtStepRatio);
+        //Get the number of MtWindows that will be analyzed
+        int mtWindowsNumber = (int) Math.ceil((float) extractedShortTermFeatures.columns() / mtStepRatio);
 
         //Create the base response INDArray initialized with zeros. Is size is [NumberOfFeatures * NumberOfStatisticalMeasures]
-        INDArray audioFeaturesStatistics = Nd4j.zeros(extractedFeaturesMatrix.rows() * moduleParams.getStatisticalMeasuresNumber(), mtWindows);
+        INDArray audioFeaturesStatistics = Nd4j.zeros(extractedShortTermFeatures.rows() * moduleParams.getStatisticalMeasuresNumber(), mtWindowsNumber);
 
-        //68 veces
-        for (int featureIndex = 0; featureIndex < extractedFeaturesMatrix.rows(); featureIndex++) {
+        //For each feature (34 times) extractedShortTermFeatures rows
+        for (int featureIndex = 0; featureIndex < extractedShortTermFeatures.rows(); featureIndex++) {
             int cur_p = 0;
-            int featureDataIndex = 0;
+            int featureValueDataIndex = 0;
 
-            //
-            while (cur_p < extractedFeaturesMatrix.columns()) {
+            //For each value of each feature extractedShortTermFeatures cols
+            while (cur_p < extractedShortTermFeatures.columns()) {
                 int N1 = cur_p;
                 int N2 = cur_p + mtWinRation;
 
-                if (N2 > extractedFeaturesMatrix.columns()) {
-                    N2 = extractedFeaturesMatrix.columns();
+                //For the last window
+                if (N2 > extractedShortTermFeatures.columns()) {
+                    N2 = extractedShortTermFeatures.columns();
                 }
 
+                //Extract the mid term slice for the feature [featureIndex]
+                INDArray midTermSlice = extractedShortTermFeatures.get(
+                        NDArrayIndex.point(featureIndex),
+                        NDArrayIndex.interval(N1, N2));
 
                 //Calculate all the statistical info based on the module params from the extractedFeaturesMatrix. Result returned on mtFeatures.
-                calculateStatisticalInfo(extractedFeaturesMatrix, audioFeaturesStatistics, featureIndex, featureDataIndex, N1, N2, moduleParams);
+                List<Double> statisticValuesOfSlice = calculateStatisticalInfo(midTermSlice, moduleParams);
+                setInfoIntoMidTerm(audioFeaturesStatistics, statisticValuesOfSlice, featureIndex, featureValueDataIndex);
 
                 cur_p += mtStepRatio;
-                featureDataIndex++;
+                featureValueDataIndex++;
             }
 
 
         }
 
         return audioFeaturesStatistics.mean(1);
+    }
+
+    /**
+     * Insert the calculated statistic from the midTermSlice into the audioFeaturesStatistics
+     *
+     * @param audioFeaturesStatistics INDArray where the output statistic values are saved
+     * @param statisticValuesOfSlice  statistics values extracted from the midTermSlice
+     * @param beginIndex
+     * @param endIndex
+     */
+    private void setInfoIntoMidTerm(INDArray audioFeaturesStatistics, List<Double> statisticValuesOfSlice, int beginIndex, int endIndex) {
+        int i = 0;
+        for (double statValue : statisticValuesOfSlice) {
+            audioFeaturesStatistics.put(new INDArrayIndex[]{
+                    NDArrayIndex.point(beginIndex + TOTAL_FEATURES * i),
+                    NDArrayIndex.point(endIndex)
+            }, statValue);
+            i++;
+        }
+
     }
 }

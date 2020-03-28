@@ -151,7 +151,7 @@ public class AudioFeaturesExtractor {
         }
 
         //Apply statistic operations to each N sample for each of the 32 features. Extract a matrix of [32 features] x [N statistic operations]
-        INDArray mtFeatures = statisticsExtractor.obtainAudioFeaturesStatistics(matrixExtractedFeatures, moduleParams);
+        INDArray mtFeatures = statisticsExtractor.obtainMidTermFeatures(matrixExtractedFeatures, moduleParams);
 
 
         if (moduleParams.isLogProcessesDurationEnabled()) {

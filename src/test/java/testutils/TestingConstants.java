@@ -111,4 +111,7 @@ public class TestingConstants {
     };
 
 
+    public static final double TEST_SLICE_STATS_MEAN = 0.10977169126272202;
+    public static final double TEST_SLICE_STATS_STD = 0.08966296911239624;
+
 }

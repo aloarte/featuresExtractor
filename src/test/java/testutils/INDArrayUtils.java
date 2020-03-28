@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import static constants.FeaturesNumbersConstants.TOTAL_FEATURES;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
@@ -186,5 +187,78 @@ public class INDArrayUtils {
         System.out.println("Round precision " + roundPrecision[4] + " : " + cntPrecision[4]);
 
         assertThat(cntPrecision[0] + cntPrecision[1] + cntPrecision[2] + cntPrecision[3] + cntPrecision[4], is(extractShortTermFeatures.columns() * extractShortTermFeatures.rows()));
+    }
+
+
+    /**
+     * Iterate through extractMidTermFeatures & controlMidTermFeatures verifying that their values are the same,
+     * rounding its values on several situations
+     *
+     * @param extractMidTermFeatures Extracted values
+     * @param controlMidTermFeatures Control values
+     * @param roundPrecision         Array with the precisions used on the verifications
+     */
+    public static void assertFeaturesDataMidTerm(INDArray extractMidTermFeatures, INDArray controlMidTermFeatures, double[] roundPrecision) {
+        assertNotNull(extractMidTermFeatures);
+        assertNotNull(controlMidTermFeatures);
+
+        int[] cntPrecision = new int[]{0, 0, 0, 0, 0};
+        NdIndexIterator iterator = new NdIndexIterator(extractMidTermFeatures.rows(), extractMidTermFeatures.columns());
+        while (iterator.hasNext()) {
+            int[] nextIndex = iterator.next();
+            if (TestUtils.getRoundDouble(controlMidTermFeatures.getDouble(nextIndex[0] > 33 ? (nextIndex[0] + TOTAL_FEATURES) : nextIndex[0]), roundPrecision[0]) != TestUtils.getRoundDouble(extractMidTermFeatures.getDouble(nextIndex), roundPrecision[0])) {
+                if (TestUtils.getRoundDouble(controlMidTermFeatures.getDouble(nextIndex[0] > 33 ? (nextIndex[0] + TOTAL_FEATURES) : nextIndex[0]), roundPrecision[1]) != TestUtils.getRoundDouble(extractMidTermFeatures.getDouble(nextIndex), roundPrecision[1])) {
+                    if (TestUtils.getRoundDouble(controlMidTermFeatures.getDouble(nextIndex[0] > 33 ? (nextIndex[0] + TOTAL_FEATURES) : nextIndex[0]), roundPrecision[2]) != TestUtils.getRoundDouble(extractMidTermFeatures.getDouble(nextIndex), roundPrecision[2])) {
+                        if (TestUtils.getRoundDouble(controlMidTermFeatures.getDouble(nextIndex[0] > 33 ? (nextIndex[0] + TOTAL_FEATURES) : nextIndex[0]), roundPrecision[3]) != TestUtils.getRoundDouble(extractMidTermFeatures.getDouble(nextIndex), roundPrecision[3])) {
+                            cntPrecision[4]++;
+                            assertThat(TestUtils.getRoundDouble(controlMidTermFeatures.getDouble(nextIndex[0] > 33 ? (nextIndex[0] + TOTAL_FEATURES) : nextIndex[0]), roundPrecision[4]), is(TestUtils.getRoundDouble(extractMidTermFeatures.getDouble(nextIndex), roundPrecision[4])));
+                        } else {
+                            cntPrecision[3]++;
+                            assertThat(TestUtils.getRoundDouble(controlMidTermFeatures.getDouble(nextIndex[0] > 33 ? (nextIndex[0] + TOTAL_FEATURES) : nextIndex[0]), roundPrecision[3]), is(TestUtils.getRoundDouble(extractMidTermFeatures.getDouble(nextIndex), roundPrecision[3])));
+                        }
+                    } else {
+                        cntPrecision[2]++;
+                        assertThat(TestUtils.getRoundDouble(controlMidTermFeatures.getDouble(nextIndex[0] > 33 ? (nextIndex[0] + TOTAL_FEATURES) : nextIndex[0]), roundPrecision[2]), is(TestUtils.getRoundDouble(extractMidTermFeatures.getDouble(nextIndex), roundPrecision[2])));
+                    }
+                } else {
+                    cntPrecision[1]++;
+                    assertThat(TestUtils.getRoundDouble(controlMidTermFeatures.getDouble(nextIndex[0] > 33 ? (nextIndex[0] + TOTAL_FEATURES) : nextIndex[0]), roundPrecision[1]), is(TestUtils.getRoundDouble(extractMidTermFeatures.getDouble(nextIndex), roundPrecision[1])));
+                }
+            } else {
+                cntPrecision[0]++;
+                assertThat(TestUtils.getRoundDouble(controlMidTermFeatures.getDouble(nextIndex[0] > 33 ? (nextIndex[0] + TOTAL_FEATURES) : nextIndex[0]), roundPrecision[0]), is(TestUtils.getRoundDouble(extractMidTermFeatures.getDouble(nextIndex), roundPrecision[0])));
+            }
+        }
+
+        System.out.println("Round precision " + roundPrecision[0] + " : " + cntPrecision[0]);
+        System.out.println("Round precision " + roundPrecision[1] + " : " + cntPrecision[1]);
+        System.out.println("Round precision " + roundPrecision[2] + " : " + cntPrecision[2]);
+        System.out.println("Round precision " + roundPrecision[3] + " : " + cntPrecision[3]);
+        System.out.println("Round precision " + roundPrecision[4] + " : " + cntPrecision[4]);
+
+        assertThat(cntPrecision[0] + cntPrecision[1] + cntPrecision[2] + cntPrecision[3] + cntPrecision[4], is(extractMidTermFeatures.columns() * extractMidTermFeatures.rows()));
+    }
+
+    public static INDArray readMidTermFeaturesFromFile(String fileName) {
+        Scanner scan;
+        File file = new File(fileName);
+        try {
+            scan = new Scanner(file);
+            String readLane = scan.next();
+
+            String[] fileValue = readLane.split(",");
+            double[] readValue = new double[fileValue.length];
+
+            for (int i = 0; i < readValue.length; i++) {
+                readValue[i] = Double.parseDouble(fileValue[i]);
+            }
+
+
+            return Nd4j.create(readValue);
+
+        } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+            return null;
+        }
     }
 }

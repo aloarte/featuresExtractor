@@ -89,5 +89,15 @@ public class MethodsEntryValidator {
      */
     public void validateConfiguration(ModuleParams moduleParams) throws ConfigurationException {
         //TODO: Implement validations over the configuration
+
+
+        // Frequency rate > 11025    warning, que fuerze su uso
+        // Frequency rate > 0 obligatorio
+        // Frequency rate < 44100   -- warning, que fuerze su uso
+
+
+        // shortermwindosize < midtermwindowsize
+        // shortstep <= shortwindowsize   -- > en este caso se pierde informaciñón de la que no se extrae info
+        // midstep <= midwindowsize    -->
     }
 }
