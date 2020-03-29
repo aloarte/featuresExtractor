@@ -43,7 +43,7 @@ public class StatisticsExtractorTest {
     @Test
     public void obtainAudioFeaturesStatistics() throws AudioAnalysisException {
         INDArray extractedMidTermFeatures = SUT.obtainMidTermFeatures(controlShortTermFeatures, moduleParams);
-        INDArrayUtils.assertFeaturesDataMidTerm(extractedMidTermFeatures, controlMidTermFeatures, roundPrecision);
+        INDArrayUtils.assertFeatures(extractedMidTermFeatures, controlMidTermFeatures, roundPrecision);
     }
 
     @Test

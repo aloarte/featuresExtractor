@@ -198,7 +198,7 @@ public class INDArrayUtils {
      * @param controlMidTermFeatures Control values
      * @param roundPrecision         Array with the precisions used on the verifications
      */
-    public static void assertFeaturesDataMidTerm(INDArray extractMidTermFeatures, INDArray controlMidTermFeatures, double[] roundPrecision) {
+    public static void assertFeatures(INDArray extractMidTermFeatures, INDArray controlMidTermFeatures, double[] roundPrecision) {
         assertNotNull(extractMidTermFeatures);
         assertNotNull(controlMidTermFeatures);
 

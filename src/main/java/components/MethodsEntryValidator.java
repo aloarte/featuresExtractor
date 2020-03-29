@@ -1,6 +1,7 @@
 package components;
 
 import model.ModuleParams;
+import model.enums.ConfigurationExceptionType;
 import model.enums.ExtractionExceptionType;
 import model.enums.ProcessingExceptionType;
 import model.exceptions.ConfigurationException;
@@ -9,6 +10,8 @@ import model.exceptions.ProcessingException;
 import org.nd4j.linalg.api.ndarray.INDArray;
 
 import static constants.FeaturesNumbersConstants.TOTAL_FEATURES;
+import static constants.ModuleConstants.HIGH_FREQUENCY_RATE;
+import static constants.ModuleConstants.RECOMMENDED_FREQUENCY_RATE;
 
 public class MethodsEntryValidator {
 
@@ -88,6 +91,13 @@ public class MethodsEntryValidator {
      * @param moduleParams Configuration made by the user
      */
     public void validateConfiguration(ModuleParams moduleParams) throws ConfigurationException {
+
+        if (moduleParams != null) {
+            validateConfigurationFrequency(moduleParams);
+            validateConfigurationStMtWindowStepSize(moduleParams);
+        } else
+            throw new ConfigurationException(ConfigurationExceptionType.NullConfiguration, "The module configuration is null.");
+
         //TODO: Implement validations over the configuration
 
 
@@ -99,5 +109,50 @@ public class MethodsEntryValidator {
         // shortermwindosize < midtermwindowsize
         // shortstep <= shortwindowsize   -- > en este caso se pierde informaciñón de la que no se extrae info
         // midstep <= midwindowsize    -->
+    }
+
+    private void validateConfigurationStMtWindowStepSize(ModuleParams moduleParams) throws ConfigurationException {
+        if (moduleParams.getShortTermWindowSize() > 0 &&
+                moduleParams.getShortTermStepSize() > 0 &&
+                moduleParams.getMidTermWindowSize() > 0 &&
+                moduleParams.getMidTermStepSize() > 0) {
+            if (moduleParams.getShortTermWindowSize() <= moduleParams.getMidTermWindowSize()) {
+                //If the step is bigger than the window size, but the force flag isn't activate,  throw an error
+                if ((moduleParams.getShortTermStepSize() > moduleParams.getShortTermWindowSize()) && !moduleParams.isForceHighStepSize()) {
+                    throw new ConfigurationException(ConfigurationExceptionType.WarningHighStepSize, "The step size is larger than the window size. This will cause regions with info ignored. You can force this configuration by using forceHighStepSize()" +
+                            " ShortStepSize: " + moduleParams.getShortTermStepSize() +
+                            ", ShortWindowSize: " + moduleParams.getShortTermWindowSize());
+                }
+
+                if ((moduleParams.getMidTermStepSize() > moduleParams.getMidTermWindowSize()) && !moduleParams.isForceHighStepSize()) {
+                    throw new ConfigurationException(ConfigurationExceptionType.WarningHighStepSize, "The step size is larger than the window size. This will cause regions with info ignored. You can force this configuration by using forceHighStepSize()" +
+                            " MidStepSize: " + moduleParams.getMidTermStepSize() +
+                            ", MidWindowSize: " + moduleParams.getMidTermWindowSize());
+                }
+
+            } else
+                throw new ConfigurationException(ConfigurationExceptionType.IncompatibleWindowSizes, "The value of the short window size must be less or equals than the mid window size." +
+                        " ShortWindowSize: " + moduleParams.getShortTermWindowSize() +
+                        ", MidWindowSize: " + moduleParams.getMidTermWindowSize());
+        } else throw new ConfigurationException(ConfigurationExceptionType.InvalidParameter,
+                "The input parameters had invalid values. Values must be be > 0 " +
+                        " ShortWindowSize: " + moduleParams.getShortTermWindowSize() +
+                        ", ShortStepSize: " + moduleParams.getShortTermStepSize() +
+                        ", MidWindowSize: " + moduleParams.getMidTermWindowSize() +
+                        ", MidStepSize: " + moduleParams.getMidTermStepSize());
+    }
+
+    private void validateConfigurationFrequency(ModuleParams moduleParams) throws ConfigurationException {
+        if (moduleParams.getFrequencyRate() > 0) {
+            if (moduleParams.getFrequencyRate() < RECOMMENDED_FREQUENCY_RATE && !moduleParams.isForceUseLowFrequencyRateEnabled()) {
+                throw new ConfigurationException(ConfigurationExceptionType.WarningLowFrequencyRate, "The frequency rate is too low. We recommend you to use 22050 as your frequency rate. Otherwise you can force this configuration by using forceLowFrequencyRate()");
+            }
+
+            if ((moduleParams.getFrequencyRate() > RECOMMENDED_FREQUENCY_RATE && moduleParams.getFrequencyRate() > HIGH_FREQUENCY_RATE) && !moduleParams.isForceUseHighFrequencyRateEnabled()) {
+                throw new ConfigurationException(ConfigurationExceptionType.WarningHighFrequencyRate, "The frequency rate is too high and may cause slow audio processing. We recommend you to use 22050 as your frequency rate. Otherwise you can force this configuration by using forceHighFrequencyRate()");
+            }
+
+        } else throw new ConfigurationException(ConfigurationExceptionType.InvalidParameter,
+                "The input parameters had invalid values. Values must be be > 0  FrequencyRate: " + moduleParams.getFrequencyRate());
     }
 }

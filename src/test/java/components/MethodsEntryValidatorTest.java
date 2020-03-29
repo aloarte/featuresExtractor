@@ -1,9 +1,12 @@
 package components;
 
+import model.ModuleParams;
 import model.enums.AudioAnalysisExceptionType;
+import model.enums.ConfigurationExceptionType;
 import model.enums.ExtractionExceptionType;
 import model.enums.ProcessingExceptionType;
 import model.exceptions.AudioAnalysisException;
+import model.exceptions.ConfigurationException;
 import model.exceptions.ExtractionException;
 import model.exceptions.ProcessingException;
 import org.junit.Before;
@@ -58,7 +61,7 @@ public class MethodsEntryValidatorTest {
         } catch (ProcessingException exception) {
             assertNotNull(exception);
             assertThat(exception.getAudioProcessingSubtype(), is(ProcessingExceptionType.fftShapesMismatch));
-            assertThat(exception.getExtractionExceptionType(), is(AudioAnalysisExceptionType.AudioProcessing));
+            assertThat(exception.getAudioAnalysisExceptionType(), is(AudioAnalysisExceptionType.AudioProcessing));
         } catch (Exception e) {
             fail("This test case should raise an ProcessingException");
         }
@@ -69,7 +72,7 @@ public class MethodsEntryValidatorTest {
         } catch (ProcessingException exception) {
             assertNotNull(exception);
             assertThat(exception.getAudioProcessingSubtype(), is(ProcessingExceptionType.BadCurrentAudioSlice));
-            assertThat(exception.getExtractionExceptionType(), is(AudioAnalysisExceptionType.AudioProcessing));
+            assertThat(exception.getAudioAnalysisExceptionType(), is(AudioAnalysisExceptionType.AudioProcessing));
         } catch (Exception e) {
             fail("This test case should raise an ProcessingException");
         }
@@ -80,7 +83,7 @@ public class MethodsEntryValidatorTest {
         } catch (ProcessingException exception) {
             assertNotNull(exception);
             assertThat(exception.getAudioProcessingSubtype(), is(ProcessingExceptionType.BadCurrentFftAudioSlice));
-            assertThat(exception.getExtractionExceptionType(), is(AudioAnalysisExceptionType.AudioProcessing));
+            assertThat(exception.getAudioAnalysisExceptionType(), is(AudioAnalysisExceptionType.AudioProcessing));
         } catch (Exception e) {
             fail("This test case should raise an ProcessingException");
         }
@@ -91,7 +94,7 @@ public class MethodsEntryValidatorTest {
         } catch (ProcessingException exception) {
             assertNotNull(exception);
             assertThat(exception.getAudioProcessingSubtype(), is(ProcessingExceptionType.BadPreviousAudioSlice));
-            assertThat(exception.getExtractionExceptionType(), is(AudioAnalysisExceptionType.AudioProcessing));
+            assertThat(exception.getAudioAnalysisExceptionType(), is(AudioAnalysisExceptionType.AudioProcessing));
 
         } catch (Exception e) {
             fail("This test case should raise an ProcessingException");
@@ -116,7 +119,7 @@ public class MethodsEntryValidatorTest {
             fail("This test case should raise an exception");
         } catch (ExtractionException exception) {
             assertNotNull(exception);
-            assertThat(exception.getExtractionExceptionType(), is(AudioAnalysisExceptionType.AudioExtraction));
+            assertThat(exception.getAudioAnalysisExceptionType(), is(AudioAnalysisExceptionType.AudioExtraction));
             assertThat(exception.getExtractionExceptionSubtype(), is(ExtractionExceptionType.WrongNumberOfFeaturesExtracted));
         } catch (Exception e) {
             fail("This test case should raise an ExtractionException");
@@ -127,7 +130,7 @@ public class MethodsEntryValidatorTest {
             fail("This test case should raise an exception");
         } catch (ExtractionException exception) {
             assertNotNull(exception);
-            assertThat(exception.getExtractionExceptionType(), is(AudioAnalysisExceptionType.AudioExtraction));
+            assertThat(exception.getAudioAnalysisExceptionType(), is(AudioAnalysisExceptionType.AudioExtraction));
             assertThat(exception.getExtractionExceptionSubtype(), is(ExtractionExceptionType.BadExtractedFeaturesMatrix));
 
         } catch (Exception e) {
@@ -181,5 +184,159 @@ public class MethodsEntryValidatorTest {
         }
     }
 
+    @Test
+    public void validateConfiguration_goodConfiguration() {
+        try {
+            ModuleParams moduleParams = new ModuleParams(TEST_FREQUENCY_RATE, 0.01, 0.01, 1, 1);
+            SUT.validateConfiguration(moduleParams);
+        } catch (ConfigurationException e) {
+            fail("This test can't raise an exception");
+        }
+
+        try {
+            ModuleParams moduleParams = new ModuleParams(TEST_FREQUENCY_RATE, 1, 1, 1, 1);
+            SUT.validateConfiguration(moduleParams);
+        } catch (ConfigurationException e) {
+            fail("This test can't raise an exception");
+        }
+
+        try {
+            ModuleParams moduleParams = new ModuleParams(TEST_LOW_FREQUENCY_RATE, 1, 1, 1, 1);
+            moduleParams.forceLowFrequencyRate();
+            SUT.validateConfiguration(moduleParams);
+        } catch (ConfigurationException e) {
+            fail("This test can't raise an exception");
+        }
+
+        try {
+            ModuleParams moduleParams = new ModuleParams(TEST_HIGH_FREQUENCY_RATE, 1, 1, 1, 1);
+            moduleParams.forceHighFrequencyRate();
+            SUT.validateConfiguration(moduleParams);
+        } catch (ConfigurationException e) {
+            fail("This test can't raise an exception");
+        }
+
+        try {
+            ModuleParams moduleParams = new ModuleParams(TEST_FREQUENCY_RATE, 0.01, 0.1, 1, 1);
+            moduleParams.forceHighStepSize();
+            SUT.validateConfiguration(moduleParams);
+        } catch (ConfigurationException e) {
+            fail("This test can't raise an exception");
+        }
+
+        try {
+            ModuleParams moduleParams = new ModuleParams(TEST_FREQUENCY_RATE, 0.001, 0.001, 0.01, 0.1);
+            moduleParams.forceHighStepSize();
+            SUT.validateConfiguration(moduleParams);
+        } catch (ConfigurationException e) {
+            fail("This test can't raise an exception");
+        }
+    }
+
+
+    @Test
+    public void validateConfiguration_badConfig_warningExceptions() {
+
+        try {
+            ModuleParams moduleParams = new ModuleParams(TEST_FREQUENCY_RATE, 0.01, 0.1, 1, 1);
+            SUT.validateConfiguration(moduleParams);
+            fail("This test should raise an exception");
+        } catch (ConfigurationException e) {
+            assertThat(e.getAudioAnalysisExceptionType(), is(AudioAnalysisExceptionType.ExtractionConfiguration));
+            assertThat(e.getConfigurationExceptionSubtype(), is(ConfigurationExceptionType.WarningHighStepSize));
+        }
+
+        try {
+            ModuleParams moduleParams = new ModuleParams(TEST_FREQUENCY_RATE, 0.001, 0.001, 0.01, 0.1);
+            SUT.validateConfiguration(moduleParams);
+            fail("This test should raise an exception");
+        } catch (ConfigurationException e) {
+            assertThat(e.getAudioAnalysisExceptionType(), is(AudioAnalysisExceptionType.ExtractionConfiguration));
+            assertThat(e.getConfigurationExceptionSubtype(), is(ConfigurationExceptionType.WarningHighStepSize));
+        }
+
+        try {
+            ModuleParams moduleParams = new ModuleParams(TEST_LOW_FREQUENCY_RATE, 1, 1, 1, 1);
+            SUT.validateConfiguration(moduleParams);
+            fail("This test should raise an exception");
+        } catch (ConfigurationException e) {
+            assertThat(e.getAudioAnalysisExceptionType(), is(AudioAnalysisExceptionType.ExtractionConfiguration));
+            assertThat(e.getConfigurationExceptionSubtype(), is(ConfigurationExceptionType.WarningLowFrequencyRate));
+        }
+
+        try {
+            ModuleParams moduleParams = new ModuleParams(TEST_HIGH_FREQUENCY_RATE, 1, 1, 1, 1);
+            SUT.validateConfiguration(moduleParams);
+            fail("This test should raise an exception");
+        } catch (ConfigurationException e) {
+            assertThat(e.getAudioAnalysisExceptionType(), is(AudioAnalysisExceptionType.ExtractionConfiguration));
+            assertThat(e.getConfigurationExceptionSubtype(), is(ConfigurationExceptionType.WarningHighFrequencyRate));
+        }
+    }
+
+    @Test
+    public void validateConfiguration_badConfig_badInputs() {
+
+        try {
+            SUT.validateConfiguration(null);
+            fail("This test should raise an exception");
+        } catch (ConfigurationException e) {
+            assertThat(e.getAudioAnalysisExceptionType(), is(AudioAnalysisExceptionType.ExtractionConfiguration));
+            assertThat(e.getConfigurationExceptionSubtype(), is(ConfigurationExceptionType.NullConfiguration));
+        }
+
+        try {
+            ModuleParams moduleParams = new ModuleParams(TEST_FREQUENCY_RATE, 1, 1, 0.01, 0.01);
+            SUT.validateConfiguration(moduleParams);
+            fail("This test should raise an exception");
+        } catch (ConfigurationException e) {
+            assertThat(e.getAudioAnalysisExceptionType(), is(AudioAnalysisExceptionType.ExtractionConfiguration));
+            assertThat(e.getConfigurationExceptionSubtype(), is(ConfigurationExceptionType.IncompatibleWindowSizes));
+        }
+
+        try {
+            ModuleParams moduleParams = new ModuleParams(TEST_FREQUENCY_RATE, 0, 1, 1, 1);
+            SUT.validateConfiguration(moduleParams);
+            fail("This test should raise an exception");
+        } catch (ConfigurationException e) {
+            assertThat(e.getAudioAnalysisExceptionType(), is(AudioAnalysisExceptionType.ExtractionConfiguration));
+            assertThat(e.getConfigurationExceptionSubtype(), is(ConfigurationExceptionType.InvalidParameter));
+        }
+        try {
+            ModuleParams moduleParams = new ModuleParams(TEST_FREQUENCY_RATE, 1, -1, 1, 1);
+            SUT.validateConfiguration(moduleParams);
+            fail("This test should raise an exception");
+        } catch (ConfigurationException e) {
+            assertThat(e.getAudioAnalysisExceptionType(), is(AudioAnalysisExceptionType.ExtractionConfiguration));
+            assertThat(e.getConfigurationExceptionSubtype(), is(ConfigurationExceptionType.InvalidParameter));
+        }
+
+        try {
+            ModuleParams moduleParams = new ModuleParams(TEST_FREQUENCY_RATE, 1, 1, 0, 1);
+            SUT.validateConfiguration(moduleParams);
+            fail("This test should raise an exception");
+        } catch (ConfigurationException e) {
+            assertThat(e.getAudioAnalysisExceptionType(), is(AudioAnalysisExceptionType.ExtractionConfiguration));
+            assertThat(e.getConfigurationExceptionSubtype(), is(ConfigurationExceptionType.InvalidParameter));
+        }
+
+        try {
+            ModuleParams moduleParams = new ModuleParams(TEST_FREQUENCY_RATE, 1, 1, 1, -1);
+            SUT.validateConfiguration(moduleParams);
+            fail("This test should raise an exception");
+        } catch (ConfigurationException e) {
+            assertThat(e.getAudioAnalysisExceptionType(), is(AudioAnalysisExceptionType.ExtractionConfiguration));
+            assertThat(e.getConfigurationExceptionSubtype(), is(ConfigurationExceptionType.InvalidParameter));
+        }
+
+        try {
+            ModuleParams moduleParams = new ModuleParams(0, 1, 1, 1, 1);
+            SUT.validateConfiguration(moduleParams);
+            fail("This test should raise an exception");
+        } catch (ConfigurationException e) {
+            assertThat(e.getAudioAnalysisExceptionType(), is(AudioAnalysisExceptionType.ExtractionConfiguration));
+            assertThat(e.getConfigurationExceptionSubtype(), is(ConfigurationExceptionType.InvalidParameter));
+        }
+    }
 
 }

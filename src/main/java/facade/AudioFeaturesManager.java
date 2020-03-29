@@ -31,22 +31,17 @@ public class AudioFeaturesManager {
      */
     public List<AudioFeatures> processAudioSource(final double[] rawAudioSource, final ModuleParams moduleParams) throws AudioAnalysisException {
 
-        try {
-            validator.validateConfiguration(moduleParams);
+        //Check the module configuration values
+        validator.validateConfiguration(moduleParams);
+        //Check if the audio source is well read from the raw source. If anything goes wrong, throws an AudioExtractionException
+        validator.validateAudioSource(rawAudioSource, moduleParams.getFrequencyRate());
 
-            //Check if the audio source is well read from the raw source. If anything goes wrong, throws an AudioExtractionException
-            validator.validateAudioSource(rawAudioSource, moduleParams.getFrequencyRate());
-
-            //Extract the global features in an INDArray
-            INDArray globalFeatures = audioFeaturesExtractor.globalFeatureExtraction(rawAudioSource, moduleParams);
+        //Extract the global features in an INDArray
+        INDArray globalFeatures = audioFeaturesExtractor.featureExtraction(rawAudioSource, moduleParams);
 
 
-            //Parse the audio features from the INDArray to the concrete AudioFeature object
-            return dataParser.parseAudioFeatures(globalFeatures, moduleParams);
-        } catch (AudioAnalysisException audioAnalysisException) {
-            System.err.println(audioAnalysisException.getMessage());
-            throw audioAnalysisException;
-        }
+        //Parse the audio features from the INDArray to the concrete AudioFeature object
+        return dataParser.parseAudioFeatures(globalFeatures, moduleParams);
 
     }
 

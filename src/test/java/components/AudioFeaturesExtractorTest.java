@@ -1,5 +1,6 @@
 package components;
 
+import model.ModuleParams;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -39,21 +40,21 @@ public class AudioFeaturesExtractorTest {
 
     @Ignore
     @Test
-    public void globalFeatureExtraction() throws Exception {
+    public void featureExtraction() throws Exception {
 
         // Transform the input file into a float[] array
-        double[] samples = wavUtils.load_wav(TEST_SAMPLE);
+        double[] samples = wavUtils.load_wav(TEST_SAMPLE_KNIFE);
 
-        //INDArray controlMidTermFeatures = INDArrayUtils.readINDArrayFromFile("short_feature");
-
+        INDArray controlFeatures = INDArrayUtils.readMidTermFeaturesFromFile(TEST_SAMPLE_FEATURES);
 
         // Extract globalFeatures
-        //INDArray extractedMidTermFeatures = SUT.globalFeatureExtraction(samples, new ModuleParams(TEST_FREQUENCY_RATE, 0.01, 0.01, 1, 1));
+        INDArray extractedFeatures = SUT.featureExtraction(samples, new ModuleParams(TEST_FREQUENCY_RATE, 0.01, 0.01, 1, 1));
+        INDArrayUtils.assertFeatures(extractedFeatures, controlFeatures, roundPrecision);
 
     }
 
     @Test
-    public void extractAudioFeatures() throws Exception {
+    public void extractShortTermFeatures() throws Exception {
 
         // Transform the input file into a float[] array
         double[] samples = wavUtils.load_wav(TEST_SAMPLE_KNIFE);
@@ -65,7 +66,7 @@ public class AudioFeaturesExtractorTest {
         assertThat(controlShortTermFeatures.columns(), is(30196));
 
         // Extract short term features
-        INDArray extractShortTermFeatures = SUT.extractAudioFeatures(samples, TEST_FREQUENCY_RATE, 220, 220);
+        INDArray extractShortTermFeatures = SUT.extractShortTermFeatures(samples, TEST_FREQUENCY_RATE, 220, 220);
 
         assertNotNull(extractShortTermFeatures);
         assertThat(extractShortTermFeatures.rows(), is(34));

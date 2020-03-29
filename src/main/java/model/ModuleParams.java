@@ -36,6 +36,13 @@ public class ModuleParams {
 
     private boolean logProcessesDurationEnabled = false;
 
+    private boolean forceUseLowFrequencyRate = false;
+
+    private boolean forceUseHighFrequencyRate = false;
+
+    private boolean forceHighStepSize = false;
+
+
     public ModuleParams(int frequencyRate, double shortTermWindow, double shortTermStep, double midTermWindow, double midTermStep) {
         statisticalMeasures = new ArrayList<>();
         statisticalMeasures.add(StatisticalMeasureType.Mean);
@@ -86,7 +93,31 @@ public class ModuleParams {
         return logProcessesDurationEnabled;
     }
 
+    public boolean isForceUseLowFrequencyRateEnabled() {
+        return forceUseLowFrequencyRate;
+    }
+
+    public boolean isForceUseHighFrequencyRateEnabled() {
+        return forceUseHighFrequencyRate;
+    }
+
+    public boolean isForceHighStepSize() {
+        return forceHighStepSize;
+    }
+
     public void enableLogProcessesDuration() {
         this.logProcessesDurationEnabled = true;
+    }
+
+    public void forceLowFrequencyRate() {
+        forceUseLowFrequencyRate = true;
+    }
+
+    public void forceHighFrequencyRate() {
+        forceUseHighFrequencyRate = true;
+    }
+
+    public void forceHighStepSize() {
+        forceHighStepSize = true;
     }
 }

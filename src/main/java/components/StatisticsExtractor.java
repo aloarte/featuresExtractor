@@ -96,7 +96,6 @@ public class StatisticsExtractor {
 
 
         }
-
         return audioFeaturesStatistics.mean(1);
     }
 

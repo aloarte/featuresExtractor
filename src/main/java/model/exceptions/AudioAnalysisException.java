@@ -17,7 +17,7 @@ public abstract class AudioAnalysisException extends Exception {
     }
 
 
-    public AudioAnalysisExceptionType getExtractionExceptionType() {
+    public AudioAnalysisExceptionType getAudioAnalysisExceptionType() {
         return audioAnalysisExceptionType;
     }
 }

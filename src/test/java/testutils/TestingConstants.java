@@ -2,11 +2,19 @@ package testutils;
 
 import java.nio.file.Paths;
 
+import static constants.ModuleConstants.HIGH_FREQUENCY_RATE;
+import static constants.ModuleConstants.RECOMMENDED_FREQUENCY_RATE;
+
 public class TestingConstants {
 
     public final static double EPS_CONSTANT = 0.00000001;
 
-    public final static int TEST_FREQUENCY_RATE = 22050;
+    public final static int TEST_FREQUENCY_RATE = RECOMMENDED_FREQUENCY_RATE;
+
+    public final static int TEST_HIGH_FREQUENCY_RATE = HIGH_FREQUENCY_RATE + 1;
+
+    public final static int TEST_LOW_FREQUENCY_RATE = 5512;
+
 
     public final static int TEST_NFFT = 110;
 
