@@ -97,18 +97,6 @@ public class MethodsEntryValidator {
             validateConfigurationStMtWindowStepSize(moduleParams);
         } else
             throw new ConfigurationException(ConfigurationExceptionType.NullConfiguration, "The module configuration is null.");
-
-        //TODO: Implement validations over the configuration
-
-
-        // Frequency rate > 11025    warning, que fuerze su uso
-        // Frequency rate > 0 obligatorio
-        // Frequency rate < 44100   -- warning, que fuerze su uso
-
-
-        // shortermwindosize < midtermwindowsize
-        // shortstep <= shortwindowsize   -- > en este caso se pierde informaciñón de la que no se extrae info
-        // midstep <= midwindowsize    -->
     }
 
     private void validateConfigurationStMtWindowStepSize(ModuleParams moduleParams) throws ConfigurationException {
@@ -118,13 +106,13 @@ public class MethodsEntryValidator {
                 moduleParams.getMidTermStepSize() > 0) {
             if (moduleParams.getShortTermWindowSize() <= moduleParams.getMidTermWindowSize()) {
                 //If the step is bigger than the window size, but the force flag isn't activate,  throw an error
-                if ((moduleParams.getShortTermStepSize() > moduleParams.getShortTermWindowSize()) && !moduleParams.isForceHighStepSize()) {
+                if ((moduleParams.getShortTermStepSize() > moduleParams.getShortTermWindowSize()) && !moduleParams.isForceHighStepSizeEnabled()) {
                     throw new ConfigurationException(ConfigurationExceptionType.WarningHighStepSize, "The step size is larger than the window size. This will cause regions with info ignored. You can force this configuration by using forceHighStepSize()" +
                             " ShortStepSize: " + moduleParams.getShortTermStepSize() +
                             ", ShortWindowSize: " + moduleParams.getShortTermWindowSize());
                 }
 
-                if ((moduleParams.getMidTermStepSize() > moduleParams.getMidTermWindowSize()) && !moduleParams.isForceHighStepSize()) {
+                if ((moduleParams.getMidTermStepSize() > moduleParams.getMidTermWindowSize()) && !moduleParams.isForceHighStepSizeEnabled()) {
                     throw new ConfigurationException(ConfigurationExceptionType.WarningHighStepSize, "The step size is larger than the window size. This will cause regions with info ignored. You can force this configuration by using forceHighStepSize()" +
                             " MidStepSize: " + moduleParams.getMidTermStepSize() +
                             ", MidWindowSize: " + moduleParams.getMidTermWindowSize());

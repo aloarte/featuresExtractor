@@ -37,8 +37,8 @@ public class AudioFeaturesManager {
         validator.validateAudioSource(rawAudioSource, moduleParams.getFrequencyRate());
 
         //Extract the global features in an INDArray
-        INDArray globalFeatures = audioFeaturesExtractor.featureExtraction(rawAudioSource, moduleParams);
 
+        INDArray globalFeatures = audioFeaturesExtractor.featureExtraction(rawAudioSource, moduleParams);
 
         //Parse the audio features from the INDArray to the concrete AudioFeature object
         return dataParser.parseAudioFeatures(globalFeatures, moduleParams);

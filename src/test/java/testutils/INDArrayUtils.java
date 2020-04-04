@@ -81,16 +81,16 @@ public class INDArrayUtils {
      * @param fileName name of the file where is the data
      * @return INDArray with the data read from the file
      */
-    public static INDArray readAudioFeaturesFromFile(String fileName) {
+    public static INDArray readShortTermFeaturesFromFile(String fileName) {
 
         Scanner scan;
         File file = new File(fileName);
         try {
             scan = new Scanner(file);
-            double[][] readFeatures = new double[34][];
+            double[][] readFeatures = new double[TOTAL_FEATURES][];
             int featureIndex = 0;
             while (scan.hasNext()) {
-
+                if (featureIndex == TOTAL_FEATURES) break;
                 String rowFeature = scan.next();
                 String[] rowFeatureValues = rowFeature.split(",");
                 double[] rowFeatures = new double[rowFeatureValues.length];
@@ -110,6 +110,68 @@ public class INDArrayUtils {
             return null;
         }
 
+    }
+
+
+    public static INDArray readMidTermFeaturesFromFile(String fileName) {
+        Scanner scan;
+        File file = new File(fileName);
+        try {
+            double[][] readValue = new double[68][];
+            scan = new Scanner(file);
+            int featureIndex = 0;
+            int laneIndex = 0;
+            while (scan.hasNext()) {
+                String readLane = scan.next();
+                if ((laneIndex < TOTAL_FEATURES) || (laneIndex >= (TOTAL_FEATURES + TOTAL_FEATURES) && laneIndex < (TOTAL_FEATURES * 2 + TOTAL_FEATURES))) {
+
+
+                    String[] fileValue = readLane.split(",");
+                    double[] readMidTermRowValue = new double[fileValue.length];
+
+                    for (int i = 0; i < fileValue.length; i++) {
+                        readMidTermRowValue[i] = Double.parseDouble(fileValue[i]);
+                    }
+
+                    readValue[featureIndex] = readMidTermRowValue;
+                    featureIndex++;
+                }
+                laneIndex++;
+            }
+
+            return Nd4j.create(readValue);
+
+        } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+            return null;
+        }
+
+    }
+
+    public static INDArray readMeanMidTermFeaturesFromFile(String fileName) {
+        Scanner scan;
+        File file = new File(fileName);
+        try {
+            scan = new Scanner(file);
+            double[] readValues = new double[TOTAL_FEATURES * 2];
+            int featureIndex = 0;
+            int laneIndex = 0;
+            while (scan.hasNext()) {
+                String rowFeature = scan.next();
+                if ((laneIndex < TOTAL_FEATURES) || (laneIndex >= (TOTAL_FEATURES + TOTAL_FEATURES) && laneIndex < (TOTAL_FEATURES * 2 + TOTAL_FEATURES))) {
+                    String[] fileValue = rowFeature.split(",");
+                    readValues[featureIndex] = Double.parseDouble(fileValue[0]);
+                    featureIndex++;
+
+                }
+                laneIndex++;
+            }
+            return Nd4j.create(readValues);
+
+        } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+            return null;
+        }
     }
 
     /***
@@ -146,16 +208,18 @@ public class INDArrayUtils {
      * @param controlShortTermFeatures Control values
      * @param roundPrecision           Array with the precisions used on the verifications
      */
-    public static void assertFeaturesData(INDArray extractShortTermFeatures, INDArray controlShortTermFeatures, double[] roundPrecision) {
+    public static void assertShortTermFeaturesData(INDArray extractShortTermFeatures, INDArray controlShortTermFeatures, double[] roundPrecision) {
         assertNotNull(extractShortTermFeatures);
         assertNotNull(controlShortTermFeatures);
         assertThat(extractShortTermFeatures.columns(), is(controlShortTermFeatures.columns()));
         assertThat(extractShortTermFeatures.rows(), is(controlShortTermFeatures.rows()));
+        assertThat(extractShortTermFeatures.rows(), is(TOTAL_FEATURES));
 
         int[] cntPrecision = new int[]{0, 0, 0, 0, 0};
         NdIndexIterator iterator = new NdIndexIterator(extractShortTermFeatures.rows(), extractShortTermFeatures.columns());
         while (iterator.hasNext()) {
             int[] nextIndex = iterator.next();
+            //System.out.println("[" + nextIndex[0]+"]["+nextIndex[1]);
             if (TestUtils.getRoundDouble(controlShortTermFeatures.getDouble(nextIndex), roundPrecision[0]) != TestUtils.getRoundDouble(extractShortTermFeatures.getDouble(nextIndex), roundPrecision[0])) {
                 if (TestUtils.getRoundDouble(controlShortTermFeatures.getDouble(nextIndex), roundPrecision[1]) != TestUtils.getRoundDouble(extractShortTermFeatures.getDouble(nextIndex), roundPrecision[1])) {
                     if (TestUtils.getRoundDouble(controlShortTermFeatures.getDouble(nextIndex), roundPrecision[2]) != TestUtils.getRoundDouble(extractShortTermFeatures.getDouble(nextIndex), roundPrecision[2])) {
@@ -186,9 +250,11 @@ public class INDArrayUtils {
         System.out.println("Round precision " + roundPrecision[3] + " : " + cntPrecision[3]);
         System.out.println("Round precision " + roundPrecision[4] + " : " + cntPrecision[4]);
 
+        System.out.println("Total elements " + controlShortTermFeatures.rows() * controlShortTermFeatures.columns());
+
+
         assertThat(cntPrecision[0] + cntPrecision[1] + cntPrecision[2] + cntPrecision[3] + cntPrecision[4], is(extractShortTermFeatures.columns() * extractShortTermFeatures.rows()));
     }
-
 
     /**
      * Iterate through extractMidTermFeatures & controlMidTermFeatures verifying that their values are the same,
@@ -198,35 +264,40 @@ public class INDArrayUtils {
      * @param controlMidTermFeatures Control values
      * @param roundPrecision         Array with the precisions used on the verifications
      */
-    public static void assertFeatures(INDArray extractMidTermFeatures, INDArray controlMidTermFeatures, double[] roundPrecision) {
+    public static void assertMidTermFeaturesData(INDArray extractMidTermFeatures, INDArray controlMidTermFeatures, double[] roundPrecision) {
         assertNotNull(extractMidTermFeatures);
         assertNotNull(controlMidTermFeatures);
+
+        assertThat(extractMidTermFeatures.columns(), is(controlMidTermFeatures.columns()));
+        assertThat(extractMidTermFeatures.rows(), is(controlMidTermFeatures.rows()));
+        assertThat(extractMidTermFeatures.rows(), is(TOTAL_FEATURES * 2));
+
 
         int[] cntPrecision = new int[]{0, 0, 0, 0, 0};
         NdIndexIterator iterator = new NdIndexIterator(extractMidTermFeatures.rows(), extractMidTermFeatures.columns());
         while (iterator.hasNext()) {
             int[] nextIndex = iterator.next();
-            if (TestUtils.getRoundDouble(controlMidTermFeatures.getDouble(nextIndex[0] > 33 ? (nextIndex[0] + TOTAL_FEATURES) : nextIndex[0]), roundPrecision[0]) != TestUtils.getRoundDouble(extractMidTermFeatures.getDouble(nextIndex), roundPrecision[0])) {
-                if (TestUtils.getRoundDouble(controlMidTermFeatures.getDouble(nextIndex[0] > 33 ? (nextIndex[0] + TOTAL_FEATURES) : nextIndex[0]), roundPrecision[1]) != TestUtils.getRoundDouble(extractMidTermFeatures.getDouble(nextIndex), roundPrecision[1])) {
-                    if (TestUtils.getRoundDouble(controlMidTermFeatures.getDouble(nextIndex[0] > 33 ? (nextIndex[0] + TOTAL_FEATURES) : nextIndex[0]), roundPrecision[2]) != TestUtils.getRoundDouble(extractMidTermFeatures.getDouble(nextIndex), roundPrecision[2])) {
-                        if (TestUtils.getRoundDouble(controlMidTermFeatures.getDouble(nextIndex[0] > 33 ? (nextIndex[0] + TOTAL_FEATURES) : nextIndex[0]), roundPrecision[3]) != TestUtils.getRoundDouble(extractMidTermFeatures.getDouble(nextIndex), roundPrecision[3])) {
+            if (TestUtils.getRoundDouble(controlMidTermFeatures.getDouble(nextIndex), roundPrecision[0]) != TestUtils.getRoundDouble(extractMidTermFeatures.getDouble(nextIndex), roundPrecision[0])) {
+                if (TestUtils.getRoundDouble(controlMidTermFeatures.getDouble(nextIndex), roundPrecision[1]) != TestUtils.getRoundDouble(extractMidTermFeatures.getDouble(nextIndex), roundPrecision[1])) {
+                    if (TestUtils.getRoundDouble(controlMidTermFeatures.getDouble(nextIndex), roundPrecision[2]) != TestUtils.getRoundDouble(extractMidTermFeatures.getDouble(nextIndex), roundPrecision[2])) {
+                        if (TestUtils.getRoundDouble(controlMidTermFeatures.getDouble(nextIndex), roundPrecision[3]) != TestUtils.getRoundDouble(extractMidTermFeatures.getDouble(nextIndex), roundPrecision[3])) {
                             cntPrecision[4]++;
-                            assertThat(TestUtils.getRoundDouble(controlMidTermFeatures.getDouble(nextIndex[0] > 33 ? (nextIndex[0] + TOTAL_FEATURES) : nextIndex[0]), roundPrecision[4]), is(TestUtils.getRoundDouble(extractMidTermFeatures.getDouble(nextIndex), roundPrecision[4])));
+                            assertThat(TestUtils.getRoundDouble(controlMidTermFeatures.getDouble(nextIndex), roundPrecision[4]), is(TestUtils.getRoundDouble(extractMidTermFeatures.getDouble(nextIndex), roundPrecision[4])));
                         } else {
                             cntPrecision[3]++;
-                            assertThat(TestUtils.getRoundDouble(controlMidTermFeatures.getDouble(nextIndex[0] > 33 ? (nextIndex[0] + TOTAL_FEATURES) : nextIndex[0]), roundPrecision[3]), is(TestUtils.getRoundDouble(extractMidTermFeatures.getDouble(nextIndex), roundPrecision[3])));
+                            assertThat(TestUtils.getRoundDouble(controlMidTermFeatures.getDouble(nextIndex), roundPrecision[3]), is(TestUtils.getRoundDouble(extractMidTermFeatures.getDouble(nextIndex), roundPrecision[3])));
                         }
                     } else {
                         cntPrecision[2]++;
-                        assertThat(TestUtils.getRoundDouble(controlMidTermFeatures.getDouble(nextIndex[0] > 33 ? (nextIndex[0] + TOTAL_FEATURES) : nextIndex[0]), roundPrecision[2]), is(TestUtils.getRoundDouble(extractMidTermFeatures.getDouble(nextIndex), roundPrecision[2])));
+                        assertThat(TestUtils.getRoundDouble(controlMidTermFeatures.getDouble(nextIndex), roundPrecision[2]), is(TestUtils.getRoundDouble(extractMidTermFeatures.getDouble(nextIndex), roundPrecision[2])));
                     }
                 } else {
                     cntPrecision[1]++;
-                    assertThat(TestUtils.getRoundDouble(controlMidTermFeatures.getDouble(nextIndex[0] > 33 ? (nextIndex[0] + TOTAL_FEATURES) : nextIndex[0]), roundPrecision[1]), is(TestUtils.getRoundDouble(extractMidTermFeatures.getDouble(nextIndex), roundPrecision[1])));
+                    assertThat(TestUtils.getRoundDouble(controlMidTermFeatures.getDouble(nextIndex), roundPrecision[1]), is(TestUtils.getRoundDouble(extractMidTermFeatures.getDouble(nextIndex), roundPrecision[1])));
                 }
             } else {
                 cntPrecision[0]++;
-                assertThat(TestUtils.getRoundDouble(controlMidTermFeatures.getDouble(nextIndex[0] > 33 ? (nextIndex[0] + TOTAL_FEATURES) : nextIndex[0]), roundPrecision[0]), is(TestUtils.getRoundDouble(extractMidTermFeatures.getDouble(nextIndex), roundPrecision[0])));
+                assertThat(TestUtils.getRoundDouble(controlMidTermFeatures.getDouble(nextIndex), roundPrecision[0]), is(TestUtils.getRoundDouble(extractMidTermFeatures.getDouble(nextIndex), roundPrecision[0])));
             }
         }
 
@@ -239,26 +310,54 @@ public class INDArrayUtils {
         assertThat(cntPrecision[0] + cntPrecision[1] + cntPrecision[2] + cntPrecision[3] + cntPrecision[4], is(extractMidTermFeatures.columns() * extractMidTermFeatures.rows()));
     }
 
-    public static INDArray readMidTermFeaturesFromFile(String fileName) {
-        Scanner scan;
-        File file = new File(fileName);
-        try {
-            scan = new Scanner(file);
-            String readLane = scan.next();
+    /**
+     * Iterate through extractMeanMidTermFeatures & controlMeanMidTermFeatures verifying that their values are the same,
+     * rounding its values on several situations
+     *
+     * @param extractMeanMidTermFeatures Extracted values
+     * @param controlMeanMidTermFeatures Control values
+     * @param roundPrecision             Array with the precisions used on the verifications
+     */
+    public static void assertFeatures(INDArray extractMeanMidTermFeatures, INDArray controlMeanMidTermFeatures, double[] roundPrecision) {
+        assertNotNull(extractMeanMidTermFeatures);
+        assertNotNull(controlMeanMidTermFeatures);
 
-            String[] fileValue = readLane.split(",");
-            double[] readValue = new double[fileValue.length];
-
-            for (int i = 0; i < readValue.length; i++) {
-                readValue[i] = Double.parseDouble(fileValue[i]);
+        int[] cntPrecision = new int[]{0, 0, 0, 0, 0};
+        NdIndexIterator iterator = new NdIndexIterator(extractMeanMidTermFeatures.rows());
+        while (iterator.hasNext()) {
+            int[] nextIndex = iterator.next();
+            if (TestUtils.getRoundDouble(controlMeanMidTermFeatures.getDouble(nextIndex), roundPrecision[0]) != TestUtils.getRoundDouble(extractMeanMidTermFeatures.getDouble(nextIndex), roundPrecision[0])) {
+                if (TestUtils.getRoundDouble(controlMeanMidTermFeatures.getDouble(nextIndex), roundPrecision[1]) != TestUtils.getRoundDouble(extractMeanMidTermFeatures.getDouble(nextIndex), roundPrecision[1])) {
+                    if (TestUtils.getRoundDouble(controlMeanMidTermFeatures.getDouble(nextIndex), roundPrecision[2]) != TestUtils.getRoundDouble(extractMeanMidTermFeatures.getDouble(nextIndex), roundPrecision[2])) {
+                        if (TestUtils.getRoundDouble(controlMeanMidTermFeatures.getDouble(nextIndex), roundPrecision[3]) != TestUtils.getRoundDouble(extractMeanMidTermFeatures.getDouble(nextIndex), roundPrecision[3])) {
+                            cntPrecision[4]++;
+                            assertThat(TestUtils.getRoundDouble(controlMeanMidTermFeatures.getDouble(nextIndex), roundPrecision[4]), is(TestUtils.getRoundDouble(extractMeanMidTermFeatures.getDouble(nextIndex), roundPrecision[4])));
+                        } else {
+                            cntPrecision[3]++;
+                            assertThat(TestUtils.getRoundDouble(controlMeanMidTermFeatures.getDouble(nextIndex), roundPrecision[3]), is(TestUtils.getRoundDouble(extractMeanMidTermFeatures.getDouble(nextIndex), roundPrecision[3])));
+                        }
+                    } else {
+                        cntPrecision[2]++;
+                        assertThat(TestUtils.getRoundDouble(controlMeanMidTermFeatures.getDouble(nextIndex), roundPrecision[2]), is(TestUtils.getRoundDouble(extractMeanMidTermFeatures.getDouble(nextIndex), roundPrecision[2])));
+                    }
+                } else {
+                    cntPrecision[1]++;
+                    assertThat(TestUtils.getRoundDouble(controlMeanMidTermFeatures.getDouble(nextIndex), roundPrecision[1]), is(TestUtils.getRoundDouble(extractMeanMidTermFeatures.getDouble(nextIndex), roundPrecision[1])));
+                }
+            } else {
+                cntPrecision[0]++;
+                assertThat(TestUtils.getRoundDouble(controlMeanMidTermFeatures.getDouble(nextIndex), roundPrecision[0]), is(TestUtils.getRoundDouble(extractMeanMidTermFeatures.getDouble(nextIndex), roundPrecision[0])));
             }
-
-
-            return Nd4j.create(readValue);
-
-        } catch (FileNotFoundException e1) {
-            e1.printStackTrace();
-            return null;
         }
+
+        System.out.println("Round precision " + roundPrecision[0] + " : " + cntPrecision[0]);
+        System.out.println("Round precision " + roundPrecision[1] + " : " + cntPrecision[1]);
+        System.out.println("Round precision " + roundPrecision[2] + " : " + cntPrecision[2]);
+        System.out.println("Round precision " + roundPrecision[3] + " : " + cntPrecision[3]);
+        System.out.println("Round precision " + roundPrecision[4] + " : " + cntPrecision[4]);
+
+        assertThat(cntPrecision[0] + cntPrecision[1] + cntPrecision[2] + cntPrecision[3] + cntPrecision[4], is(extractMeanMidTermFeatures.columns() * extractMeanMidTermFeatures.rows()));
     }
+
+
 }

@@ -1,23 +1,23 @@
 import org.junit.Before;
 import org.junit.Test;
 import testutils.SamplesReaderUtils;
-import testutils.WavUtils;
+import testutils.TestUtils;
 
 import java.io.IOException;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static testutils.TestingConstants.TEST_SAMPLE_KNIFE;
-import static testutils.TestingConstants.TEST_SAMPLE_KNIFE_READ;
+import static testutils.TestingConstants.TEST_CONTROL_KNIFE_COMPLETE_WAV;
+import static testutils.TestingConstants.TEST_KNIFE_301s_WAV;
 
 public class WavLoadTest {
 
     String pathFile;
-    private WavUtils wavUtils;
+    private TestUtils testUtils;
 
     @Before
     public void startUp() {
-        wavUtils = new WavUtils();
+        testUtils = new TestUtils();
 
     }
 
@@ -25,8 +25,8 @@ public class WavLoadTest {
     public void loadWavTest() throws IOException {
         double roundPrecision = 10000d;
 
-        double[] samplesFromWav = wavUtils.load_wav(TEST_SAMPLE_KNIFE);
-        double[] samplesFromFile = SamplesReaderUtils.readSamplesFromFile(TEST_SAMPLE_KNIFE_READ);
+        double[] samplesFromWav = testUtils.load_wav(TEST_KNIFE_301s_WAV);
+        double[] samplesFromFile = SamplesReaderUtils.readSamplesFromFile(TEST_CONTROL_KNIFE_COMPLETE_WAV);
 
         assert samplesFromFile != null;
 

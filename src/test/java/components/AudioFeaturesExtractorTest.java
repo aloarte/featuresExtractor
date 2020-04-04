@@ -2,13 +2,13 @@ package components;
 
 import model.ModuleParams;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.nd4j.linalg.api.iter.NdIndexIterator;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import testutils.INDArrayUtils;
-import testutils.WavUtils;
+import testutils.TestUtils;
 
+import static constants.FeaturesNumbersConstants.TOTAL_FEATURES;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
@@ -16,7 +16,7 @@ import static testutils.TestingConstants.*;
 
 public class AudioFeaturesExtractorTest {
 
-    private WavUtils wavUtils;
+    private TestUtils testUtils;
 
     private AudioFeaturesExtractor SUT;
 
@@ -30,50 +30,126 @@ public class AudioFeaturesExtractorTest {
             10d};
 
 
+    private double[] roundPrecisionComplete = new double[]{
+            10000d,
+            1000d,
+            100d,
+            100d,
+            1d};
+
+
     @Before
     public void startUp() {
-        wavUtils = new WavUtils();
+        testUtils = new TestUtils();
         SUT = new AudioFeaturesExtractor();
         currentSliceData = INDArrayUtils.readAudioSliceFromFile(TEST_SAMPLE_INDARRAY_C_AUDIO_SLICE);
         currentFFTSliceData = INDArrayUtils.readAudioSliceFromFile(TEST_SAMPLE_INDARRAY_FFT_C_AUDIO_SLICE);
     }
 
-    @Ignore
     @Test
-    public void featureExtraction() throws Exception {
+    public void featureExtraction_knifeComplete() throws Exception {
 
         // Transform the input file into a float[] array
-        double[] samples = wavUtils.load_wav(TEST_SAMPLE_KNIFE);
+        double[] samples = testUtils.load_wav(TEST_KNIFE_301s_WAV);
 
-        INDArray controlFeatures = INDArrayUtils.readMidTermFeaturesFromFile(TEST_SAMPLE_FEATURES);
+        INDArray meanMidControlFeatures = INDArrayUtils.readMeanMidTermFeaturesFromFile(TEST_KNIFE_301s_CONTROL_VALUES_MEAN);
 
-        // Extract globalFeatures
         INDArray extractedFeatures = SUT.featureExtraction(samples, new ModuleParams(TEST_FREQUENCY_RATE, 0.01, 0.01, 1, 1));
-        INDArrayUtils.assertFeatures(extractedFeatures, controlFeatures, roundPrecision);
+        INDArrayUtils.assertFeatures(extractedFeatures, meanMidControlFeatures, roundPrecisionComplete);
 
     }
 
     @Test
-    public void extractShortTermFeatures() throws Exception {
+    public void featureExtraction_knife30s() throws Exception {
 
         // Transform the input file into a float[] array
-        double[] samples = wavUtils.load_wav(TEST_SAMPLE_KNIFE);
+        double[] samples = testUtils.load_wav(TEST_KNIFE_30s_WAV);
+
+        INDArray meanMidControlFeatures = INDArrayUtils.readMeanMidTermFeaturesFromFile(TEST_KNIFE_30s_CONTROL_VALUES_MEAN);
+
+        INDArray extractedFeatures = SUT.featureExtraction(samples, new ModuleParams(TEST_FREQUENCY_RATE, 0.01, 0.01, 1, 1));
+        INDArrayUtils.assertFeatures(extractedFeatures, meanMidControlFeatures, roundPrecisionComplete);
+
+    }
+
+    @Test
+    public void featureExtraction_knife10s() throws Exception {
+
+        // Transform the input file into a float[] array
+        double[] samples = testUtils.load_wav(TEST_KNIFE_10s_WAV);
+        INDArray meanMidControlFeatures = INDArrayUtils.readMeanMidTermFeaturesFromFile(TEST_KNIFE_10s_CONTROL_VALUES_MEAN);
+
+        INDArray extractedFeatures = SUT.featureExtraction(samples, new ModuleParams(TEST_FREQUENCY_RATE, 0.01, 0.01, 1, 1));
+        INDArrayUtils.assertFeatures(extractedFeatures, meanMidControlFeatures, roundPrecisionComplete);
+    }
+
+    @Test
+    public void extractShortTermFeatures_knifeComplete() throws Exception {
+
+        // Transform the input file into a float[] array
+        double[] samples = testUtils.load_wav(TEST_KNIFE_301s_WAV);
 
         //Extract the control short term features
-        INDArray controlShortTermFeatures = INDArrayUtils.readAudioFeaturesFromFile(TEST_SAMPLE_SHORT_FEATURE);
+        INDArray controlShortTermFeatures = INDArrayUtils.readShortTermFeaturesFromFile(TEST_KNIFE_301s_CONTROL_VALUES_SHORTTERM);
         assertNotNull(controlShortTermFeatures);
-        assertThat(controlShortTermFeatures.rows(), is(34));
-        assertThat(controlShortTermFeatures.columns(), is(30196));
+        assertThat(controlShortTermFeatures.rows(), is(TOTAL_FEATURES));
 
         // Extract short term features
         INDArray extractShortTermFeatures = SUT.extractShortTermFeatures(samples, TEST_FREQUENCY_RATE, 220, 220);
 
         assertNotNull(extractShortTermFeatures);
-        assertThat(extractShortTermFeatures.rows(), is(34));
-        assertThat(extractShortTermFeatures.columns(), is(30196));
+        assertThat(extractShortTermFeatures.rows(), is(TOTAL_FEATURES));
+        assertThat(extractShortTermFeatures.columns(), is(controlShortTermFeatures.columns()));
 
         //Check that the values are the same
-        INDArrayUtils.assertFeaturesData(extractShortTermFeatures, controlShortTermFeatures, roundPrecision);
+        INDArrayUtils.assertShortTermFeaturesData(extractShortTermFeatures, controlShortTermFeatures, roundPrecision);
+
+    }
+
+    @Test
+    public void extractShortTermFeatures_knife30s() throws Exception {
+
+        // Transform the input file into a float[] array
+        double[] samples = testUtils.load_wav(TEST_KNIFE_30s_WAV);
+
+        //Extract the control short term features
+        INDArray controlShortTermFeatures = INDArrayUtils.readShortTermFeaturesFromFile(TEST_KNIFE_30s_CONTROL_VALUES_SHORTTERM);
+        assertNotNull(controlShortTermFeatures);
+        assertThat(controlShortTermFeatures.rows(), is(TOTAL_FEATURES));
+
+        // Extract short term features
+        INDArray extractShortTermFeatures = SUT.extractShortTermFeatures(samples, TEST_FREQUENCY_RATE, 220, 220);
+
+        assertNotNull(extractShortTermFeatures);
+        assertThat(extractShortTermFeatures.rows(), is(TOTAL_FEATURES));
+        assertThat(extractShortTermFeatures.columns(), is(controlShortTermFeatures.columns()));
+
+        //Check that the values are the same
+        INDArrayUtils.assertShortTermFeaturesData(extractShortTermFeatures, controlShortTermFeatures, roundPrecision);
+
+    }
+
+
+    @Test
+    public void extractShortTermFeatures_knife10s() throws Exception {
+
+        // Transform the input file into a float[] array
+        double[] samples = testUtils.load_wav(TEST_KNIFE_10s_WAV);
+
+        //Extract the control short term features
+        INDArray controlShortTermFeatures = INDArrayUtils.readShortTermFeaturesFromFile(TEST_KNIFE_10s_CONTROL_VALUES_SHORTTERM);
+        assertNotNull(controlShortTermFeatures);
+        assertThat(controlShortTermFeatures.rows(), is(TOTAL_FEATURES));
+
+        // Extract short term features
+        INDArray extractShortTermFeatures = SUT.extractShortTermFeatures(samples, TEST_FREQUENCY_RATE, 220, 220);
+
+        assertNotNull(extractShortTermFeatures);
+        assertThat(extractShortTermFeatures.rows(), is(TOTAL_FEATURES));
+        assertThat(extractShortTermFeatures.columns(), is(controlShortTermFeatures.columns()));
+
+        //Check that the values are the same
+        INDArrayUtils.assertShortTermFeaturesData(extractShortTermFeatures, controlShortTermFeatures, roundPrecision);
 
     }
 

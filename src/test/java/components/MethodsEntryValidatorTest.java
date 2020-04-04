@@ -14,7 +14,7 @@ import org.junit.Test;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
 import testutils.INDArrayUtils;
-import testutils.WavUtils;
+import testutils.TestUtils;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
@@ -31,14 +31,14 @@ public class MethodsEntryValidatorTest {
 
     @Before
     public void startUp() {
-        WavUtils wavUtils = new WavUtils();
+        TestUtils testUtils = new TestUtils();
         SUT = new MethodsEntryValidator();
         currentSliceData = INDArrayUtils.readAudioSliceFromFile(TEST_SAMPLE_INDARRAY_C_AUDIO_SLICE);
         fftCurrentSliceData = INDArrayUtils.readAudioSliceFromFile(TEST_SAMPLE_INDARRAY_FFT_C_AUDIO_SLICE);
         fftPreviousSliceData = INDArrayUtils.readAudioSliceFromFile(TEST_SAMPLE_INDARRAY_FFT_P_AUDIO_SLICE);
-        shortTermFeatures = INDArrayUtils.readAudioFeaturesFromFile(TEST_SAMPLE_SHORT_FEATURE);
+        shortTermFeatures = INDArrayUtils.readShortTermFeaturesFromFile(TEST_KNIFE_301s_CONTROL_VALUES_SHORTTERM);
 
-        audioDataSource = wavUtils.load_wav(TEST_SAMPLE);
+        audioDataSource = testUtils.load_wav(TEST_KNIFE_30s_WAV);
 
 
     }

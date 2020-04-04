@@ -44,23 +44,23 @@ public class AudioFeaturesExtractor {
         long timeAfter;
 
         //Extract the matrix with the [32 features] x [N window samples]
-        INDArray matrixExtractedFeatures = extractShortTermFeatures(audioSamples, moduleParams.getFrequencyRate(), moduleParams.getShortTermWindowSize(), moduleParams.getShortTermStepSize());
+        INDArray shortTermFeatures = extractShortTermFeatures(audioSamples, moduleParams.getFrequencyRate(), moduleParams.getShortTermWindowSize(), moduleParams.getShortTermStepSize());
 
         if (moduleParams.isLogProcessesDurationEnabled()) {
             timeAfter = System.currentTimeMillis();
-            System.out.println("stFeatures extracted (" + (timeAfter - timeBefore) + ") : matrixExtractedFeatures [" + matrixExtractedFeatures.shape()[0] + "][" + matrixExtractedFeatures.shape()[1] + "]");
+            System.out.println("stFeatures extracted (" + (timeAfter - timeBefore) + ") : matrixExtractedFeatures [" + shortTermFeatures.shape()[0] + "][" + shortTermFeatures.shape()[1] + "]");
             timeBefore = timeAfter;
         }
 
         //Apply statistic operations to each N sample for each of the 32 features. Extract a matrix of [32 features] x [N statistic operations]
-        INDArray mtFeatures = statisticsExtractor.obtainMidTermFeatures(matrixExtractedFeatures, moduleParams);
-
+        INDArray midTermFeatures = statisticsExtractor.obtainMidTermFeatures(shortTermFeatures, moduleParams);
 
         if (moduleParams.isLogProcessesDurationEnabled()) {
             timeAfter = System.currentTimeMillis();
-            System.out.println("mtFeatures extracted (" + (timeAfter - timeBefore) + ") : mtFeatures [" + mtFeatures.shape()[0] + "][" + mtFeatures.shape()[1] + "]");
+            System.out.println("mtFeatures extracted (" + (timeAfter - timeBefore) + ") : mtFeatures [" + midTermFeatures.shape()[0] + "][" + midTermFeatures.shape()[1] + "]");
         }
-        return mtFeatures;
+
+        return midTermFeatures.mean(1);
     }
 
     /**
@@ -118,8 +118,7 @@ public class AudioFeaturesExtractor {
         }
 
         matrixStFeatures = matrixStFeatures.reshape(matrixStFeatures.length() / TOTAL_FEATURES, TOTAL_FEATURES);
-
-        return matrixStFeatures.transpose();
+        return matrixStFeatures.transpose().dup();
     }
 
     /**

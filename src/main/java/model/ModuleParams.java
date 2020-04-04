@@ -101,7 +101,7 @@ public class ModuleParams {
         return forceUseHighFrequencyRate;
     }
 
-    public boolean isForceHighStepSize() {
+    public boolean isForceHighStepSizeEnabled() {
         return forceHighStepSize;
     }
 

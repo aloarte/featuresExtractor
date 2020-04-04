@@ -29,14 +29,6 @@ public class DataParser {
                 //Create the AudioFeatures class and set the statistical measure type
                 AudioFeatures audioFeatures = parseAudioFeature(smExtractedFeatures, statisticalMeasureIndex);
                 audioFeatures.setStatisticalMeasureType(moduleParams.getStatisticalMeasures().get(statisticalMeasureIndex));
-
-//                //Add each set of features to the final AudioFeatures class
-//                audioFeatures.setZeroCrossingRate(smExtractedFeatures.getDouble(statisticalMeasureIndex));
-//                audioFeatures.setEnergyFeatures(parseEnergyFeatures(smExtractedFeatures, statisticalMeasureIndex));
-//                audioFeatures.setSpectralFeatures(parseSpectralFeatures(smExtractedFeatures, statisticalMeasureIndex));
-//                audioFeatures.setMfcCs(parseMFFCS(smExtractedFeatures, statisticalMeasureIndex));
-//                audioFeatures.setChromaFeatures(parseChromaFeatures(smExtractedFeatures, statisticalMeasureIndex));
-
                 //Add the AudioFeatures calculated to the list of AudioFeatures
                 parsedFeatures.add(audioFeatures);
             }

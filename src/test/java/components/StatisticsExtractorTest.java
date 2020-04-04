@@ -21,30 +21,52 @@ public class StatisticsExtractorTest {
     StatisticsExtractor SUT;
 
     INDArray controlShortTermFeatures;
-    INDArray controlMidTermFeatures;
+    INDArray controlMidMeanTermFeatures;
 
     ModuleParams moduleParams;
 
     private double[] roundPrecision = new double[]{
-            100000d,
             10000d,
             1000d,
             100d,
-            10d};
+            10d,
+            1d};
 
     @Before
     public void startUp() {
         SUT = new StatisticsExtractor();
-        controlShortTermFeatures = INDArrayUtils.readAudioFeaturesFromFile(TEST_SAMPLE_SHORT_FEATURE);
-        controlMidTermFeatures = INDArrayUtils.readMidTermFeaturesFromFile(TEST_SAMPLE_FEATURES);
+        controlShortTermFeatures = INDArrayUtils.readShortTermFeaturesFromFile(TEST_KNIFE_301s_CONTROL_VALUES_SHORTTERM);
         moduleParams = new ModuleParams(TEST_FREQUENCY_RATE, 0.01, 0.01, 1, 1);
     }
 
     @Test
-    public void obtainAudioFeaturesStatistics() throws AudioAnalysisException {
+    public void obtainAudioFeaturesStatistics_knife10s() throws AudioAnalysisException {
+        INDArray controlMidMeanTermFeatures = INDArrayUtils.readMidTermFeaturesFromFile(TEST_KNIFE_10s_CONTROL_VALUES_MIDTERM);
+        INDArray controlShortTermFeatures = INDArrayUtils.readShortTermFeaturesFromFile(TEST_KNIFE_10s_CONTROL_VALUES_SHORTTERM);
+
         INDArray extractedMidTermFeatures = SUT.obtainMidTermFeatures(controlShortTermFeatures, moduleParams);
-        INDArrayUtils.assertFeatures(extractedMidTermFeatures, controlMidTermFeatures, roundPrecision);
+        INDArrayUtils.assertMidTermFeaturesData(extractedMidTermFeatures, controlMidMeanTermFeatures, roundPrecision);
     }
+
+    @Test
+    public void obtainAudioFeaturesStatistics_knife30s() throws AudioAnalysisException {
+        INDArray controlMidMeanTermFeatures = INDArrayUtils.readMidTermFeaturesFromFile(TEST_KNIFE_30s_CONTROL_VALUES_MIDTERM);
+        INDArray controlShortTermFeatures = INDArrayUtils.readShortTermFeaturesFromFile(TEST_KNIFE_30s_CONTROL_VALUES_SHORTTERM);
+
+        INDArray extractedMidTermFeatures = SUT.obtainMidTermFeatures(controlShortTermFeatures, moduleParams);
+        INDArrayUtils.assertMidTermFeaturesData(extractedMidTermFeatures, controlMidMeanTermFeatures, roundPrecision);
+    }
+
+
+    @Test
+    public void obtainAudioFeaturesStatistics_knife301s() throws AudioAnalysisException {
+        INDArray controlMidMeanTermFeatures = INDArrayUtils.readMidTermFeaturesFromFile(TEST_KNIFE_301s_CONTROL_VALUES_MIDTERM);
+        INDArray controlShortTermFeatures = INDArrayUtils.readShortTermFeaturesFromFile(TEST_KNIFE_301s_CONTROL_VALUES_SHORTTERM);
+
+        INDArray extractedMidTermFeatures = SUT.obtainMidTermFeatures(controlShortTermFeatures, moduleParams);
+        INDArrayUtils.assertMidTermFeaturesData(extractedMidTermFeatures, controlMidMeanTermFeatures, roundPrecision);
+    }
+
 
     @Test
     public void calculateStatisticalInfo() {

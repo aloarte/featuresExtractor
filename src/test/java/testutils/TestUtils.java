@@ -1,41 +1,55 @@
 package testutils;
 
-import model.AudioFeatures;
+import java.io.File;
 
 /**
  * Utils to perform the tests
  */
 public class TestUtils {
 
-    /**
-     * Loads the audio features from the audio source
-     *
-     * @return
-     */
-    public static AudioFeatures loadAudioFeaturesFromFile() {
-
-        //Load audio features from the file "audioFeatures"
-
-        //Iterathe the file and read all the audio features
-
-        //Set the readed data into the object
-        return new AudioFeatures();
-    }
-
-    /**
-     * Loads an audio from a file in byte[] that already is in this format
-     *
-     * @return
-     */
-    public static byte[] loadAudioFromMP3File() {
-        //Load audio input data from the file "audioSampled
-        // "
-
-        //Read and return the value
-        return new byte[0];
-    }
-
     public static double getRoundDouble(double numberWithoutRound, double roundPrecision) {
         return (double) Math.round(numberWithoutRound * roundPrecision) / roundPrecision;
+    }
+
+    public double[] load_wav(String input_file) {
+        double[] buffer = new double[1];
+
+        try {
+            // Open the wav file specified as input_file
+            WavFile wavFile = WavFile.openWavFile(new File(input_file));
+
+            // Display information about the wav file
+            int n_frames = (int) wavFile.getNumFrames();
+
+            // Get the number of audio channels in the wav file
+            int numChannels = wavFile.getNumChannels();
+
+            // Create a buffer of n_frames frames
+            buffer = new double[n_frames * numChannels];
+
+            int framesRead;
+            double min = Double.MAX_VALUE;
+            double max = Double.MIN_VALUE;
+
+            do {
+                // Read frames into buffer
+                framesRead = wavFile.readFrames(buffer, n_frames);
+
+                // Loop through frames and look for minimum and maximum value
+                for (int s = 0; s < framesRead * numChannels; s++) {
+                    if (buffer[s] > max) max = buffer[s];
+                    if (buffer[s] < min) min = buffer[s];
+                }
+            }
+            while (framesRead != 0);
+
+            // Close the wavFile
+            wavFile.close();
+
+            // Output the minimum and maximum value
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+        return buffer;
     }
 }
