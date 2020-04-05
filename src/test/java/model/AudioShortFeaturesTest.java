@@ -10,13 +10,13 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static testutils.TestingConstants.TEST_AF_ZCR;
 
-public class AudioFeaturesTest {
+public class AudioShortFeaturesTest {
 
-    private AudioFeatures SUT;
+    private AudioShortFeatures SUT;
 
     @Before
     public void startUp() {
-        SUT = new AudioFeatures();
+        SUT = new AudioShortFeatures();
     }
 
     @Test

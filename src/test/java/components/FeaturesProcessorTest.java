@@ -1,7 +1,7 @@
 package components;
 
 import facade.DataParser;
-import model.AudioFeatures;
+import model.AudioShortFeatures;
 import model.exceptions.AudioAnalysisException;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,7 +50,7 @@ public class FeaturesProcessorTest {
         assertThat(extractedFeatures.shape()[0], is(TOTAL_FEATURES));
         assertThat(extractedFeatures.shape()[1], is(1));
 
-        AudioFeatures extractedFeaturesFromSlice = dataParser.parseAudioFeature(extractedFeatures, 0);
+        AudioShortFeatures extractedFeaturesFromSlice = dataParser.parseAudioFeature(extractedFeatures, 0);
         assertNotNull(extractedFeaturesFromSlice);
 
         assertThat(TestUtils.getRoundDouble(extractedFeaturesFromSlice.getZeroCrossingRate(), roundPrecision), is(TestUtils.getRoundDouble(TEST_AUDIO_ZCR_VALUE, roundPrecision)));

@@ -1,7 +1,9 @@
 package components;
 
 import libs.CustomOperations;
+import model.BpmFeatures;
 import model.ModuleParams;
+import model.RawAudioFeatures;
 import model.exceptions.AudioAnalysisException;
 import org.jtransforms.fft.DoubleFFT_1D;
 import org.nd4j.linalg.api.ndarray.INDArray;
@@ -21,9 +23,12 @@ public class AudioFeaturesExtractor {
 
     private StatisticsExtractor statisticsExtractor;
 
+    private BpmExtractor bpmExtractor;
+
     public AudioFeaturesExtractor() {
         this.featuresProcessor = new FeaturesProcessor();
         this.statisticsExtractor = new StatisticsExtractor();
+        this.bpmExtractor = new BpmExtractor();
     }
 
     /**
@@ -38,13 +43,15 @@ public class AudioFeaturesExtractor {
      * @return INDArray of [34*numStatistics][1] with the mean of the mid term features
      * @throws AudioAnalysisException Exception raised in the process
      */
-    public INDArray featureExtraction(double[] audioSamples, final ModuleParams moduleParams) throws AudioAnalysisException {
+    public RawAudioFeatures featureExtraction(double[] audioSamples, final ModuleParams moduleParams) throws AudioAnalysisException {
 
         long timeBefore = System.currentTimeMillis();
         long timeAfter;
 
         //Extract the matrix with the [32 features] x [N window samples]
         INDArray shortTermFeatures = extractShortTermFeatures(audioSamples, moduleParams.getFrequencyRate(), moduleParams.getShortTermWindowSize(), moduleParams.getShortTermStepSize());
+
+        BpmFeatures bpmExtractedFeatures = bpmExtractor.extractBpm(shortTermFeatures, moduleParams);
 
         if (moduleParams.isLogProcessesDurationEnabled()) {
             timeAfter = System.currentTimeMillis();
@@ -60,7 +67,9 @@ public class AudioFeaturesExtractor {
             System.out.println("mtFeatures extracted (" + (timeAfter - timeBefore) + ") : mtFeatures [" + midTermFeatures.shape()[0] + "][" + midTermFeatures.shape()[1] + "]");
         }
 
-        return midTermFeatures.mean(1);
+        INDArray meanMidTermFeatures = midTermFeatures.mean(1).dup();
+
+        return new RawAudioFeatures(meanMidTermFeatures, bpmExtractedFeatures);
     }
 
     /**

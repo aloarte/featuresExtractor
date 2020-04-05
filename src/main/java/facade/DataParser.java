@@ -22,31 +22,31 @@ public class DataParser {
      * @param moduleParams        ModuleParams with the configuration selected by the user
      * @return A list of AudioFeatures with the same number of AudioFeatures as the number of statistical measures.
      */
-    List<AudioFeatures> parseAudioFeatures(INDArray smExtractedFeatures, final ModuleParams moduleParams) {
+    List<AudioShortFeatures> parseAudioFeatures(INDArray smExtractedFeatures, final ModuleParams moduleParams) {
         if (smExtractedFeatures != null && smExtractedFeatures.length() == (TOTAL_FEATURES * moduleParams.getStatisticalMeasuresNumber())) {
-            List<AudioFeatures> parsedFeatures = new ArrayList<>();
+            List<AudioShortFeatures> parsedFeatures = new ArrayList<>();
             for (int statisticalMeasureIndex = 0; statisticalMeasureIndex < moduleParams.getStatisticalMeasuresNumber(); statisticalMeasureIndex++) {
                 //Create the AudioFeatures class and set the statistical measure type
-                AudioFeatures audioFeatures = parseAudioFeature(smExtractedFeatures, statisticalMeasureIndex);
-                audioFeatures.setStatisticalMeasureType(moduleParams.getStatisticalMeasures().get(statisticalMeasureIndex));
+                AudioShortFeatures audioShortFeatures = parseAudioFeature(smExtractedFeatures, statisticalMeasureIndex);
+                audioShortFeatures.setStatisticalMeasureType(moduleParams.getStatisticalMeasures().get(statisticalMeasureIndex));
                 //Add the AudioFeatures calculated to the list of AudioFeatures
-                parsedFeatures.add(audioFeatures);
+                parsedFeatures.add(audioShortFeatures);
             }
             //Return the list of AudioFeatures
             return parsedFeatures;
         } else return null;
     }
 
-    public AudioFeatures parseAudioFeature(INDArray smExtractedFeatures, int statisticalMeasureIndex) {
-        AudioFeatures audioFeatures = new AudioFeatures();
+    public AudioShortFeatures parseAudioFeature(INDArray smExtractedFeatures, int statisticalMeasureIndex) {
+        AudioShortFeatures audioShortFeatures = new AudioShortFeatures();
         //Add each set of features to the final AudioFeatures class
-        audioFeatures.setZeroCrossingRate(smExtractedFeatures.getDouble(statisticalMeasureIndex));
-        audioFeatures.setEnergyFeatures(parseEnergyFeatures(smExtractedFeatures, statisticalMeasureIndex));
-        audioFeatures.setSpectralFeatures(parseSpectralFeatures(smExtractedFeatures, statisticalMeasureIndex));
-        audioFeatures.setMfcCs(parseMFFCS(smExtractedFeatures, statisticalMeasureIndex));
-        audioFeatures.setChromaFeatures(parseChromaFeatures(smExtractedFeatures, statisticalMeasureIndex));
+        audioShortFeatures.setZeroCrossingRate(smExtractedFeatures.getDouble(statisticalMeasureIndex));
+        audioShortFeatures.setEnergyFeatures(parseEnergyFeatures(smExtractedFeatures, statisticalMeasureIndex));
+        audioShortFeatures.setSpectralFeatures(parseSpectralFeatures(smExtractedFeatures, statisticalMeasureIndex));
+        audioShortFeatures.setMfcCs(parseMFFCS(smExtractedFeatures, statisticalMeasureIndex));
+        audioShortFeatures.setChromaFeatures(parseChromaFeatures(smExtractedFeatures, statisticalMeasureIndex));
 
-        return audioFeatures;
+        return audioShortFeatures;
     }
 
     /**

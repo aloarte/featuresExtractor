@@ -76,15 +76,15 @@ public class DataParserTest {
 
     @Test
     public void parseAudioFeatures() throws Exception {
-        List<AudioFeatures> parsedAudioFeatures = SUT.parseAudioFeatures(testFeatures, moduleParams);
-        assertNotNull(parsedAudioFeatures);
-        assertThat(parsedAudioFeatures.size(), is(moduleParams.getStatisticalMeasuresNumber()));
-        assertThat(TestUtils.getRoundDouble(parsedAudioFeatures.get(0).getZeroCrossingRate(), roundPrecision), is(TEST_AF_ZCR));
-        assertThat(parsedAudioFeatures.get(0).getStatisticalMeasureType(), is(StatisticalMeasureType.Mean));
-        assertNotNull(parsedAudioFeatures.get(0).getEnergyFeatures());
-        assertNotNull(parsedAudioFeatures.get(0).getSpectralFeatures());
-        assertNotNull(parsedAudioFeatures.get(0).getMfcCs());
-        assertNotNull(parsedAudioFeatures.get(0).getChromaFeatures());
+        List<AudioShortFeatures> parsedAudioShortFeatures = SUT.parseAudioFeatures(testFeatures, moduleParams);
+        assertNotNull(parsedAudioShortFeatures);
+        assertThat(parsedAudioShortFeatures.size(), is(moduleParams.getStatisticalMeasuresNumber()));
+        assertThat(TestUtils.getRoundDouble(parsedAudioShortFeatures.get(0).getZeroCrossingRate(), roundPrecision), is(TEST_AF_ZCR));
+        assertThat(parsedAudioShortFeatures.get(0).getStatisticalMeasureType(), is(StatisticalMeasureType.Mean));
+        assertNotNull(parsedAudioShortFeatures.get(0).getEnergyFeatures());
+        assertNotNull(parsedAudioShortFeatures.get(0).getSpectralFeatures());
+        assertNotNull(parsedAudioShortFeatures.get(0).getMfcCs());
+        assertNotNull(parsedAudioShortFeatures.get(0).getChromaFeatures());
 
     }
 

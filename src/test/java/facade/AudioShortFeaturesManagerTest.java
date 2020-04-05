@@ -16,7 +16,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static testutils.TestingConstants.*;
 
-public class AudioFeaturesManagerTest {
+public class AudioShortFeaturesManagerTest {
 
 
     private TestUtils testUtils;
@@ -29,13 +29,11 @@ public class AudioFeaturesManagerTest {
         SUT = new AudioFeaturesManager();
     }
 
-    @Ignore
+    @Ignore("The 301s sample of the song take too long.")
     @Test
-    public void processAudioSource() throws Exception {
-
-
+    public void processAudioSource_301s() throws Exception {
         // Transform the input file into a float[] array
-        double[] samples = testUtils.load_wav(TEST_KNIFE_30s_WAV);
+        double[] samples = testUtils.load_wav(TEST_KNIFE_301s_WAV);
 
         ModuleParams moduleParams = new ModuleParams(TEST_FREQUENCY_RATE, 0.01, 0.01, 1, 1);
         List<StatisticalMeasureType> measureTypes = new ArrayList<>();
@@ -44,10 +42,13 @@ public class AudioFeaturesManagerTest {
 
         moduleParams.setStatisticalMeasures(measureTypes);
 
-        List<AudioFeatures> extractedFeatures = SUT.processAudioSource(samples, moduleParams);
+        AudioFeatures audioFeatures = SUT.processAudioSource(samples, moduleParams);
 
-        assertNotNull(extractedFeatures);
-        assertThat(extractedFeatures.size(), is(2));
+        assertNotNull(audioFeatures);
+        assertNotNull(audioFeatures.getAudioShortFeaturesList());
+        assertNotNull(audioFeatures.getBpmFeatures());
+
+        assertThat(audioFeatures.getAudioShortFeaturesList().size(), is(2));
 
 
 //        System.out.println(extractedFeatures.get(0).toString());
@@ -61,6 +62,35 @@ public class AudioFeaturesManagerTest {
 
 
         // Transform the input file into a float[] array
+        double[] samples = testUtils.load_wav(TEST_KNIFE_30s_WAV);
+
+        ModuleParams moduleParams = new ModuleParams(TEST_FREQUENCY_RATE, 0.01, 0.01, 1, 1);
+        List<StatisticalMeasureType> measureTypes = new ArrayList<>();
+        measureTypes.add(StatisticalMeasureType.Mean);
+        measureTypes.add(StatisticalMeasureType.StandardDeviation);
+
+        moduleParams.setStatisticalMeasures(measureTypes);
+
+        AudioFeatures audioFeatures = SUT.processAudioSource(samples, moduleParams);
+
+        assertNotNull(audioFeatures);
+        assertNotNull(audioFeatures.getAudioShortFeaturesList());
+        assertNotNull(audioFeatures.getBpmFeatures());
+
+        assertThat(audioFeatures.getAudioShortFeaturesList().size(), is(2));
+
+
+//        System.out.println(extractedFeatures.get(0).toString());
+//        System.out.println(extractedFeatures.get(1).toString());
+
+    }
+
+
+    @Test
+    public void processAudioSource_10s() throws Exception {
+
+
+        // Transform the input file into a float[] array
         double[] samples = testUtils.load_wav(TEST_KNIFE_10s_WAV);
 
         ModuleParams moduleParams = new ModuleParams(TEST_FREQUENCY_RATE, 0.01, 0.01, 1, 1);
@@ -70,16 +100,18 @@ public class AudioFeaturesManagerTest {
 
         moduleParams.setStatisticalMeasures(measureTypes);
 
-        List<AudioFeatures> extractedFeatures = SUT.processAudioSource(samples, moduleParams);
+        AudioFeatures audioFeatures = SUT.processAudioSource(samples, moduleParams);
 
-        assertNotNull(extractedFeatures);
-        assertThat(extractedFeatures.size(), is(2));
+        assertNotNull(audioFeatures);
+        assertNotNull(audioFeatures.getAudioShortFeaturesList());
+        assertNotNull(audioFeatures.getBpmFeatures());
+
+        assertThat(audioFeatures.getAudioShortFeaturesList().size(), is(2));
 
 
 //        System.out.println(extractedFeatures.get(0).toString());
 //        System.out.println(extractedFeatures.get(1).toString());
 
+
     }
-
-
 }

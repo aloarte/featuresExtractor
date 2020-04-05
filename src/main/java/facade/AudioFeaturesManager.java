@@ -3,9 +3,10 @@ package facade;
 import components.AudioFeaturesExtractor;
 import components.MethodsEntryValidator;
 import model.AudioFeatures;
+import model.AudioShortFeatures;
 import model.ModuleParams;
+import model.RawAudioFeatures;
 import model.exceptions.AudioAnalysisException;
-import org.nd4j.linalg.api.ndarray.INDArray;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class AudioFeaturesManager {
      * @param rawAudioSource raw audio source in byte[] format
      * @return
      */
-    public List<AudioFeatures> processAudioSource(final double[] rawAudioSource, final ModuleParams moduleParams) throws AudioAnalysisException {
+    public AudioFeatures processAudioSource(final double[] rawAudioSource, final ModuleParams moduleParams) throws AudioAnalysisException {
 
         //Check the module configuration values
         validator.validateConfiguration(moduleParams);
@@ -38,10 +39,12 @@ public class AudioFeaturesManager {
 
         //Extract the global features in an INDArray
 
-        INDArray globalFeatures = audioFeaturesExtractor.featureExtraction(rawAudioSource, moduleParams);
+        RawAudioFeatures rawAudioFeatures = audioFeaturesExtractor.featureExtraction(rawAudioSource, moduleParams);
 
         //Parse the audio features from the INDArray to the concrete AudioFeature object
-        return dataParser.parseAudioFeatures(globalFeatures, moduleParams);
+        List<AudioShortFeatures> audioShortFeatures = dataParser.parseAudioFeatures(rawAudioFeatures.getMeanMidTermFeatures(), moduleParams);
+
+        return new AudioFeatures(rawAudioFeatures.getBpmFeatures(), audioShortFeatures);
 
     }
 
