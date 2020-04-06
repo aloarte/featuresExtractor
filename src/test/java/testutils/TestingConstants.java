@@ -94,6 +94,10 @@ public class TestingConstants {
             0.513,
             0.514};
 
+
+    public static final double TEST_AF_BPM_VALUE = 0.61;
+    public static final double TEST_AF_BPM_DEVIATION = 0.62;
+
     //Real values
     public static final double TEST_AUDIO_ZCR_VALUE = 0.0365296803652968;
     public static final double TEST_AUDIO_ENERGY_VALUE = 0.04695406827059659;
@@ -140,4 +144,7 @@ public class TestingConstants {
     public static final double TEST_SLICE_STATS_MEAN = 0.10977169126272202;
     public static final double TEST_SLICE_STATS_STD = 0.08966296911239624;
 
+
+    public static final double TEST_AUDIO_BPM_VALUE = 0.04695406827059659;
+    public static final double TEST_AUDIO_BPM_DEVIATION = 2.874689817428589;
 }

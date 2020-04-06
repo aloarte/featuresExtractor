@@ -38,6 +38,7 @@ public class AudioShortFeaturesExtractorTest {
             100d,
             100d,
             1d};
+    private ModuleParams moduleParams;
 
 
     @Before
@@ -46,6 +47,8 @@ public class AudioShortFeaturesExtractorTest {
         SUT = new AudioFeaturesExtractor();
         currentSliceData = INDArrayUtils.readAudioSliceFromFile(TEST_SAMPLE_INDARRAY_C_AUDIO_SLICE);
         currentFFTSliceData = INDArrayUtils.readAudioSliceFromFile(TEST_SAMPLE_INDARRAY_FFT_C_AUDIO_SLICE);
+        moduleParams = new ModuleParams(TEST_FREQUENCY_RATE, 0.01, 0.01, 1, 1);
+        moduleParams.enableLogProcessesDuration();
     }
 
     @Ignore("The 301s sample of the song take too long.")
@@ -57,7 +60,7 @@ public class AudioShortFeaturesExtractorTest {
 
         INDArray meanMidControlFeatures = INDArrayUtils.readMeanMidTermFeaturesFromFile(TEST_KNIFE_301s_CONTROL_VALUES_MEAN);
 
-        RawAudioFeatures extractedFeatures = SUT.featureExtraction(samples, new ModuleParams(TEST_FREQUENCY_RATE, 0.01, 0.01, 1, 1));
+        RawAudioFeatures extractedFeatures = SUT.featureExtraction(samples, moduleParams);
         INDArrayUtils.assertFeatures(extractedFeatures.getMeanMidTermFeatures(), meanMidControlFeatures, roundPrecisionComplete);
 
     }
@@ -70,7 +73,7 @@ public class AudioShortFeaturesExtractorTest {
 
         INDArray meanMidControlFeatures = INDArrayUtils.readMeanMidTermFeaturesFromFile(TEST_KNIFE_30s_CONTROL_VALUES_MEAN);
 
-        RawAudioFeatures extractedFeatures = SUT.featureExtraction(samples, new ModuleParams(TEST_FREQUENCY_RATE, 0.01, 0.01, 1, 1));
+        RawAudioFeatures extractedFeatures = SUT.featureExtraction(samples, moduleParams);
         INDArrayUtils.assertFeatures(extractedFeatures.getMeanMidTermFeatures(), meanMidControlFeatures, roundPrecisionComplete);
 
     }
@@ -82,7 +85,7 @@ public class AudioShortFeaturesExtractorTest {
         double[] samples = testUtils.load_wav(TEST_KNIFE_10s_WAV);
         INDArray meanMidControlFeatures = INDArrayUtils.readMeanMidTermFeaturesFromFile(TEST_KNIFE_10s_CONTROL_VALUES_MEAN);
 
-        RawAudioFeatures extractedFeatures = SUT.featureExtraction(samples, new ModuleParams(TEST_FREQUENCY_RATE, 0.01, 0.01, 1, 1));
+        RawAudioFeatures extractedFeatures = SUT.featureExtraction(samples, moduleParams);
         INDArrayUtils.assertFeatures(extractedFeatures.getMeanMidTermFeatures(), meanMidControlFeatures, roundPrecisionComplete);
     }
 

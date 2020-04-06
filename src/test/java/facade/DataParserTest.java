@@ -1,7 +1,10 @@
 package facade;
 
 import model.*;
+import model.enums.AudioAnalysisExceptionType;
+import model.enums.DataParseExceptionType;
 import model.enums.StatisticalMeasureType;
+import model.exceptions.DataParseException;
 import org.junit.Before;
 import org.junit.Test;
 import org.nd4j.linalg.api.ndarray.INDArray;
@@ -14,8 +17,7 @@ import java.util.List;
 import static constants.FeaturesNumbersConstants.MFCCS_FEATURES;
 import static constants.FeaturesNumbersConstants.TOTAL_FEATURES;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 import static testutils.TestingConstants.*;
 
 public class DataParserTest {
@@ -34,48 +36,48 @@ public class DataParserTest {
         measureTypes.add(StatisticalMeasureType.Mean);
         moduleParams.setStatisticalMeasures(measureTypes);
 
-        testFeatures = Nd4j.zeros(TOTAL_FEATURES);
-        testFeatures.putScalar(0, TEST_AF_ZCR);
-        testFeatures.putScalar(1, TEST_AF_EF_E);
-        testFeatures.putScalar(2, TEST_AF_EF_EN);
-        testFeatures.putScalar(3, TEST_AF_SF_C);
-        testFeatures.putScalar(4, TEST_AF_SF_S);
-        testFeatures.putScalar(5, TEST_AF_SF_E);
-        testFeatures.putScalar(6, TEST_AF_SF_F);
-        testFeatures.putScalar(7, TEST_AF_SF_R);
+        testFeatures = Nd4j.zeros(TOTAL_FEATURES, 1);
+        testFeatures.putScalar(new int[]{0, 0}, TEST_AF_ZCR);
+        testFeatures.putScalar(new int[]{1, 0}, TEST_AF_EF_E);
+        testFeatures.putScalar(new int[]{2, 0}, TEST_AF_EF_EN);
+        testFeatures.putScalar(new int[]{3, 0}, TEST_AF_SF_C);
+        testFeatures.putScalar(new int[]{4, 0}, TEST_AF_SF_S);
+        testFeatures.putScalar(new int[]{5, 0}, TEST_AF_SF_E);
+        testFeatures.putScalar(new int[]{6, 0}, TEST_AF_SF_F);
+        testFeatures.putScalar(new int[]{7, 0}, TEST_AF_SF_R);
 
-        testFeatures.putScalar(8, TEST_AF_MFCC[0]);
-        testFeatures.putScalar(9, TEST_AF_MFCC[1]);
-        testFeatures.putScalar(10, TEST_AF_MFCC[2]);
-        testFeatures.putScalar(11, TEST_AF_MFCC[3]);
-        testFeatures.putScalar(12, TEST_AF_MFCC[4]);
-        testFeatures.putScalar(13, TEST_AF_MFCC[5]);
-        testFeatures.putScalar(14, TEST_AF_MFCC[6]);
-        testFeatures.putScalar(15, TEST_AF_MFCC[7]);
-        testFeatures.putScalar(16, TEST_AF_MFCC[8]);
-        testFeatures.putScalar(17, TEST_AF_MFCC[9]);
-        testFeatures.putScalar(18, TEST_AF_MFCC[10]);
-        testFeatures.putScalar(19, TEST_AF_MFCC[11]);
-        testFeatures.putScalar(20, TEST_AF_MFCC[12]);
+        testFeatures.putScalar(new int[]{8, 0}, TEST_AF_MFCC[0]);
+        testFeatures.putScalar(new int[]{9, 0}, TEST_AF_MFCC[1]);
+        testFeatures.putScalar(new int[]{10, 0}, TEST_AF_MFCC[2]);
+        testFeatures.putScalar(new int[]{11, 0}, TEST_AF_MFCC[3]);
+        testFeatures.putScalar(new int[]{12, 0}, TEST_AF_MFCC[4]);
+        testFeatures.putScalar(new int[]{13, 0}, TEST_AF_MFCC[5]);
+        testFeatures.putScalar(new int[]{14, 0}, TEST_AF_MFCC[6]);
+        testFeatures.putScalar(new int[]{15, 0}, TEST_AF_MFCC[7]);
+        testFeatures.putScalar(new int[]{16, 0}, TEST_AF_MFCC[8]);
+        testFeatures.putScalar(new int[]{17, 0}, TEST_AF_MFCC[9]);
+        testFeatures.putScalar(new int[]{18, 0}, TEST_AF_MFCC[10]);
+        testFeatures.putScalar(new int[]{19, 0}, TEST_AF_MFCC[11]);
+        testFeatures.putScalar(new int[]{20, 0}, TEST_AF_MFCC[12]);
 
-        testFeatures.putScalar(21, TEST_AF_CF_CV[0]);
-        testFeatures.putScalar(22, TEST_AF_CF_CV[1]);
-        testFeatures.putScalar(23, TEST_AF_CF_CV[2]);
-        testFeatures.putScalar(24, TEST_AF_CF_CV[3]);
-        testFeatures.putScalar(25, TEST_AF_CF_CV[4]);
-        testFeatures.putScalar(26, TEST_AF_CF_CV[5]);
-        testFeatures.putScalar(27, TEST_AF_CF_CV[6]);
-        testFeatures.putScalar(28, TEST_AF_CF_CV[7]);
-        testFeatures.putScalar(29, TEST_AF_CF_CV[8]);
-        testFeatures.putScalar(30, TEST_AF_CF_CV[9]);
-        testFeatures.putScalar(31, TEST_AF_CF_CV[10]);
-        testFeatures.putScalar(32, TEST_AF_CF_CV[11]);
-        testFeatures.putScalar(33, TEST_AF_CF_CE);
+        testFeatures.putScalar(new int[]{21, 0}, TEST_AF_CF_CV[0]);
+        testFeatures.putScalar(new int[]{22, 0}, TEST_AF_CF_CV[1]);
+        testFeatures.putScalar(new int[]{23, 0}, TEST_AF_CF_CV[2]);
+        testFeatures.putScalar(new int[]{24, 0}, TEST_AF_CF_CV[3]);
+        testFeatures.putScalar(new int[]{25, 0}, TEST_AF_CF_CV[4]);
+        testFeatures.putScalar(new int[]{26, 0}, TEST_AF_CF_CV[5]);
+        testFeatures.putScalar(new int[]{27, 0}, TEST_AF_CF_CV[6]);
+        testFeatures.putScalar(new int[]{28, 0}, TEST_AF_CF_CV[7]);
+        testFeatures.putScalar(new int[]{29, 0}, TEST_AF_CF_CV[8]);
+        testFeatures.putScalar(new int[]{30, 0}, TEST_AF_CF_CV[9]);
+        testFeatures.putScalar(new int[]{31, 0}, TEST_AF_CF_CV[10]);
+        testFeatures.putScalar(new int[]{32, 0}, TEST_AF_CF_CV[11]);
+        testFeatures.putScalar(new int[]{33, 0}, TEST_AF_CF_CE);
 
     }
 
     @Test
-    public void parseAudioFeatures() throws Exception {
+    public void parseAudioFeatures_validInput() throws Exception {
         List<AudioShortFeatures> parsedAudioShortFeatures = SUT.parseAudioFeatures(testFeatures, moduleParams);
         assertNotNull(parsedAudioShortFeatures);
         assertThat(parsedAudioShortFeatures.size(), is(moduleParams.getStatisticalMeasuresNumber()));
@@ -89,7 +91,61 @@ public class DataParserTest {
     }
 
     @Test
-    public void parseEnergyFeatures() throws Exception {
+    public void parseAudioFeatures_badInputs() {
+        try {
+            SUT.parseAudioFeatures(null, moduleParams);
+            fail("This test should raise an exception");
+        } catch (DataParseException e) {
+            assertNotNull(e);
+            assertThat(e.getAudioAnalysisExceptionType(), is(AudioAnalysisExceptionType.AudioParsing));
+            assertThat(e.getDataParserExceptionSubtype(), is(DataParseExceptionType.NullExtractedFeatures));
+        }
+
+        double[][] badInputRows = new double[][]{{0.1}, {0.1}, {0.1}, {0.1}, {0.1}, {0.1}, {0.1}, {0.1}, {0.1}, {0.1},
+                {0.1}, {0.1}, {0.1}, {0.1}, {0.1}, {0.1}, {0.1}, {0.1}, {0.1}, {0.1}, {0.1}, {0.1}, {0.1}, {0.1},
+                {0.1}, {0.1}, {0.1}, {0.1}, {0.1}, {0.1}, {0.1}, {0.1}, {0.1}};
+
+        try {
+            SUT.parseAudioFeatures(Nd4j.create(badInputRows), moduleParams);
+            fail("This test should raise an exception");
+        } catch (DataParseException e) {
+            assertNotNull(e);
+            assertThat(e.getAudioAnalysisExceptionType(), is(AudioAnalysisExceptionType.AudioParsing));
+            assertThat(e.getDataParserExceptionSubtype(), is(DataParseExceptionType.IllegalElementNumber));
+        }
+
+        double[][] badInputCols = new double[][]{{0.1, 0.2}, {0.1, 0.2}, {0.1, 0.2}, {0.1, 0.2}, {0.1, 0.2}, {0.1, 0.2},
+                {0.1, 0.2}, {0.1, 0.2}, {0.1, 0.2}, {0.1, 0.2}, {0.1, 0.2}, {0.1, 0.2}, {0.1, 0.2}, {0.1, 0.2},
+                {0.1, 0.2}, {0.1, 0.2}, {0.1, 0.2}, {0.1, 0.2}, {0.1, 0.2}, {0.1, 0.2}, {0.1, 0.2}, {0.1, 0.2},
+                {0.1, 0.2}, {0.1, 0.2}, {0.1, 0.2}, {0.1, 0.2}, {0.1, 0.2}, {0.1, 0.2}, {0.1, 0.2}, {0.1, 0.2},
+                {0.1, 0.2}, {0.1, 0.2}, {0.1, 0.2}, {0.1, 0.1}};
+
+        try {
+            SUT.parseAudioFeatures(Nd4j.create(badInputCols), moduleParams);
+            fail("This test should raise an exception");
+        } catch (DataParseException e) {
+            assertNotNull(e);
+            assertThat(e.getAudioAnalysisExceptionType(), is(AudioAnalysisExceptionType.AudioParsing));
+            assertThat(e.getDataParserExceptionSubtype(), is(DataParseExceptionType.IllegalElementNumber));
+        }
+
+    }
+
+    @Test
+    public void parseAudioFeature_badInput() {
+        try {
+            SUT.parseAudioFeature(null, 0);
+            fail("This test should raise an exception");
+        } catch (DataParseException e) {
+            assertNotNull(e);
+            assertThat(e.getAudioAnalysisExceptionType(), is(AudioAnalysisExceptionType.AudioParsing));
+            assertThat(e.getDataParserExceptionSubtype(), is(DataParseExceptionType.NullExtractedFeatures));
+        }
+    }
+
+
+    @Test
+    public void parseEnergyFeatures() {
         EnergyFeatures parsedEnergyFeatures = SUT.parseEnergyFeatures(testFeatures, 0);
         assertNotNull(parsedEnergyFeatures);
         assertThat(TestUtils.getRoundDouble(parsedEnergyFeatures.getEnergy(), roundPrecision), is(TEST_AF_EF_E));
@@ -97,7 +153,7 @@ public class DataParserTest {
     }
 
     @Test
-    public void parseSpectralFeatures() throws Exception {
+    public void parseSpectralFeatures() {
         SpectralFeatures parsedSpectralFeatures = SUT.parseSpectralFeatures(testFeatures, 0);
         assertNotNull(parsedSpectralFeatures);
         assertThat(TestUtils.getRoundDouble(parsedSpectralFeatures.getSpectralCentroid(), roundPrecision), is(TEST_AF_SF_C));
@@ -108,7 +164,7 @@ public class DataParserTest {
     }
 
     @Test
-    public void parseMFFCS() throws Exception {
+    public void parseMFFCS() {
         MFCCs parsedMfccs = SUT.parseMFFCS(testFeatures, 0);
         assertNotNull(parsedMfccs);
         assertThat(parsedMfccs.getMfccsValues().length, is(MFCCS_FEATURES));
@@ -130,7 +186,7 @@ public class DataParserTest {
     }
 
     @Test
-    public void parseChromaFeatures() throws Exception {
+    public void parseChromaFeatures() {
         ChromaFeatures parsedChromaFeatures = SUT.parseChromaFeatures(testFeatures, 0);
         assertNotNull(parsedChromaFeatures);
         assertThat(TestUtils.getRoundDouble(parsedChromaFeatures.getChromaVector()[0], roundPrecision), is(TEST_AF_CF_CV[0]));

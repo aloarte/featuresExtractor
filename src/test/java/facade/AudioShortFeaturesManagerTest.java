@@ -50,10 +50,6 @@ public class AudioShortFeaturesManagerTest {
 
         assertThat(audioFeatures.getAudioShortFeaturesList().size(), is(2));
 
-
-//        System.out.println(extractedFeatures.get(0).toString());
-//        System.out.println(extractedFeatures.get(1).toString());
-
     }
 
 
@@ -76,12 +72,7 @@ public class AudioShortFeaturesManagerTest {
         assertNotNull(audioFeatures);
         assertNotNull(audioFeatures.getAudioShortFeaturesList());
         assertNotNull(audioFeatures.getBpmFeatures());
-
         assertThat(audioFeatures.getAudioShortFeaturesList().size(), is(2));
-
-
-//        System.out.println(extractedFeatures.get(0).toString());
-//        System.out.println(extractedFeatures.get(1).toString());
 
     }
 
@@ -105,13 +96,7 @@ public class AudioShortFeaturesManagerTest {
         assertNotNull(audioFeatures);
         assertNotNull(audioFeatures.getAudioShortFeaturesList());
         assertNotNull(audioFeatures.getBpmFeatures());
-
         assertThat(audioFeatures.getAudioShortFeaturesList().size(), is(2));
-
-
-//        System.out.println(extractedFeatures.get(0).toString());
-//        System.out.println(extractedFeatures.get(1).toString());
-
 
     }
 }

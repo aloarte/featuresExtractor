@@ -31,6 +31,4 @@ public class AudioFeatures {
     public void setAudioShortFeaturesList(List<AudioShortFeatures> audioShortFeaturesList) {
         this.audioShortFeaturesList = audioShortFeaturesList;
     }
-
-
 }

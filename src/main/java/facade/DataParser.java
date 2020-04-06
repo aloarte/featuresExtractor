@@ -1,6 +1,8 @@
 package facade;
 
 import model.*;
+import model.enums.DataParseExceptionType;
+import model.exceptions.DataParseException;
 import org.nd4j.linalg.api.ndarray.INDArray;
 
 import java.util.ArrayList;
@@ -18,35 +20,45 @@ public class DataParser {
     /**
      * Parse the INDArray of statistical measures of the extracted features into a list of AudioFeatures
      *
-     * @param smExtractedFeatures INDArray containing the statistical measures of each extracted feature
-     * @param moduleParams        ModuleParams with the configuration selected by the user
+     * @param midTermFeatures INDArray containing the statistical measures of each extracted feature
+     * @param moduleParams    ModuleParams with the configuration selected by the user
      * @return A list of AudioFeatures with the same number of AudioFeatures as the number of statistical measures.
      */
-    List<AudioShortFeatures> parseAudioFeatures(INDArray smExtractedFeatures, final ModuleParams moduleParams) {
-        if (smExtractedFeatures != null && smExtractedFeatures.length() == (TOTAL_FEATURES * moduleParams.getStatisticalMeasuresNumber())) {
+    List<AudioShortFeatures> parseAudioFeatures(INDArray midTermFeatures, final ModuleParams moduleParams) throws DataParseException {
+        if (midTermFeatures == null)
+            throw new DataParseException(DataParseExceptionType.NullExtractedFeatures, "The midTermFeatures input is null.");
+        else if (midTermFeatures.rows() != (TOTAL_FEATURES * moduleParams.getStatisticalMeasuresNumber()))
+            throw new DataParseException(DataParseExceptionType.IllegalElementNumber, "Illegal number of rows of the midTermFeatures. Rows should be " + TOTAL_FEATURES * moduleParams.getStatisticalMeasuresNumber() + " instead of " + midTermFeatures.rows());
+        else if (midTermFeatures.columns() != 1)
+            throw new DataParseException(DataParseExceptionType.IllegalElementNumber, "Illegal number of columns of the midTermFeatures. Rows should be 1 instead of " + midTermFeatures.columns());
+        else {
             List<AudioShortFeatures> parsedFeatures = new ArrayList<>();
             for (int statisticalMeasureIndex = 0; statisticalMeasureIndex < moduleParams.getStatisticalMeasuresNumber(); statisticalMeasureIndex++) {
                 //Create the AudioFeatures class and set the statistical measure type
-                AudioShortFeatures audioShortFeatures = parseAudioFeature(smExtractedFeatures, statisticalMeasureIndex);
+                AudioShortFeatures audioShortFeatures = parseAudioFeature(midTermFeatures, statisticalMeasureIndex);
                 audioShortFeatures.setStatisticalMeasureType(moduleParams.getStatisticalMeasures().get(statisticalMeasureIndex));
                 //Add the AudioFeatures calculated to the list of AudioFeatures
                 parsedFeatures.add(audioShortFeatures);
             }
             //Return the list of AudioFeatures
             return parsedFeatures;
-        } else return null;
+        }
     }
 
-    public AudioShortFeatures parseAudioFeature(INDArray smExtractedFeatures, int statisticalMeasureIndex) {
-        AudioShortFeatures audioShortFeatures = new AudioShortFeatures();
-        //Add each set of features to the final AudioFeatures class
-        audioShortFeatures.setZeroCrossingRate(smExtractedFeatures.getDouble(statisticalMeasureIndex));
-        audioShortFeatures.setEnergyFeatures(parseEnergyFeatures(smExtractedFeatures, statisticalMeasureIndex));
-        audioShortFeatures.setSpectralFeatures(parseSpectralFeatures(smExtractedFeatures, statisticalMeasureIndex));
-        audioShortFeatures.setMfcCs(parseMFFCS(smExtractedFeatures, statisticalMeasureIndex));
-        audioShortFeatures.setChromaFeatures(parseChromaFeatures(smExtractedFeatures, statisticalMeasureIndex));
+    public AudioShortFeatures parseAudioFeature(INDArray midTermFeatures, int statisticalMeasureIndex) throws DataParseException {
+        if (midTermFeatures != null) {
+            AudioShortFeatures audioShortFeatures = new AudioShortFeatures();
+            //Add each set of features to the final AudioFeatures class
+            audioShortFeatures.setZeroCrossingRate(midTermFeatures.getDouble(statisticalMeasureIndex));
+            audioShortFeatures.setEnergyFeatures(parseEnergyFeatures(midTermFeatures, statisticalMeasureIndex));
+            audioShortFeatures.setSpectralFeatures(parseSpectralFeatures(midTermFeatures, statisticalMeasureIndex));
+            audioShortFeatures.setMfcCs(parseMFFCS(midTermFeatures, statisticalMeasureIndex));
+            audioShortFeatures.setChromaFeatures(parseChromaFeatures(midTermFeatures, statisticalMeasureIndex));
 
-        return audioShortFeatures;
+            return audioShortFeatures;
+        } else
+            throw new DataParseException(DataParseExceptionType.NullExtractedFeatures, "The midTermFeatures input is null.");
+
     }
 
     /**
