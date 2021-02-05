@@ -1,78 +1,78 @@
-plugins {
-    id 'java'
-    id 'java-library'
-    id 'maven-publish'
+import proguard.gradle.ProGuardTask
+
+apply plugin: 'idea'
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+group 'com.p4r4d0x'
+version '0.0.1'
+
+def javaName = archivesBaseName + '-java'
+def fullJavaName = archivesBaseName + '-full'
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+    }
 }
-compileJava(){
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
-}
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
-
     implementation 'fr.delthas:javamp3:1.0.1'
     implementation "org.nd4j:nd4j-native-platform:1.0.0-alpha"
     implementation "com.github.wendykierp:JTransforms:3.1"
     implementation "org.slf4j:slf4j-jdk14:1.7.25"
 
 
+    testImplementation 'fr.delthas:javamp3:1.0.1'
+    testImplementation "org.nd4j:nd4j-native-platform:1.0.0-alpha"
+    testImplementation "com.github.wendykierp:JTransforms:3.1"
+    testImplementation "org.slf4j:slf4j-jdk14:1.7.25"
     testImplementation "junit:junit:4.12"
 
 }
 
 
-task sourcesJar(type: Jar){
-    from sourceSets.main.allJava
-    classifier "sourcer"
+jar {
+    archiveBaseName = javaName
+    manifest {
+        attributes "Implementation-Title": javaName
+        attributes "Implementation-Version": archiveVersion
+    }
+
 }
 
-javadoc{
-    title = project.getName() + " " + version
-    options.encoding = 'UTF-8'
+task fullJavaJar(type: Jar) {
+    archiveBaseName = fullJavaName
+    manifest {
+        attributes "Implementation-Title": archiveBaseName
+        attributes "Implementation-Version": archiveVersion
+    }
+    from sourceSets.main.output
+    artifacts {
+        archives fullJavaJar
+    }
 }
 
-task javadocsJar(type: Jar, dependsOn: javadoc){
-    from javadoc.destinationDir
-    classifier "javadoc"
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'net.sf.proguard:proguard-gradle:5.2.1'
+    }
 }
 
-task obfuscateJar(type: Jar){
-    classifier "debug"
-}
 
-//publising{
-//    publications{
-//        mavenJava(MavenPublication){
-//            groupId rootProject.ext.groupIdLib
-//            artifactId project.getName()
-//            version rootProject.ext.version
-//
-//            artifact sourcesJar
-//            artifact javadocsJar
-//            artifact ("$buildDir/libs/${project.getName()}-${project.ext.version}.jar"){
-//                classifier "debug"
-//            }
-//            artifact("$buildDir/libs/${project.getName()}-${project.ext.version}.jar")
-//        }
-//    }
-//    repositories{
-//        maven {
-//            //Get the credentials for the publication
-//            credentials{
-//                username = domainUser
-//                password = domainPassword
-//            }
-//            //if the library is a snapshot, use the publications URL for the snapshots
-//            if(rootProject.ext.version.endsWith('-SNAPSHOT')) {
-//                url rootProject.ext.urlMavenSnapshots
-//            }
-//            else{ //Otherwise use the Releases URL
-//                url rootProject.ext.urlMavenReleases
-//            }
-//        }
-//    }
-//}
+task proguard(type: ProGuardTask) {
+    configuration 'proguard-rules.pro'
+
+    injars "$buildDir/libs/${fullJavaName}-${version}.jar"
+    outjars "$buildDir/libs/${javaName}-${version}.jar"
+}
 

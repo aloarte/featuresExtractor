@@ -57,9 +57,6 @@ public class MfccsProcessor {
         }
 
 
-        //TODO: Review the filterbank
-
-
         DoubleDCT_1D mydtc = new DoubleDCT_1D(mspec.length());
         double[] ceps = mspec.toDoubleVector();
         mydtc.forward(ceps, true);
