@@ -1,11 +1,8 @@
 package components;
 
-import model.ModuleParams;
-import model.RawAudioFeatures;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.nd4j.linalg.api.iter.NdIndexIterator;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import testutils.INDArrayUtils;
 import testutils.TestUtils;
@@ -16,14 +13,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static testutils.TestingConstants.*;
 
-public class AudioShortFeaturesExtractorTest {
+public class ShortTermExtractorTest {
 
     private TestUtils testUtils;
 
-    private AudioFeaturesExtractor SUT;
+    private ShortTermExtractor SUT;
 
-    private INDArray currentSliceData;
-    private INDArray currentFFTSliceData;
     private double[] roundPrecision = new double[]{
             10000d,
             1000d,
@@ -38,57 +33,13 @@ public class AudioShortFeaturesExtractorTest {
             100d,
             100d,
             1d};
-    private ModuleParams moduleParams;
 
 
     @Before
     public void startUp() {
         testUtils = new TestUtils();
-        SUT = new AudioFeaturesExtractor();
-        currentSliceData = INDArrayUtils.readAudioSliceFromFile(TEST_SAMPLE_INDARRAY_C_AUDIO_SLICE);
-        currentFFTSliceData = INDArrayUtils.readAudioSliceFromFile(TEST_SAMPLE_INDARRAY_FFT_C_AUDIO_SLICE);
-        moduleParams = new ModuleParams(TEST_FREQUENCY_RATE, 0.01, 0.01, 1, 1);
-        moduleParams.enableLogProcessesDuration();
+        SUT = new ShortTermExtractor();
     }
-
-    @Ignore("The 301s sample of the song take too long.")
-    @Test
-    public void featureExtraction_knife301s() throws Exception {
-
-        // Transform the input file into a float[] array
-        double[] samples = testUtils.load_wav(TEST_KNIFE_301s_WAV);
-
-        INDArray meanMidControlFeatures = INDArrayUtils.readMeanMidTermFeaturesFromFile(TEST_KNIFE_301s_CONTROL_VALUES_MEAN);
-
-        RawAudioFeatures extractedFeatures = SUT.featureExtraction(samples, moduleParams);
-        INDArrayUtils.assertFeatures(extractedFeatures.getMeanMidTermFeatures(), meanMidControlFeatures, roundPrecisionComplete);
-
-    }
-
-    @Test
-    public void featureExtraction_knife30s() throws Exception {
-
-        // Transform the input file into a float[] array
-        double[] samples = testUtils.load_wav(TEST_KNIFE_30s_WAV);
-
-        INDArray meanMidControlFeatures = INDArrayUtils.readMeanMidTermFeaturesFromFile(TEST_KNIFE_30s_CONTROL_VALUES_MEAN);
-
-        RawAudioFeatures extractedFeatures = SUT.featureExtraction(samples, moduleParams);
-        INDArrayUtils.assertFeatures(extractedFeatures.getMeanMidTermFeatures(), meanMidControlFeatures, roundPrecisionComplete);
-
-    }
-
-    @Test
-    public void featureExtraction_knife10s() throws Exception {
-
-        // Transform the input file into a float[] array
-        double[] samples = testUtils.load_wav(TEST_KNIFE_10s_WAV);
-        INDArray meanMidControlFeatures = INDArrayUtils.readMeanMidTermFeaturesFromFile(TEST_KNIFE_10s_CONTROL_VALUES_MEAN);
-
-        RawAudioFeatures extractedFeatures = SUT.featureExtraction(samples, moduleParams);
-        INDArrayUtils.assertFeatures(extractedFeatures.getMeanMidTermFeatures(), meanMidControlFeatures, roundPrecisionComplete);
-    }
-
 
     @Ignore("The 301s sample of the song take too long.")
     @Test
@@ -159,22 +110,6 @@ public class AudioShortFeaturesExtractorTest {
         //Check that the values are the same
         INDArrayUtils.assertShortTermFeaturesData(extractShortTermFeatures, controlShortTermFeatures, roundPrecision);
 
-    }
-
-
-    @Test
-    public void calculateFftFromAudioSlice() {
-        INDArray fftAudioSlice = SUT.calculateFftFromAudioSlice(currentSliceData, TEST_NFFT);
-        assertNotNull(fftAudioSlice);
-        assertNotNull(currentFFTSliceData);
-        assertThat(fftAudioSlice.size(1), is(TEST_NFFT));
-        assertThat(currentFFTSliceData.size(1), is(TEST_NFFT));
-
-        NdIndexIterator iterator = new NdIndexIterator(currentFFTSliceData.rows(), currentFFTSliceData.columns());
-        while (iterator.hasNext()) {
-            int[] nextIndex = iterator.next();
-            assertThat(currentFFTSliceData.getDouble(nextIndex), is(fftAudioSlice.getDouble(nextIndex)));
-        }
     }
 
 }

@@ -6,7 +6,7 @@ apply plugin: 'maven-publish'
 group 'com.p4r4d0x'
 version '0.0.1'
 
-def javaName = archivesBaseName + '-java'
+def javaName = archivesBaseName
 def fullJavaName = archivesBaseName + '-full'
 
 sourceSets {
@@ -27,11 +27,6 @@ dependencies {
     implementation "com.github.wendykierp:JTransforms:3.1"
     implementation "org.slf4j:slf4j-jdk14:1.7.25"
 
-
-    testImplementation 'fr.delthas:javamp3:1.0.1'
-    testImplementation "org.nd4j:nd4j-native-platform:1.0.0-alpha"
-    testImplementation "com.github.wendykierp:JTransforms:3.1"
-    testImplementation "org.slf4j:slf4j-jdk14:1.7.25"
     testImplementation "junit:junit:4.12"
 
 }

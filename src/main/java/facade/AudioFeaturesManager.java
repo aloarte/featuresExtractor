@@ -7,6 +7,7 @@ import model.AudioShortFeatures;
 import model.ModuleParams;
 import model.RawAudioFeatures;
 import model.exceptions.AudioAnalysisException;
+import utils.WavUtils;
 
 import java.util.List;
 
@@ -22,6 +23,12 @@ public class AudioFeaturesManager {
         this.dataParser = new DataParser();
         this.audioFeaturesExtractor = new AudioFeaturesExtractor();
         this.validator = new MethodsEntryValidator();
+    }
+
+
+    public AudioFeatures processAudioSource(String audioSamplesPath, final ModuleParams moduleParams) throws AudioAnalysisException {
+        double[] audioSamples = WavUtils.load_wav(audioSamplesPath);
+        return processAudioSource(audioSamples, moduleParams);
     }
 
     /**
@@ -45,8 +52,5 @@ public class AudioFeaturesManager {
         List<AudioShortFeatures> audioShortFeatures = dataParser.parseAudioFeatures(rawAudioFeatures.getMeanMidTermFeatures(), moduleParams);
 
         return new AudioFeatures(rawAudioFeatures.getBpmFeatures(), audioShortFeatures);
-
     }
-
-
 }

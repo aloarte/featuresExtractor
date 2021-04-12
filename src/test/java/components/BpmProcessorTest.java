@@ -29,7 +29,7 @@ public class BpmProcessorTest {
         double[] samples = new TestUtils().load_wav(TEST_KNIFE_301s_WAV);
 
         //Extract the matrix with the [32 features] x [N window samples]
-        INDArray shortTermFeatures = new AudioFeaturesExtractor().extractShortTermFeatures(samples, moduleParams.getFrequencyRate(), moduleParams.getShortTermWindowSize(), moduleParams.getShortTermStepSize());
+        INDArray shortTermFeatures = new ShortTermExtractor().extractShortTermFeatures(samples, moduleParams.getFrequencyRate(), moduleParams.getShortTermWindowSize(), moduleParams.getShortTermStepSize());
 
 
         //INDArray controlShortTermFeatures = INDArrayUtils.readShortTermFeaturesFromFile(TEST_KNIFE_301s_CONTROL_VALUES_SHORTTERM);
