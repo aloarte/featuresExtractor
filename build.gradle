@@ -1,5 +1,18 @@
 import proguard.gradle.ProGuardTask
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'net.sf.proguard:proguard-gradle:5.2.1'
+    }
+}
+
+plugins {
+    id 'jacoco'
+}
 apply plugin: 'idea'
 apply plugin: 'java'
 apply plugin: 'maven-publish'
@@ -27,7 +40,10 @@ dependencies {
     implementation "com.github.wendykierp:JTransforms:3.1"
     implementation "org.slf4j:slf4j-jdk14:1.7.25"
 
-    testImplementation "junit:junit:4.12"
+    //JaCoCo
+    implementation("org.jacoco:org.jacoco.core:0.8.7")
+
+    testImplementation 'junit:junit:4.13.1'
 
 }
 
@@ -53,21 +69,26 @@ task fullJavaJar(type: Jar) {
     }
 }
 
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'net.sf.proguard:proguard-gradle:5.2.1'
-    }
-}
-
 
 task proguard(type: ProGuardTask) {
     configuration 'proguard-rules.pro'
 
     injars "$buildDir/libs/${fullJavaName}-${version}.jar"
     outjars "$buildDir/libs/${javaName}-${version}.jar"
+}
+
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport)
+}
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+}
+
+tasks.jacocoTestReport {
+    reports {
+        xml.enabled = true
+        csv.enabled = true
+        html.enabled = true
+    }
 }
 

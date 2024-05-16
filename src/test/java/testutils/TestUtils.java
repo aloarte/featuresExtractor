@@ -48,6 +48,7 @@ public class TestUtils {
 
             // Output the minimum and maximum value
         } catch (Exception e) {
+
             System.err.println(e);
         }
         return buffer;
