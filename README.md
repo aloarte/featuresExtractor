@@ -1,3 +1,6 @@
+[![Tests](https://github.com/aloarte/featuresExtractor/actions/workflows/ci.yml/badge.svg)](https://github.com/aloarte/featuresExtractor/actions/workflows/ci.yml)
+[![Coverage Status](https://codecov.io/github/aloarte/featuresExtractor/coverage.svg?branch=master)](https://app.codecov.io/gh/aloarte/featuresExtractor)
+
 # Audio Features Extractor
 Extract several audio features from audio sources.
 
