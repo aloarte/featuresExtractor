@@ -50,7 +50,7 @@ public class AudioFeaturesExtractorTest {
 
     @Test
     public void featureExtraction_knife30s() throws Exception {
-        System.out.println("_____________ PATH: "+TEST_RESOURCES_PATH);
+        System.err.println("_____________ PATH: "+TEST_RESOURCES_PATH);
 
 
         // Transform the input file into a float[] array
@@ -65,6 +65,8 @@ public class AudioFeaturesExtractorTest {
 
     @Test
     public void featureExtraction_knife10s() throws Exception {
+        System.out.println("_____________ Init knife 10s");
+        System.err.println("_____________ Init knife 10s");
 
         // Transform the input file into a float[] array
         double[] samples = testUtils.load_wav(TEST_KNIFE_10s_WAV);
@@ -72,5 +74,8 @@ public class AudioFeaturesExtractorTest {
 
         RawAudioFeatures extractedFeatures = SUT.featureExtraction(samples, moduleParams);
         INDArrayUtils.assertFeatures(extractedFeatures.getMeanMidTermFeatures(), meanMidControlFeatures, roundPrecisionComplete);
+        System.out.println("_____________ Init knife end 10s");
+        System.err.println("_____________ Init knife end 10s");
+
     }
 }
