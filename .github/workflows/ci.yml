@@ -33,7 +33,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2.4.2
       - name: Build app
-        run: ./gradlew build --scan
+        run: ./gradlew -Dskip.tests build --scan
 
   test:
     needs: [ avoid_redundancy ]
@@ -49,6 +49,9 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+
+      - name: Grant execute permissions for resource files
+        run: chmod +x src/test/resources/
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2.4.2
