@@ -19,10 +19,11 @@ public class TestingConstants {
     public final static int TEST_NFFT = 110;
 
     public final static String TEST_RESOURCES_PATH = Paths.get("src", "test", "resources").toFile().getAbsolutePath();
-    public final static String TEST_RESOURCES_PATH_CONTROL_VALUES = TEST_RESOURCES_PATH + "\\control_values\\";
-    public final static String TEST_RESOURCES_PATH_WAV_FILES = TEST_RESOURCES_PATH + "\\wav_files\\";
+    //public final static String TEST_RESOURCES_PATH_CONTROL_VALUES = TEST_RESOURCES_PATH + "\\control_values\\";
+    //public final static String TEST_RESOURCES_PATH_WAV_FILES = TEST_RESOURCES_PATH + "\\wav_files\\";
 
-
+    public final static String TEST_RESOURCES_PATH_CONTROL_VALUES = "src/test/resources/control_values/";
+    public final static String TEST_RESOURCES_PATH_WAV_FILES = "src/test/resources/wav_files/";
     public final static String TEST_KNIFE_301s_WAV = TEST_RESOURCES_PATH_WAV_FILES + "knife_301s_22050fr.wav";
     public final static String TEST_KNIFE_301s_CONTROL_VALUES_MEAN = TEST_RESOURCES_PATH_CONTROL_VALUES + "knife_301s_22050fr_MEAN";
     public final static String TEST_KNIFE_301s_CONTROL_VALUES_MIDTERM = TEST_RESOURCES_PATH_CONTROL_VALUES + "knife_301s_22050fr_MIDTERM";
