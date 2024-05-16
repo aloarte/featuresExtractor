@@ -20,10 +20,10 @@ public class TestingConstants {
 
 
     //public final static String TEST_RESOURCES_PATH = Paths.get("src", "test", "resources").toFile().getAbsolutePath();
-    public final static String TEST_RESOURCES_PATH = "src/test/resources";
+    public final static String TEST_RESOURCES_PATH = "src/test/resources/";
 
-    public final static String TEST_RESOURCES_PATH_CONTROL_VALUES = TEST_RESOURCES_PATH + "\\control_values\\";
-    public final static String TEST_RESOURCES_PATH_WAV_FILES = TEST_RESOURCES_PATH + "\\wav_files\\";
+    public final static String TEST_RESOURCES_PATH_CONTROL_VALUES = TEST_RESOURCES_PATH + "control_values/";
+    public final static String TEST_RESOURCES_PATH_WAV_FILES = TEST_RESOURCES_PATH + "wav_files/";
 
     public final static String TEST_KNIFE_301s_WAV = TEST_RESOURCES_PATH_WAV_FILES + "knife_301s_22050fr.wav";
     public final static String TEST_KNIFE_301s_CONTROL_VALUES_MEAN = TEST_RESOURCES_PATH_CONTROL_VALUES + "knife_301s_22050fr_MEAN";
@@ -43,9 +43,9 @@ public class TestingConstants {
 
     public final static String TEST_CONTROL_KNIFE_COMPLETE_WAV = TEST_RESOURCES_PATH_WAV_FILES + "knife_301s_22050_wav_data";
 
-    public final static String TEST_SAMPLE_INDARRAY_C_AUDIO_SLICE = TEST_RESOURCES_PATH + "\\CurrentAudioSlice_Knife_22220";
-    public final static String TEST_SAMPLE_INDARRAY_FFT_C_AUDIO_SLICE = TEST_RESOURCES_PATH + "\\FFTCurrentAudioSlice_Knife_22220";
-    public final static String TEST_SAMPLE_INDARRAY_FFT_P_AUDIO_SLICE = TEST_RESOURCES_PATH + "\\FFTPreviousSlice_Knife_22220";
+    public final static String TEST_SAMPLE_INDARRAY_C_AUDIO_SLICE = TEST_RESOURCES_PATH + "CurrentAudioSlice_Knife_22220";
+    public final static String TEST_SAMPLE_INDARRAY_FFT_C_AUDIO_SLICE = TEST_RESOURCES_PATH + "FFTCurrentAudioSlice_Knife_22220";
+    public final static String TEST_SAMPLE_INDARRAY_FFT_P_AUDIO_SLICE = TEST_RESOURCES_PATH + "FFTPreviousSlice_Knife_22220";
 
 //    public final static String TEST_SAMPLE_SHORT_FEATURE = TEST_RESOURCES_PATH + "\\knife_22050fr_SHORTERM";
 //    public final static String TEST_SAMPLE_MID_FEATURE = TEST_RESOURCES_PATH + "\\knife_22050fr_MIDTERM";
