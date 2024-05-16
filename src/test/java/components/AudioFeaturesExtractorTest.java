@@ -50,6 +50,8 @@ public class AudioFeaturesExtractorTest {
 
     @Test
     public void featureExtraction_knife30s() throws Exception {
+        System.out.println("_____________ PATH: "+TEST_RESOURCES_PATH);
+
 
         // Transform the input file into a float[] array
         double[] samples = testUtils.load_wav(TEST_KNIFE_30s_WAV);
