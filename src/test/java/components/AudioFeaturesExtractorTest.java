@@ -31,7 +31,6 @@ public class AudioFeaturesExtractorTest {
         testUtils = new TestUtils();
         SUT = new AudioFeaturesExtractor();
         moduleParams = new ModuleParams(TEST_FREQUENCY_RATE, 0.01, 0.01, 1, 1);
-        moduleParams.enableLogProcessesDuration();
     }
 
     @Ignore("The 301s sample of the song take too long.")
@@ -50,9 +49,6 @@ public class AudioFeaturesExtractorTest {
 
     @Test
     public void featureExtraction_knife30s() throws Exception {
-        System.err.println("_____________ PATH: "+TEST_RESOURCES_PATH);
-
-
         // Transform the input file into a float[] array
         double[] samples = testUtils.load_wav(TEST_KNIFE_30s_WAV);
 
@@ -65,17 +61,12 @@ public class AudioFeaturesExtractorTest {
 
     @Test
     public void featureExtraction_knife10s() throws Exception {
-        System.out.println("_____________ Init knife 10s");
-        System.err.println("_____________ Init knife 10s");
-
         // Transform the input file into a float[] array
         double[] samples = testUtils.load_wav(TEST_KNIFE_10s_WAV);
         INDArray meanMidControlFeatures = INDArrayUtils.readMeanMidTermFeaturesFromFile(TEST_KNIFE_10s_CONTROL_VALUES_MEAN);
 
         RawAudioFeatures extractedFeatures = SUT.featureExtraction(samples, moduleParams);
         INDArrayUtils.assertFeatures(extractedFeatures.getMeanMidTermFeatures(), meanMidControlFeatures, roundPrecisionComplete);
-        System.out.println("_____________ Init knife end 10s");
-        System.err.println("_____________ Init knife end 10s");
 
     }
 }
