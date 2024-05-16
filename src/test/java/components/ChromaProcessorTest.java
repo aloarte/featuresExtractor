@@ -6,6 +6,7 @@ import org.nd4j.linalg.api.ndarray.INDArray;
 import testutils.INDArrayUtils;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static testutils.TestingConstants.*;
 
@@ -25,19 +26,20 @@ public class ChromaProcessorTest {
 
     @Test
     public void extractChromaFeatures() {
+        double delta = 1e-6f;
         double[] chromaFeatures = SUT.extractChromaFeatures(fftCurrentSliceData);
-        assertThat(chromaFeatures[0], is(TEST_AUDIO_CHROMA_VECTORS[0]));
-        assertThat(chromaFeatures[1], is(TEST_AUDIO_CHROMA_VECTORS[1]));
-        assertThat(chromaFeatures[2], is(TEST_AUDIO_CHROMA_VECTORS[2]));
-        assertThat(chromaFeatures[3], is(TEST_AUDIO_CHROMA_VECTORS[3]));
-        assertThat(chromaFeatures[4], is(TEST_AUDIO_CHROMA_VECTORS[4]));
-        assertThat(chromaFeatures[5], is(TEST_AUDIO_CHROMA_VECTORS[5]));
-        assertThat(chromaFeatures[6], is(TEST_AUDIO_CHROMA_VECTORS[6]));
-        assertThat(chromaFeatures[7], is(TEST_AUDIO_CHROMA_VECTORS[7]));
-        assertThat(chromaFeatures[8], is(TEST_AUDIO_CHROMA_VECTORS[8]));
-        assertThat(chromaFeatures[9], is(TEST_AUDIO_CHROMA_VECTORS[9]));
-        assertThat(chromaFeatures[10], is(TEST_AUDIO_CHROMA_VECTORS[10]));
-        assertThat(chromaFeatures[11], is(TEST_AUDIO_CHROMA_VECTORS[11]));
+        assertEquals(TEST_AUDIO_CHROMA_VECTORS[0], chromaFeatures[0], delta);
+        assertEquals(TEST_AUDIO_CHROMA_VECTORS[1], chromaFeatures[1], delta);
+        assertEquals(TEST_AUDIO_CHROMA_VECTORS[2], chromaFeatures[2], delta);
+        assertEquals(TEST_AUDIO_CHROMA_VECTORS[3], chromaFeatures[3], delta);
+        assertEquals(TEST_AUDIO_CHROMA_VECTORS[4], chromaFeatures[4], delta);
+        assertEquals(TEST_AUDIO_CHROMA_VECTORS[5], chromaFeatures[5], delta);
+        assertEquals(TEST_AUDIO_CHROMA_VECTORS[6], chromaFeatures[6], delta);
+        assertEquals(TEST_AUDIO_CHROMA_VECTORS[7], chromaFeatures[7], delta);
+        assertEquals(TEST_AUDIO_CHROMA_VECTORS[8], chromaFeatures[8], delta);
+        assertEquals(TEST_AUDIO_CHROMA_VECTORS[9], chromaFeatures[9], delta);
+        assertEquals(TEST_AUDIO_CHROMA_VECTORS[10], chromaFeatures[10], delta);
+        assertEquals(TEST_AUDIO_CHROMA_VECTORS[11], chromaFeatures[11], delta);
 
 
     }

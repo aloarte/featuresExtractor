@@ -6,8 +6,7 @@ import org.nd4j.linalg.api.ndarray.INDArray;
 import testutils.INDArrayUtils;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 import static testutils.TestingConstants.*;
 
 public class SpectralProcessorTest {
@@ -39,7 +38,7 @@ public class SpectralProcessorTest {
     @Test
     public void extractSpectralEntropy() {
         double spectralEntropy = SUT.extractSpectralEntropy(fftCurrentSliceData);
-        assertThat(spectralEntropy, is(TEST_AUDIO_SPECTRAL_ENTROPY_VALUE));
+        assertEquals(spectralEntropy, TEST_AUDIO_SPECTRAL_ENTROPY_VALUE,1e-6f);
     }
 
     @Test

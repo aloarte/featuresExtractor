@@ -50,11 +50,6 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Grant execute permissions for resource files
-        run: chmod +x src/test/resources/wav_files/knife_30s_22050fr.wav
-      - name: Grant execute permissions for resource files 2
-        run: chmod +x src/test/resources/control_values/knife_30s_22050fr_MEAN
-
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2.4.2
 

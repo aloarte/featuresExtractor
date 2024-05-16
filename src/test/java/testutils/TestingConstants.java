@@ -18,8 +18,6 @@ public class TestingConstants {
 
     public final static int TEST_NFFT = 110;
 
-
-    //public final static String TEST_RESOURCES_PATH = Paths.get("src", "test", "resources").toFile().getAbsolutePath();
     public final static String TEST_RESOURCES_PATH = "src/test/resources/";
 
     public final static String TEST_RESOURCES_PATH_CONTROL_VALUES = TEST_RESOURCES_PATH + "control_values/";
